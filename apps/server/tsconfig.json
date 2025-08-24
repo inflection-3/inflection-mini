@@ -1,0 +1,16 @@
+{
+  "extends": "@mini/typescript-config/base.json",
+  "compilerOptions": {
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "paths": {
+      "@mini/db": ["../../packages/db"]
+    }
+  }
+}

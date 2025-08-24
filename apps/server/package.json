@@ -1,0 +1,26 @@
+{
+  "name": "server",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run --watch --env-file=.env index.ts"
+  },
+  "devDependencies": {
+    "@mini/db": "*",
+    "@mini/typescript-config": "*",
+    "@types/bun": "latest",
+    "@types/jsonwebtoken": "^9.0.10"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@dynamic-labs/passport-dynamic": "^0.0.15",
+    "@types/passport": "^1.0.17",
+    "hono": "^4.9.4",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.2.0",
+    "passport": "^0.7.0"
+  }
+}

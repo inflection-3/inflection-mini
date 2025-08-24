@@ -16,5 +16,9 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "zod": "^4.1.0"
+  }
 }

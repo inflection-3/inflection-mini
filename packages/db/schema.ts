@@ -91,6 +91,25 @@ export const userAppReward = pgTable("user_app_rewards", {
   index("user_app_reward_index").on(table.userId, table.partnerApplicationId, table.rewardId),
 ])
 
+
+export const notification = pgTable("notifications", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id),
+  title: text("title").notNull(),
+  message: text("message").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+})
+
+
+export const notificationToken = pgTable("notification_tokens", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id),
+  token: text("token").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+})
+
 // Relations
 // User relations
 export const userRelations = relations(users, ({ many }) => ({
@@ -162,6 +181,23 @@ export const rewardRelations = relations(reward, ({ one }) => ({
 export const refreshTokensRelations = relations(refreshTokens, ({ one }) => ({
   user: one(users, {
     fields: [refreshTokens.userId],
+    references: [users.id],
+  }),
+}));
+
+
+// Notification relations
+export const notificationRelations = relations(notification, ({ one }) => ({
+  user: one(users, {
+    fields: [notification.userId],
+    references: [users.id],
+  }),
+}));
+
+// Notification Token relations
+export const notificationTokenRelations = relations(notificationToken, ({ one }) => ({
+  user: one(users, {
+    fields: [notificationToken.userId],
     references: [users.id],
   }),
 }));

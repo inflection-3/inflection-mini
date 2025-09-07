@@ -1,8 +1,9 @@
-export function useUsdcBalance({}: {
+export function useUsdcBalance({ address }: {
     address: string
 }) {
+    
     return {
-        balance: 0,
+        balance: 0.00,
         isLoading: false,
     }
 }

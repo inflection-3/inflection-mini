@@ -9,7 +9,7 @@ export function StatCard({
     return (
       <div
         className={cn(
-          "rounded-[28px] px-5 bg-gradient-to-b from-[#0E0E0E] to-[#1A1A1A] min-h-[118px]",
+          "rounded-[16px] p-5 bg-gradient-to-b from-[#0E0E0E] to-[#1A1A1A] border-[0.5px] min-h-0",
           className
         )}
         {...props}

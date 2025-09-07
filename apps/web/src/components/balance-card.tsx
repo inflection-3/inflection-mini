@@ -1,25 +1,20 @@
 import { useUsdcBalance } from "@/hooks/use-usdc-balance";
 import { StatCard } from "./gradient-card";
+import { useUser } from "@/hooks/use-user";
 import { Button } from "./ui/button";
-import { useState } from "react";
-import { ArrowUpRight, CirclePlus } from "lucide-react";
-import { WalletScreen } from "./wallet-screen";
+import { Wallet } from "lucide-react";
+import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
+
 
 export function BalanceCard() {
-    const { balance, isLoading } = useUsdcBalance({ address: "" })
-    const [tab, setTab] = useState<"deposit" | "send">("deposit");
-    const [isOpen, setIsOpen] = useState(false);
-  
-    const handleClick = (tab: "deposit" | "send") => {
-        setIsOpen(true);
-        setTab(tab);
-      };
+    const { user } = useUser()
+    const { balance, isLoading } = useUsdcBalance({ address: user?.walletAddress || "" })
+    const {setShowDynamicUserProfile} = useDynamicContext()
     return (
-    <StatCard className="h-max p-5 py-8 border-[0.5px] w-full">
-    <div className="flex flex-col gap-y-6">
-      <div className="flex justify-between w-full">
-        <h2 className="text-lg font-semibold text-foreground">
-          Wallet Balance
+    <StatCard className="w-full ">
+    <div className="flex flex-col">
+        <h2 className="font-semibold text-foreground text-muted-foreground">
+          Total Balance
         </h2>
         <div className="">
           {isLoading ? (
@@ -27,36 +22,19 @@ export function BalanceCard() {
           ) : (
             <div className="flex items-center gap-2">
               <span className="text-2xl font-bold text-foreground">
-                ${balance ? balance?.toFixed(2) : 0}
+                ${balance ? balance : "0.00"   }
               </span>
             </div>
           )}
         </div>
-      </div>
-      <div className="flex gap-4 w-full">
-        <Button
-          onClick={() => {
-            handleClick("deposit");
-          }}
-          className="flex-1 rounded-sm border bg-transparent"
-          variant={"outline"}
-        >
-          <CirclePlus />
-          Deposit
-        </Button>
-        <Button
-          onClick={() => {
-            handleClick("send");
-          }}
-          className=" flex-1 rounded-sm border bg-transparent"
-          variant={"outline"}
-        >
-          <ArrowUpRight />
-          Send
-        </Button>
-      </div>
+        <div className="flex items-center gap-2 w-full">
+          <p className="text-sm text-muted-foreground truncate max-w-[100px]">{user?.walletAddress}</p>
+          <Button size={"sm"} variant="secondary" className="py-2 gap-[2px]" onClick={() => setShowDynamicUserProfile(true)}>
+            <Wallet />
+            Wallet
+          </Button>
+        </div>
     </div>
-    <WalletScreen tab={tab} isOpen={isOpen} setIsOpen={setIsOpen} />
   </StatCard>
   )
 }

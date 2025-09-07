@@ -14,7 +14,7 @@ import { Route as WalletIndexRouteImport } from './routes/wallet/index'
 import { Route as NotificationsIndexRouteImport } from './routes/notifications/index'
 import { Route as NetworkIndexRouteImport } from './routes/network/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
-import { Route as OrgIdRouteImport } from './routes/_org/$id'
+import { Route as AppsIdRouteImport } from './routes/_apps/$id'
 import { Route as AdminAgentsIndexRouteImport } from './routes/admin/agents/index'
 
 const IndexRoute = IndexRouteImport.update({
@@ -42,8 +42,8 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/admin/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OrgIdRoute = OrgIdRouteImport.update({
-  id: '/_org/$id',
+const AppsIdRoute = AppsIdRouteImport.update({
+  id: '/_apps/$id',
   path: '/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
@@ -55,7 +55,7 @@ const AdminAgentsIndexRoute = AdminAgentsIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/$id': typeof OrgIdRoute
+  '/$id': typeof AppsIdRoute
   '/admin': typeof AdminIndexRoute
   '/network': typeof NetworkIndexRoute
   '/notifications': typeof NotificationsIndexRoute
@@ -64,7 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/$id': typeof OrgIdRoute
+  '/$id': typeof AppsIdRoute
   '/admin': typeof AdminIndexRoute
   '/network': typeof NetworkIndexRoute
   '/notifications': typeof NotificationsIndexRoute
@@ -74,7 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_org/$id': typeof OrgIdRoute
+  '/_apps/$id': typeof AppsIdRoute
   '/admin/': typeof AdminIndexRoute
   '/network/': typeof NetworkIndexRoute
   '/notifications/': typeof NotificationsIndexRoute
@@ -103,7 +103,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/_org/$id'
+    | '/_apps/$id'
     | '/admin/'
     | '/network/'
     | '/notifications/'
@@ -113,7 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  OrgIdRoute: typeof OrgIdRoute
+  AppsIdRoute: typeof AppsIdRoute
   AdminIndexRoute: typeof AdminIndexRoute
   NetworkIndexRoute: typeof NetworkIndexRoute
   NotificationsIndexRoute: typeof NotificationsIndexRoute
@@ -158,11 +158,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_org/$id': {
-      id: '/_org/$id'
+    '/_apps/$id': {
+      id: '/_apps/$id'
       path: '/$id'
       fullPath: '/$id'
-      preLoaderRoute: typeof OrgIdRouteImport
+      preLoaderRoute: typeof AppsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/agents/': {
@@ -177,7 +177,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  OrgIdRoute: OrgIdRoute,
+  AppsIdRoute: AppsIdRoute,
   AdminIndexRoute: AdminIndexRoute,
   NetworkIndexRoute: NetworkIndexRoute,
   NotificationsIndexRoute: NotificationsIndexRoute,

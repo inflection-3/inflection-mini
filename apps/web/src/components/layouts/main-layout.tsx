@@ -6,13 +6,13 @@ import { BottomNavigation } from "../bottom-navigation";
 export function MainLayout() {
   return (
     <Providers> 
-    <div className="flex flex-col gap-y-4 max-w-7xl mx-auto">
+    <div className="flex flex-col gap-y-4 max-w-7xl mx-auto h-screen">
       <SiteHeader />
-      <div className="flex flex-col gap-y-4 max-w-md mx-auto p-4">
+      <div className="flex flex-col gap-y-4 max-w-md mx-auto p-4 w-full">
         <Outlet />
       </div>
-      <BottomNavigation />
     </div>
+      <BottomNavigation />
     </Providers>
   );
 }

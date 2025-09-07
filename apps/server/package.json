@@ -13,13 +13,13 @@
     "@types/jsonwebtoken": "^9.0.10"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^5.9.2"
   },
   "dependencies": {
     "@dynamic-labs/passport-dynamic": "^0.0.15",
     "@types/passport": "^1.0.17",
-    "firebase-admin": "^12.0.0",
-    "hono": "^4.9.4",
+    "firebase-admin": "^12.7.0",
+    "hono": "^4.9.6",
     "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^3.2.0",
     "passport": "^0.7.0"

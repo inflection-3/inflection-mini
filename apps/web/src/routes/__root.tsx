@@ -1,7 +1,7 @@
 import { createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanstackDevtools } from '@tanstack/react-devtools'
-import { MainLayout } from '@/components/layouts.tsx/main-layout'
+import { MainLayout } from '@/components/layouts/main-layout'
 
 export const Route = createRootRoute({
   component: () => (

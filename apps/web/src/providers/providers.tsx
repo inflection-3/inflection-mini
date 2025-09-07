@@ -8,6 +8,8 @@ import { WagmiProvider } from "wagmi";
 import { config as wagmiConfig } from "@/lib/wagmi";
 import {  config } from "@/lib/config";
 import { queryClient } from "@/lib/query-client";
+import { ZeroDevSmartWalletConnectors } from "@dynamic-labs/ethereum-aa";
+
 
 export default function Providers({ children }: { children: React.ReactNode }) {
 
@@ -16,7 +18,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       theme="auto"
       settings={{
         environmentId: config.dynamic.environmentId,
-        walletConnectors: [EthereumWalletConnectors],
+        walletConnectors: [EthereumWalletConnectors, ZeroDevSmartWalletConnectors],
       }}
     >
       <WagmiProvider config={wagmiConfig}>

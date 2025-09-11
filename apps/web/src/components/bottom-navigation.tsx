@@ -31,11 +31,11 @@ const data = [
 
 export function BottomNavigation() {
   return (
-    <div className="fixed bottom-2 w-full max-w-md mx-auto inset-x-0">
+    <div className="fixed bottom-2 w-full max-w-md mx-auto inset-x-0 bg-transparent">
       <Dock
         magnification={40}
         distance={10}
-        className="items-end pb-3 bg-background justify-center w-full max-w-xs mx-auto"
+        className="items-end pb-3 bg-muted border-2 justify-center w-full max-w-md mx-auto"
       >
         {data.map((item, idx) => (
           <Link to={item.href} key={idx}>
@@ -44,7 +44,7 @@ export function BottomNavigation() {
               className="aspect-square rounded-full bg-gray-200 dark:bg-neutral-800"
             >
               <DockLabel>{item.label}</DockLabel>
-              <DockIcon>{item.icon}</DockIcon>
+              <DockIcon className="stroke-muted">{item.icon}</DockIcon>
             </DockItem>
           </Link>
         ))}

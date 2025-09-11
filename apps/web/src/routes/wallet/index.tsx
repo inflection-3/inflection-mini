@@ -1,8 +1,13 @@
 import { BalanceCard } from "@/components/balance-card";
 import { StatCard } from "@/components/gradient-card";
+import { MyPoints } from "@/components/my-points";
 import { SearchInput } from "@/components/search";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
 import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowDown, ArrowRight, ArrowUp, Filter } from "lucide-react";
@@ -71,6 +76,8 @@ function RouteComponent() {
   return (
     <>
       <BalanceCard />
+      <MyPoints />
+      <div className="h-5"></div>
       <h1 className="font-medium">Transction History</h1>
       <div className="flex justify-between">
         <SearchInput />
@@ -102,15 +109,10 @@ function TransactionItem({ type, amount, date, status }: TransactionItemProps) {
         ? "text-yellow-500"
         : "text-red-500";
   const Icon = type === "deposit" && <ArrowUp /> || type === "withdrawal" && <ArrowDown /> || type === "transfer" && <ArrowRight /> || type === "buy" && <ArrowUp /> || type === "sell" && <ArrowDown /> || type === "swap" && <ArrowRight /> || type === "receive" && <ArrowDown /> || type === "app_incentaction" && <ArrowUp />;
-  {
-    type === "receive" && <ArrowDown />;
-  }
-  {
-    type === "app_incentaction" && <ArrowUp />;
-  }
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>
+    <Drawer>
+      <DrawerTrigger asChild>
         <StatCard>
           <div className="flex justify-between">
             <div className="flex items-center gap-2">
@@ -132,8 +134,9 @@ function TransactionItem({ type, amount, date, status }: TransactionItemProps) {
             </div>
           </div>
         </StatCard>
-      </DialogTrigger>
-      <DialogContent className="flex flex-col gap-4 items-center">
+      </DrawerTrigger>
+      <DrawerContent>
+        <div className="flex p-5 flex-col max-w-md mx-auto w-full gap-4 items-center">
         <h2 className="capitalize">{type}</h2>
         <div
           className={cn(
@@ -159,7 +162,8 @@ function TransactionItem({ type, amount, date, status }: TransactionItemProps) {
         <a className="w-full" href="https://etherscan.io/tx/0x1234567890" target="_blank">
           <Button className="w-full">view on explorer</Button>
         </a>
-      </DialogContent>
-    </Dialog>
+        </div>
+      </DrawerContent>
+    </Drawer>
   );
 }

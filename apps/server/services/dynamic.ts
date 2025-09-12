@@ -84,7 +84,7 @@ export function authenticateDynamic() {
       await next();
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Authentication failed';
-      return c.json({ error: message }, 401);
+      return c.json({ message, success: false, data: null }, 401);
     }
   };
 }

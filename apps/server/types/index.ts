@@ -9,7 +9,7 @@ export interface AppBindings {
     dynamicUserId: string;
     user: InferSelectModel<typeof users>;
     jwtPayload: {
-      userId: number;
+      userId: string;
     };
   };
 }

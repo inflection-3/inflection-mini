@@ -9,11 +9,14 @@ import { DATABASE_URL } from ".";
 
 const pool = new Pool({
   connectionString: DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
 });
 
+type Db = typeof db;
+
+export type Tx = Parameters<Parameters<Db['transaction']>[0]>[0];
+
+
+
+
 export const db = drizzle(pool, { schema: { ...schema } });
-export default db;
 export * from "drizzle-orm";

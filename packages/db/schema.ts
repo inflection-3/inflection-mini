@@ -1,17 +1,17 @@
 import { relations } from "drizzle-orm";
-import {varchar, boolean, integer, pgEnum, pgTable, serial, text, timestamp, uniqueIndex, index } from "drizzle-orm/pg-core";
+import {varchar, boolean, integer, pgEnum, pgTable, serial, text, timestamp, uniqueIndex, index, uuid } from "drizzle-orm/pg-core";
 
 
 export const userRole = pgEnum("user_role", ["admin", "user"]);
-export const verficationTYpe = pgEnum("verification_type", ["auto", "api", "manual"])
+export const verficationTYpe = pgEnum("verification_type", ["auto", "api", "manual", "none"])
 export const rewardType = pgEnum("reward_type", ["points", "USDC", "NFT"])
 
 export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   dynamicId: varchar("dynamic_id").notNull().unique(),
-  phone: text("phone").notNull().unique(),
-  name: text("name").notNull(),
-  email: text("email"),
+  phone: varchar("phone").notNull().unique(),
+  name: varchar("name").notNull(),
+  email: varchar("email"),
   walletAddress: varchar("wallet_address"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -19,56 +19,70 @@ export const users = pgTable("users", {
 
 
 export const refreshTokens = pgTable("refresh_tokens", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull().references(() => users.id),
   token: text("token").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 })
 
 
+export const partnerCategories = pgTable("partner_categories", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: varchar("name").notNull().unique(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+})
+
+
 export const partnerApplications = pgTable("partner_applications", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
-  slug: text("slug").notNull().unique(),
-  appName: text("app_name").notNull(),
-  appLogo: text("app_logo").notNull(),
-  appUrl: text("app_url").notNull(),
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull().references(() => users.id),
+  categoryId: uuid("category_id").references(() => partnerCategories.id),
+  categoryName: varchar("category_name").references(() => partnerCategories.name),
+  slug: varchar("slug").notNull().unique(),
+  appName: varchar("app_name").notNull(),
+  bannerImage: varchar("banner_image"),
+  appLogo: varchar("app_logo").notNull(),
+  appUrl: varchar("app_url").notNull(),
   appDescription: text("app_description").notNull(),
-  appBadgeLabel: text("app_badge_label"),
+  openForClaim: boolean("open_for_claim").notNull().default(false),
+  appBadgeLabel: varchar("app_badge_label"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
 
 export const partnerInteraction = pgTable("partner_interaction", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
+  appId: uuid("app_id").notNull().references(() => partnerApplications.id),
   interactionUrl: text("interaction_url").notNull(),
-  partnerApplicationId: integer("partner_application_id").references(() => partnerApplications.id),
+  partnerApplicationId: uuid("partner_application_id").notNull().references(() => partnerApplications.id),
   verficationType: verficationTYpe("verfication_type").default("auto"),
+  rewardId: uuid("reward_id").notNull().references(() => reward.id),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
 
 export const userAppInteraction = pgTable("user_app_interaction", {
-  id: serial("id").primaryKey(),
-  partnerApplicationId: integer("partner_application_id").references(() => partnerApplications.id),
-  userId: integer("user_id").references(() => users.id),
+  id: uuid("id").primaryKey().defaultRandom(),
+  interactionId: uuid("interaction_id").references(() => partnerInteraction.id),
+  userId: uuid("user_id").references(() => users.id),
   verfied: boolean("verfied_at").notNull().default(false),
   verfiedAt: timestamp("verfied_at").$onUpdate(() => new Date()),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 }, (table) => [
-  index("user_app_interaction_index").on(table.userId, table.partnerApplicationId),
-  uniqueIndex("user_app_interaction_unique").on(table.userId, table.partnerApplicationId),
+  index("user_app_interaction_index").on(table.userId, table.interactionId),
+  uniqueIndex("user_app_interaction_unique").on(table.userId, table.interactionId),
 ]);
 
 
 export const reward = pgTable("rewards", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
-  partnerApplicationId: integer("partner_application_id").references(() => partnerApplications.id),
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull().references(() => users.id),
+  partnerApplicationId: uuid("partner_application_id").notNull().references(() => partnerApplications.id),
   rewardType: rewardType("reward_type").notNull(),
   amount: integer("amount").notNull(),
   issuedAt: timestamp("issued_at").notNull().defaultNow(),
@@ -80,10 +94,10 @@ export const reward = pgTable("rewards", {
 
 
 export const userAppReward = pgTable("user_app_rewards", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
-  partnerApplicationId: integer("partner_application_id").references(() => partnerApplications.id),
-  rewardId: integer("reward_id").references(() => reward.id),
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull().references(() => users.id),
+  partnerApplicationId: uuid("partner_application_id").notNull().references(() => partnerApplications.id),
+  rewardId: uuid("reward_id").references(() => reward.id),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 }, (table) => [
@@ -93,9 +107,9 @@ export const userAppReward = pgTable("user_app_rewards", {
 
 
 export const notification = pgTable("notifications", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
-  title: text("title").notNull(),
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").references(() => users.id),
+  title: varchar("title").notNull(),
   message: text("message").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -103,8 +117,8 @@ export const notification = pgTable("notifications", {
 
 
 export const notificationToken = pgTable("notification_tokens", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull().references(() => users.id),
   token: text("token").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -126,17 +140,22 @@ export const partnerApplicationsRelations = relations(partnerApplications, ({ on
     references: [users.id],
   }),
   interactions: many(partnerInteraction),
-  appInteractions: many(userAppInteraction),
+  userInteractions: many(userAppInteraction),
   rewards: many(reward),
-  appRewards: many(userAppReward),
+  userAppRewards: many(userAppReward),
 }));
 
 // Partner Interaction relations
-export const partnerInteractionRelations = relations(partnerInteraction, ({ one }) => ({
+export const partnerInteractionRelations = relations(partnerInteraction, ({ one, many }) => ({
   partnerApplication: one(partnerApplications, {
     fields: [partnerInteraction.partnerApplicationId],
     references: [partnerApplications.id],
   }),
+  reward: one(reward, {
+    fields: [partnerInteraction.rewardId],
+    references: [reward.id],
+  }),
+  userInteraction: many(userAppInteraction),
 }));
 
 export const userAppInteractionRelations = relations(userAppInteraction, ({ one }) => ({
@@ -144,9 +163,9 @@ export const userAppInteractionRelations = relations(userAppInteraction, ({ one 
     fields: [userAppInteraction.userId],
     references: [users.id],
   }),
-  partnerApplication: one(partnerApplications, {
-    fields: [userAppInteraction.partnerApplicationId],
-    references: [partnerApplications.id],
+  interaction: one(partnerInteraction, {
+    fields: [userAppInteraction.interactionId],
+    references: [partnerInteraction.id],
   }),
 }));
 

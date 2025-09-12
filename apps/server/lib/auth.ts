@@ -1,7 +1,7 @@
 import {  users } from "db/schema";
-import { jwt } from "hono/jwt";
+import { jwt, sign } from "hono/jwt";
 import { createMiddleware } from "hono/factory";
-import db from "@mini/db/connection";
+import {db} from "@mini/db/connection";
 import { eq, InferSelectModel } from "drizzle-orm";
 import { env } from "../env";
 import { AppBindings } from "../types";
@@ -95,3 +95,18 @@ export const verifyDynamicAccessTokenMiddleware = createMiddleware<AppBindings>(
   await next();
 });
 
+
+export async function generateTokens(userId: string) {
+  const accessToken = await sign(
+    { userId, exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60 },
+    env.ACCESS_TOKEN_SECRETE,
+    "HS256"
+  );
+
+  const refreshToken = await sign(
+    { userId, exp: Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60 },
+    env.REFRESH_TOKEN_SECRETE,
+    "HS256"
+  );
+  return { accessToken, refreshToken };
+}

@@ -16,8 +16,10 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.888.0",
     "@dynamic-labs/passport-dynamic": "^0.0.15",
     "@hono/zod-validator": "^0.7.2",
+    "@mini/types": "workspace:*",
     "@rcmade/hono-docs": "^1.0.30",
     "@types/passport": "^1.0.17",
     "firebase-admin": "^12.7.0",
@@ -25,7 +27,6 @@
     "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^3.2.0",
     "passport": "^0.7.0",
-    "viem": "^2.37.5",
-    "@mini/types": "workspace:*"
+    "viem": "^2.37.5"
   }
 }

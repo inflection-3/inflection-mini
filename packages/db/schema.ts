@@ -1,8 +1,8 @@
 import { relations } from "drizzle-orm";
-import {varchar, boolean, integer, pgEnum, pgTable, serial, text, timestamp, uniqueIndex, index, uuid } from "drizzle-orm/pg-core";
+import {varchar, boolean, integer, pgEnum, pgTable, text, timestamp, uniqueIndex, index, uuid } from "drizzle-orm/pg-core";
 
 
-export const userRole = pgEnum("user_role", ["admin", "user"]);
+export const userRole = pgEnum("user_role", ["admin", "user", "agent"]);
 export const verficationTYpe = pgEnum("verification_type", ["auto", "api", "manual", "none"])
 export const rewardType = pgEnum("reward_type", ["points", "USDC", "NFT"])
 
@@ -12,6 +12,8 @@ export const users = pgTable("users", {
   phone: varchar("phone").notNull().unique(),
   name: varchar("name").notNull(),
   email: varchar("email"),
+  role: userRole("role").notNull().default("user"),
+  onboardingAgentId: uuid("onboarding_agent_id"),
   walletAddress: varchar("wallet_address"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -123,6 +125,17 @@ export const notificationToken = pgTable("notification_tokens", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 })
+
+
+export const userOnboardingReward = pgTable("user_onboarding_rewards", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull().references(() => users.id),
+  rewardId: uuid("reward_id").notNull().references(() => reward.id),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+})
+
+
 
 // Relations
 // User relations

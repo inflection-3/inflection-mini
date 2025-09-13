@@ -5,6 +5,7 @@ import { idSchema } from "./apps";
 import { createAppReward, getReward } from "../lib/apps";
 import z from "zod";
 import { authMiddleware } from "../lib/auth";
+import { adminApiMiddleware } from "./middleware/admin-api";
 
 const rewardRouter = new Hono<AppBindings>();
 
@@ -24,7 +25,7 @@ rewardRouter.get("/:id", zValidator("param", idSchema), async (c) => {
   return c.json({ rewards, success: true, message: "Reward fetched successfully" });
 });
 
-rewardRouter.post("/", zValidator("json", rewardSchema), authMiddleware, async (c) => {
+rewardRouter.post("/", zValidator("json", rewardSchema), authMiddleware, adminApiMiddleware, async (c) => {
   const { rewardType, amount, appId } = c.req.valid("json");
   const { userId } = c.get("jwtPayload");
   const rewards = await createAppReward({

@@ -4,7 +4,7 @@ import { MyPoints } from "@/components/my-points";
 import { FeaturedList } from "@/components/featured-list";
 import { ExploreList } from "@/components/explore-list";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_main/")({
   component: App,
   beforeLoad: async ({ context }) => {
     const { auth } = context;

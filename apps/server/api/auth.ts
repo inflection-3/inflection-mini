@@ -35,14 +35,14 @@ authRouter.post("/login", zValidator("json", loginSchema), authenticateDynamic()
         }
         const tokens = await generateTokens(newUser.id);
         return c.json({success: true, data: {
-            userId: newUser.id,
+            user: newUser,
             accessToken: tokens.accessToken,
             refreshToken: tokens.refreshToken,
         }, message: "Logged in successfully" });
     }
     const tokens = await generateTokens(user.id);
     return c.json({success: true, data: {
-        userId: user.id,
+        user: user,
         accessToken: tokens.accessToken,
         refreshToken: tokens.refreshToken,
     }, message: "Logged in successfully" });

@@ -1,8 +1,15 @@
 import { DynamicEmbeddedAuthFlow,} from '@dynamic-labs/sdk-react-core'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/login/')({
   component: LoginComponent,
+  beforeLoad: async ({ context }) => {
+    const { auth} = context;
+    if (auth.isAuthenticated) {
+      throw redirect({ to: "/" });
+    }
+    return { auth };
+  },
 })
 
 function LoginComponent() {

@@ -1,9 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/apps/edit/$id')({
+export const Route = createFileRoute('/_main/notifications/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  return <div>Hello "/apps/edit/$id"!</div>
+  return <div>Hello "/notifications/"!</div>
 }
+    

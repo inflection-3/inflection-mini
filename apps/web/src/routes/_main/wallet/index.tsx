@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowDown, ArrowRight, ArrowUp, Filter } from "lucide-react";
 
-export const Route = createFileRoute("/wallet/")({
+export const Route = createFileRoute("/_main/wallet/")({
   component: RouteComponent,
 });
 

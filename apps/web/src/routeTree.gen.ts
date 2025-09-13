@@ -9,36 +9,30 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as WalletIndexRouteImport } from './routes/wallet/index'
-import { Route as NotificationsIndexRouteImport } from './routes/notifications/index'
-import { Route as NetworkIndexRouteImport } from './routes/network/index'
+import { Route as AdminRouteRouteImport } from './routes/admin/route'
+import { Route as MainRouteRouteImport } from './routes/_main/route'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
-import { Route as AppsIndexRouteImport } from './routes/apps/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
-import { Route as AppsNewRouteImport } from './routes/apps/new'
-import { Route as AppsIdRouteImport } from './routes/apps/$id'
+import { Route as MainIndexRouteImport } from './routes/_main/index'
+import { Route as AdminAppsIndexRouteImport } from './routes/admin/apps/index'
 import { Route as AdminAgentsIndexRouteImport } from './routes/admin/agents/index'
-import { Route as AppsEditIdRouteImport } from './routes/apps/edit/$id'
+import { Route as MainWalletIndexRouteImport } from './routes/_main/wallet/index'
+import { Route as MainNotificationsIndexRouteImport } from './routes/_main/notifications/index'
+import { Route as MainNetworkIndexRouteImport } from './routes/_main/network/index'
+import { Route as MainAppsIndexRouteImport } from './routes/_main/apps/index'
+import { Route as AdminAppsNewRouteImport } from './routes/admin/apps/new'
+import { Route as AdminAppsIdRouteImport } from './routes/admin/apps/$id'
+import { Route as MainAppsIdRouteImport } from './routes/_main/apps/$id'
+import { Route as AdminAppsIdInteractionRouteImport } from './routes/admin/apps/$id.interaction'
+import { Route as AdminAppsIdEditRouteImport } from './routes/admin/apps/$id.edit'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AdminRouteRoute = AdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WalletIndexRoute = WalletIndexRouteImport.update({
-  id: '/wallet/',
-  path: '/wallet/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NotificationsIndexRoute = NotificationsIndexRouteImport.update({
-  id: '/notifications/',
-  path: '/notifications/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NetworkIndexRoute = NetworkIndexRouteImport.update({
-  id: '/network/',
-  path: '/network/',
+const MainRouteRoute = MainRouteRouteImport.update({
+  id: '/_main',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginIndexRoute = LoginIndexRouteImport.update({
@@ -46,161 +40,198 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
   path: '/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppsIndexRoute = AppsIndexRouteImport.update({
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const MainIndexRoute = MainIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MainRouteRoute,
+} as any)
+const AdminAppsIndexRoute = AdminAppsIndexRouteImport.update({
   id: '/apps/',
   path: '/apps/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppsNewRoute = AppsNewRouteImport.update({
-  id: '/apps/new',
-  path: '/apps/new',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppsIdRoute = AppsIdRouteImport.update({
-  id: '/apps/$id',
-  path: '/apps/$id',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminAgentsIndexRoute = AdminAgentsIndexRouteImport.update({
-  id: '/admin/agents/',
-  path: '/admin/agents/',
-  getParentRoute: () => rootRouteImport,
+  id: '/agents/',
+  path: '/agents/',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
-const AppsEditIdRoute = AppsEditIdRouteImport.update({
-  id: '/apps/edit/$id',
-  path: '/apps/edit/$id',
-  getParentRoute: () => rootRouteImport,
+const MainWalletIndexRoute = MainWalletIndexRouteImport.update({
+  id: '/wallet/',
+  path: '/wallet/',
+  getParentRoute: () => MainRouteRoute,
+} as any)
+const MainNotificationsIndexRoute = MainNotificationsIndexRouteImport.update({
+  id: '/notifications/',
+  path: '/notifications/',
+  getParentRoute: () => MainRouteRoute,
+} as any)
+const MainNetworkIndexRoute = MainNetworkIndexRouteImport.update({
+  id: '/network/',
+  path: '/network/',
+  getParentRoute: () => MainRouteRoute,
+} as any)
+const MainAppsIndexRoute = MainAppsIndexRouteImport.update({
+  id: '/apps/',
+  path: '/apps/',
+  getParentRoute: () => MainRouteRoute,
+} as any)
+const AdminAppsNewRoute = AdminAppsNewRouteImport.update({
+  id: '/apps/new',
+  path: '/apps/new',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminAppsIdRoute = AdminAppsIdRouteImport.update({
+  id: '/apps/$id',
+  path: '/apps/$id',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const MainAppsIdRoute = MainAppsIdRouteImport.update({
+  id: '/apps/$id',
+  path: '/apps/$id',
+  getParentRoute: () => MainRouteRoute,
+} as any)
+const AdminAppsIdInteractionRoute = AdminAppsIdInteractionRouteImport.update({
+  id: '/interaction',
+  path: '/interaction',
+  getParentRoute: () => AdminAppsIdRoute,
+} as any)
+const AdminAppsIdEditRoute = AdminAppsIdEditRouteImport.update({
+  id: '/edit',
+  path: '/edit',
+  getParentRoute: () => AdminAppsIdRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/apps/$id': typeof AppsIdRoute
-  '/apps/new': typeof AppsNewRoute
-  '/admin': typeof AdminIndexRoute
-  '/apps': typeof AppsIndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
+  '/': typeof MainIndexRoute
+  '/admin/': typeof AdminIndexRoute
   '/login': typeof LoginIndexRoute
-  '/network': typeof NetworkIndexRoute
-  '/notifications': typeof NotificationsIndexRoute
-  '/wallet': typeof WalletIndexRoute
-  '/apps/edit/$id': typeof AppsEditIdRoute
+  '/apps/$id': typeof MainAppsIdRoute
+  '/admin/apps/$id': typeof AdminAppsIdRouteWithChildren
+  '/admin/apps/new': typeof AdminAppsNewRoute
+  '/apps': typeof MainAppsIndexRoute
+  '/network': typeof MainNetworkIndexRoute
+  '/notifications': typeof MainNotificationsIndexRoute
+  '/wallet': typeof MainWalletIndexRoute
   '/admin/agents': typeof AdminAgentsIndexRoute
+  '/admin/apps': typeof AdminAppsIndexRoute
+  '/admin/apps/$id/edit': typeof AdminAppsIdEditRoute
+  '/admin/apps/$id/interaction': typeof AdminAppsIdInteractionRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/apps/$id': typeof AppsIdRoute
-  '/apps/new': typeof AppsNewRoute
+  '/': typeof MainIndexRoute
   '/admin': typeof AdminIndexRoute
-  '/apps': typeof AppsIndexRoute
   '/login': typeof LoginIndexRoute
-  '/network': typeof NetworkIndexRoute
-  '/notifications': typeof NotificationsIndexRoute
-  '/wallet': typeof WalletIndexRoute
-  '/apps/edit/$id': typeof AppsEditIdRoute
+  '/apps/$id': typeof MainAppsIdRoute
+  '/admin/apps/$id': typeof AdminAppsIdRouteWithChildren
+  '/admin/apps/new': typeof AdminAppsNewRoute
+  '/apps': typeof MainAppsIndexRoute
+  '/network': typeof MainNetworkIndexRoute
+  '/notifications': typeof MainNotificationsIndexRoute
+  '/wallet': typeof MainWalletIndexRoute
   '/admin/agents': typeof AdminAgentsIndexRoute
+  '/admin/apps': typeof AdminAppsIndexRoute
+  '/admin/apps/$id/edit': typeof AdminAppsIdEditRoute
+  '/admin/apps/$id/interaction': typeof AdminAppsIdInteractionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/apps/$id': typeof AppsIdRoute
-  '/apps/new': typeof AppsNewRoute
+  '/_main': typeof MainRouteRouteWithChildren
+  '/admin': typeof AdminRouteRouteWithChildren
+  '/_main/': typeof MainIndexRoute
   '/admin/': typeof AdminIndexRoute
-  '/apps/': typeof AppsIndexRoute
   '/login/': typeof LoginIndexRoute
-  '/network/': typeof NetworkIndexRoute
-  '/notifications/': typeof NotificationsIndexRoute
-  '/wallet/': typeof WalletIndexRoute
-  '/apps/edit/$id': typeof AppsEditIdRoute
+  '/_main/apps/$id': typeof MainAppsIdRoute
+  '/admin/apps/$id': typeof AdminAppsIdRouteWithChildren
+  '/admin/apps/new': typeof AdminAppsNewRoute
+  '/_main/apps/': typeof MainAppsIndexRoute
+  '/_main/network/': typeof MainNetworkIndexRoute
+  '/_main/notifications/': typeof MainNotificationsIndexRoute
+  '/_main/wallet/': typeof MainWalletIndexRoute
   '/admin/agents/': typeof AdminAgentsIndexRoute
+  '/admin/apps/': typeof AdminAppsIndexRoute
+  '/admin/apps/$id/edit': typeof AdminAppsIdEditRoute
+  '/admin/apps/$id/interaction': typeof AdminAppsIdInteractionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/apps/$id'
-    | '/apps/new'
     | '/admin'
-    | '/apps'
+    | '/'
+    | '/admin/'
     | '/login'
+    | '/apps/$id'
+    | '/admin/apps/$id'
+    | '/admin/apps/new'
+    | '/apps'
     | '/network'
     | '/notifications'
     | '/wallet'
-    | '/apps/edit/$id'
     | '/admin/agents'
+    | '/admin/apps'
+    | '/admin/apps/$id/edit'
+    | '/admin/apps/$id/interaction'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/apps/$id'
-    | '/apps/new'
     | '/admin'
-    | '/apps'
     | '/login'
+    | '/apps/$id'
+    | '/admin/apps/$id'
+    | '/admin/apps/new'
+    | '/apps'
     | '/network'
     | '/notifications'
     | '/wallet'
-    | '/apps/edit/$id'
     | '/admin/agents'
+    | '/admin/apps'
+    | '/admin/apps/$id/edit'
+    | '/admin/apps/$id/interaction'
   id:
     | '__root__'
-    | '/'
-    | '/apps/$id'
-    | '/apps/new'
+    | '/_main'
+    | '/admin'
+    | '/_main/'
     | '/admin/'
-    | '/apps/'
     | '/login/'
-    | '/network/'
-    | '/notifications/'
-    | '/wallet/'
-    | '/apps/edit/$id'
+    | '/_main/apps/$id'
+    | '/admin/apps/$id'
+    | '/admin/apps/new'
+    | '/_main/apps/'
+    | '/_main/network/'
+    | '/_main/notifications/'
+    | '/_main/wallet/'
     | '/admin/agents/'
+    | '/admin/apps/'
+    | '/admin/apps/$id/edit'
+    | '/admin/apps/$id/interaction'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AppsIdRoute: typeof AppsIdRoute
-  AppsNewRoute: typeof AppsNewRoute
-  AdminIndexRoute: typeof AdminIndexRoute
-  AppsIndexRoute: typeof AppsIndexRoute
+  MainRouteRoute: typeof MainRouteRouteWithChildren
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
   LoginIndexRoute: typeof LoginIndexRoute
-  NetworkIndexRoute: typeof NetworkIndexRoute
-  NotificationsIndexRoute: typeof NotificationsIndexRoute
-  WalletIndexRoute: typeof WalletIndexRoute
-  AppsEditIdRoute: typeof AppsEditIdRoute
-  AdminAgentsIndexRoute: typeof AdminAgentsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/wallet/': {
-      id: '/wallet/'
-      path: '/wallet'
-      fullPath: '/wallet'
-      preLoaderRoute: typeof WalletIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/notifications/': {
-      id: '/notifications/'
-      path: '/notifications'
-      fullPath: '/notifications'
-      preLoaderRoute: typeof NotificationsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/network/': {
-      id: '/network/'
-      path: '/network'
-      fullPath: '/network'
-      preLoaderRoute: typeof NetworkIndexRouteImport
+    '/_main': {
+      id: '/_main'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof MainRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login/': {
@@ -210,63 +241,160 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/apps/': {
-      id: '/apps/'
-      path: '/apps'
-      fullPath: '/apps'
-      preLoaderRoute: typeof AppsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/': {
       id: '/admin/'
-      path: '/admin'
-      fullPath: '/admin'
+      path: '/'
+      fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
-    '/apps/new': {
-      id: '/apps/new'
-      path: '/apps/new'
-      fullPath: '/apps/new'
-      preLoaderRoute: typeof AppsNewRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_main/': {
+      id: '/_main/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof MainIndexRouteImport
+      parentRoute: typeof MainRouteRoute
     }
-    '/apps/$id': {
-      id: '/apps/$id'
-      path: '/apps/$id'
-      fullPath: '/apps/$id'
-      preLoaderRoute: typeof AppsIdRouteImport
-      parentRoute: typeof rootRouteImport
+    '/admin/apps/': {
+      id: '/admin/apps/'
+      path: '/apps'
+      fullPath: '/admin/apps'
+      preLoaderRoute: typeof AdminAppsIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/admin/agents/': {
       id: '/admin/agents/'
-      path: '/admin/agents'
+      path: '/agents'
       fullPath: '/admin/agents'
       preLoaderRoute: typeof AdminAgentsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
-    '/apps/edit/$id': {
-      id: '/apps/edit/$id'
-      path: '/apps/edit/$id'
-      fullPath: '/apps/edit/$id'
-      preLoaderRoute: typeof AppsEditIdRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_main/wallet/': {
+      id: '/_main/wallet/'
+      path: '/wallet'
+      fullPath: '/wallet'
+      preLoaderRoute: typeof MainWalletIndexRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
+    '/_main/notifications/': {
+      id: '/_main/notifications/'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof MainNotificationsIndexRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
+    '/_main/network/': {
+      id: '/_main/network/'
+      path: '/network'
+      fullPath: '/network'
+      preLoaderRoute: typeof MainNetworkIndexRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
+    '/_main/apps/': {
+      id: '/_main/apps/'
+      path: '/apps'
+      fullPath: '/apps'
+      preLoaderRoute: typeof MainAppsIndexRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
+    '/admin/apps/new': {
+      id: '/admin/apps/new'
+      path: '/apps/new'
+      fullPath: '/admin/apps/new'
+      preLoaderRoute: typeof AdminAppsNewRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/apps/$id': {
+      id: '/admin/apps/$id'
+      path: '/apps/$id'
+      fullPath: '/admin/apps/$id'
+      preLoaderRoute: typeof AdminAppsIdRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_main/apps/$id': {
+      id: '/_main/apps/$id'
+      path: '/apps/$id'
+      fullPath: '/apps/$id'
+      preLoaderRoute: typeof MainAppsIdRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
+    '/admin/apps/$id/interaction': {
+      id: '/admin/apps/$id/interaction'
+      path: '/interaction'
+      fullPath: '/admin/apps/$id/interaction'
+      preLoaderRoute: typeof AdminAppsIdInteractionRouteImport
+      parentRoute: typeof AdminAppsIdRoute
+    }
+    '/admin/apps/$id/edit': {
+      id: '/admin/apps/$id/edit'
+      path: '/edit'
+      fullPath: '/admin/apps/$id/edit'
+      preLoaderRoute: typeof AdminAppsIdEditRouteImport
+      parentRoute: typeof AdminAppsIdRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AppsIdRoute: AppsIdRoute,
-  AppsNewRoute: AppsNewRoute,
+interface MainRouteRouteChildren {
+  MainIndexRoute: typeof MainIndexRoute
+  MainAppsIdRoute: typeof MainAppsIdRoute
+  MainAppsIndexRoute: typeof MainAppsIndexRoute
+  MainNetworkIndexRoute: typeof MainNetworkIndexRoute
+  MainNotificationsIndexRoute: typeof MainNotificationsIndexRoute
+  MainWalletIndexRoute: typeof MainWalletIndexRoute
+}
+
+const MainRouteRouteChildren: MainRouteRouteChildren = {
+  MainIndexRoute: MainIndexRoute,
+  MainAppsIdRoute: MainAppsIdRoute,
+  MainAppsIndexRoute: MainAppsIndexRoute,
+  MainNetworkIndexRoute: MainNetworkIndexRoute,
+  MainNotificationsIndexRoute: MainNotificationsIndexRoute,
+  MainWalletIndexRoute: MainWalletIndexRoute,
+}
+
+const MainRouteRouteWithChildren = MainRouteRoute._addFileChildren(
+  MainRouteRouteChildren,
+)
+
+interface AdminAppsIdRouteChildren {
+  AdminAppsIdEditRoute: typeof AdminAppsIdEditRoute
+  AdminAppsIdInteractionRoute: typeof AdminAppsIdInteractionRoute
+}
+
+const AdminAppsIdRouteChildren: AdminAppsIdRouteChildren = {
+  AdminAppsIdEditRoute: AdminAppsIdEditRoute,
+  AdminAppsIdInteractionRoute: AdminAppsIdInteractionRoute,
+}
+
+const AdminAppsIdRouteWithChildren = AdminAppsIdRoute._addFileChildren(
+  AdminAppsIdRouteChildren,
+)
+
+interface AdminRouteRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminAppsIdRoute: typeof AdminAppsIdRouteWithChildren
+  AdminAppsNewRoute: typeof AdminAppsNewRoute
+  AdminAgentsIndexRoute: typeof AdminAgentsIndexRoute
+  AdminAppsIndexRoute: typeof AdminAppsIndexRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminIndexRoute: AdminIndexRoute,
-  AppsIndexRoute: AppsIndexRoute,
-  LoginIndexRoute: LoginIndexRoute,
-  NetworkIndexRoute: NetworkIndexRoute,
-  NotificationsIndexRoute: NotificationsIndexRoute,
-  WalletIndexRoute: WalletIndexRoute,
-  AppsEditIdRoute: AppsEditIdRoute,
+  AdminAppsIdRoute: AdminAppsIdRouteWithChildren,
+  AdminAppsNewRoute: AdminAppsNewRoute,
   AdminAgentsIndexRoute: AdminAgentsIndexRoute,
+  AdminAppsIndexRoute: AdminAppsIndexRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
+const rootRouteChildren: RootRouteChildren = {
+  MainRouteRoute: MainRouteRouteWithChildren,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
+  LoginIndexRoute: LoginIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

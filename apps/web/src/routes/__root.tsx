@@ -1,7 +1,6 @@
-import {  createRootRouteWithContext } from '@tanstack/react-router'
+import {  createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanstackDevtools } from '@tanstack/react-devtools'
-import { MainLayout } from '@/components/layouts/main-layout'
 import type { QueryClient } from '@tanstack/react-query';
 import type { User } from '@mini/types';
 import { userQueries } from '@/lib/queries';
@@ -26,7 +25,10 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
         const userData = await queryClient.fetchQuery(userQueries.meOptions());
         return {
           auth: {
-            user: userData,
+            user: {
+              ...userData,
+              role: "admin",
+            },
             isAuthenticated: true,
           },
         };
@@ -49,7 +51,7 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
   },
   component: () => (
     <>
-      <MainLayout />
+      <Outlet />
       <TanstackDevtools
         config={{
           position: 'bottom-left',

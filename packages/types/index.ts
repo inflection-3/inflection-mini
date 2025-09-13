@@ -28,10 +28,12 @@ export const userSchema = z.object({
   walletAddress: z.string().nullable(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
+  role: z.enum(["admin", "user", "agent"]),
+  onboardingAgentId: z.string().uuid().nullable(),
 });
 
 export const userWithTokensSchema = z.object({
-  userId: z.string().uuid(),
+  user: userSchema,
   accessToken: z.string(),
   refreshToken: z.string(),
 });

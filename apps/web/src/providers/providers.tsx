@@ -44,7 +44,6 @@ export default function Providers({ children }: { children: React.ReactNode }) {
               if (!response.success) {
                 toast.error(response.message)
               }
-              console.log("RESPONSE", response.data)
               localStorage.setItem("accessToken", response.data.accessToken)
               localStorage.setItem("refreshToken", response.data.refreshToken)
               queryClient.setQueryData(userQueries.me(), response.data)

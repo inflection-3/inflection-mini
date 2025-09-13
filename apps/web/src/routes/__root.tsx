@@ -20,12 +20,10 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
     const { queryClient } = context;
     
     const token = localStorage.getItem("accessToken");
-    console.log("TOKEN", token);
     
     if (token) {
       try {
         const userData = await queryClient.fetchQuery(userQueries.meOptions());
-        console.log("User data from query:", userData);
         return {
           auth: {
             user: userData,
@@ -33,7 +31,6 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
           },
         };
       } catch (error) {
-        console.log("Error fetching user data:", error);
         return {
           auth: {
             user: null,

@@ -32,7 +32,6 @@ export async function api<T = any>(
 
   // Add authorization header if token exists
   const token = localStorage.getItem("accessToken");
-  console.log("API Request - Token:", token ? "Present" : "Missing");
   
   const requestHeaders = {
     ...headers,

@@ -42,7 +42,6 @@ export const protectedMiddleware = async (
         await next();
       });
     } catch (error) {
-      console.log(error);
       throw new HTTPException(401, { message: "Unauthorized" });
     }
   };

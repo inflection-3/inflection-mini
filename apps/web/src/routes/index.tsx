@@ -8,14 +8,11 @@ export const Route = createFileRoute("/")({
   component: App,
   beforeLoad: async ({ context }) => {
     const { auth } = context;
-    console.log(auth);
     if (!auth?.isAuthenticated) {
-      console.log("redirecting to login");
       throw redirect({
         to: "/login",
       });
     }
-    console.log("not redirecting to login");
     return {
       user: auth.user,
       isAuthenticated: auth.isAuthenticated,

@@ -1,8 +1,5 @@
 import { z } from "zod";
 
-
-
-
 export const responseSchema = <T extends z.ZodType>(dataSchema: T) =>
   z.object({
     success: z.boolean(),
@@ -46,7 +43,6 @@ export const partnerCategorySchema = z.object({
   updatedAt: z.string().datetime(),
 });
 
-// Partner Application schemas
 export const partnerApplicationSchema = z.object({
   id: z.string().uuid(),
   userId: z.string().uuid(),
@@ -170,6 +166,18 @@ export const userWithDetailsSchema = userSchema.extend({
   partnerApplications: z.array(partnerApplicationSchema).optional(),
 });
 
+
+export const createCategorySchema = z.object({
+  name: z.string().min(1),
+});
+
+export const categorySchema = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+});
+
 export type User = z.infer<typeof userSchema>;
 export type UserWithTokens = z.infer<typeof userWithTokensSchema>;
 export type PartnerCategory = z.infer<typeof partnerCategorySchema>;
@@ -187,6 +195,8 @@ export type Notification = z.infer<typeof notificationSchema>;
 export type NotificationToken = z.infer<typeof notificationTokenSchema>;
 export type UserWithDetails = z.infer<typeof userWithDetailsSchema>;
 export type Login = z.infer<typeof loginSchema>;
+export type CreateCategory = z.infer<typeof createCategorySchema>;
+export type Category = z.infer<typeof categorySchema>;
 
 // API Response wrapper
 export type ApiResponse<T> = {

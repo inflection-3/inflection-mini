@@ -2,21 +2,24 @@ import { Hono } from "hono";
 import {
   createApp,
   createAppInteraction,
+  createCategory,
   createUserAppInteraction,
   createUserAppReward,
   deleteApp,
   getApp,
   getAppInteraction,
   getApps,
+  getCategories,
   getFeaturedApps,
   isOwnApp,
   updateApp,
 } from "../lib/apps";
 import { zValidator } from "@hono/zod-validator";
-import z from "zod";
+import { z } from "zod";
 import { authMiddleware } from "../lib/auth";
 import { AppBindings } from "../types";
 import { db } from "@mini/db/connection";
+import { adminApiMiddleware } from "./middleware/admin-api";
 
 const appsRouter = new Hono<AppBindings>();
 
@@ -44,6 +47,10 @@ export const idSchema = z.object({
 const updateAppSchema = appSchema.partial().extend({
   id: z.string(),
   categoryId: z.number(),
+});
+
+const createCategorySchema = z.object({
+  name: z.string().min(1),
 });
 
 appsRouter.get("/", async (c) => {
@@ -285,6 +292,25 @@ appsRouter.post(
   }
 );
 
+appsRouter.post("/categories", zValidator("json", createCategorySchema), authMiddleware, adminApiMiddleware, async (c) => {
+  const input = c.req.valid("json");
+  const categories = await createCategory(input);
+  return c.json({
+    success: true,
+    message: "Categories fetched successfully",
+    data: categories,
+  });
+});
+
+appsRouter.get("/categories", async (c) => {
+  const categories = await getCategories();
+  return c.json({
+    success: true,
+    message: "Categories fetched successfully",
+    data: categories,
+  });
+});
+
 appsRouter.get("/:id", zValidator("param", idSchema), async (c) => {
   const { id } = c.req.valid("param");
   const app = await getApp(id);
@@ -300,6 +326,10 @@ appsRouter.get("/:id", zValidator("param", idSchema), async (c) => {
     success: true,
   });
 });
+
+
+
+
 
 export type AppType = typeof appsRouter;
 

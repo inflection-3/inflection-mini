@@ -9,9 +9,17 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "./dist",
     "paths": {
       "@mini/db": ["../../packages/db"],
       "@mini/types": ["../../packages/types"]
     }
-  }
+  },
+  "references": [
+    { "path": "../../packages/types" },
+    { "path": "../../packages/db" }
+  ]
 }

@@ -10,18 +10,18 @@ const upfetch = up(fetch, () => ({
   },
 }));
 
-type RequestOptions = {
+type RequestOptions<T extends z.ZodType = z.ZodType> = {
   method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   body?: any;
   headers?: Record<string, string>;
   params?: Record<string, string>;
-  schema?: z.ZodType;
+  schema?: T;
 };
 
-export async function api<T = any>(
+export async function api<T extends z.ZodType>(
   endpoint: string,
-  options: RequestOptions = {}
-): Promise<T> {
+  options: RequestOptions<T> = {}
+): Promise<T extends z.ZodType ? z.infer<T> : any> {
   const {
     method = "GET",
     body,
@@ -39,7 +39,7 @@ export async function api<T = any>(
   };
 
   try {
-    const data = await upfetch<T>(endpoint, {
+    const data = await upfetch(endpoint, {
       method,
       body,
       headers: requestHeaders,
@@ -47,7 +47,7 @@ export async function api<T = any>(
       schema,
     });
 
-    return data as T;
+    return data;
   } catch (error: any) {
     if (error.data?.message) {
       throw new Error(error.data.message);

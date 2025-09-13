@@ -1,4 +1,4 @@
-import { partnerApplications, partnerInteraction, reward, userAppInteraction, userAppReward } from "@mini/db/schema"
+import { partnerApplications, partnerCategories, partnerInteraction, reward, userAppInteraction, userAppReward } from "@mini/db/schema"
 import { eq, db, Tx } from "@mini/db/connection"
 
 export const getApps = async (tx?: Tx) => {
@@ -123,4 +123,17 @@ export const getReward = async (id: string, tx?: Tx) => {
     where: eq(reward.id, id),
   })
   return result
+}
+
+
+export const createCategory = async (category: typeof partnerCategories.$inferInsert, tx?: Tx) => {
+  const executer = tx ? tx : db
+  const [newCategory] = await executer.insert(partnerCategories).values(category).returning()
+  return newCategory
+}
+
+export const getCategories = async (tx?: Tx) => {
+  const executer = tx ? tx : db
+  const categories = await executer.select().from(partnerCategories)
+  return categories
 }

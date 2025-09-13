@@ -9,13 +9,14 @@
   },
   "types": "index.ts",
   "private": true,
-  "dependencies": {
-    "zod": "^3.22.0"
+  "scripts": {
+    "build": "tsc"
   },
   "devDependencies": {
+    "@mini/typescript-config": "workspace:*",
     "@types/bun": "latest"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^5.9.2"
   }
 }

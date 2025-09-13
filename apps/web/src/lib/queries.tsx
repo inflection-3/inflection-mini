@@ -9,6 +9,7 @@ import {
   rewardSchema,
   notificationSchema,
   notificationTokenSchema,
+  categorySchema,
 } from "@mini/types";
 import { api } from "./api";
 
@@ -248,6 +249,28 @@ export const notificationQueries = {
       queryFn: async () => {
         const response = await api("/user/me/notification-token", {
           schema: responseSchema(z.array(notificationTokenSchema)),
+        });
+        if (!response.success) {
+          throw new Error(response.message);
+        }
+        return response.data;
+      },
+      staleTime: 10 * 60 * 1000,
+      enabled: enabled,
+    }),
+};
+
+// ===== CATEGORY QUERIES =====
+export const categoryQueries = {
+  all: () => ["categories"] as const,
+  list: () => [...categoryQueries.all(), "list"] as const,
+
+  listOptions: (enabled: boolean = true) =>
+    queryOptions({
+      queryKey: categoryQueries.list(),
+      queryFn: async () => {
+        const response = await api("/apps/categories", {
+          schema: responseSchema(z.array(categorySchema)),
         });
         if (!response.success) {
           throw new Error(response.message);

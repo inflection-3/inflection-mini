@@ -12,6 +12,8 @@ import {
   updateAppSchema,
   createInteractionSchema,
   createRewardSchema,
+  createCategorySchema,
+  categorySchema,
 } from "@mini/types";
 import { api } from "./api";
 import {
@@ -19,6 +21,7 @@ import {
   appsQueries,
   rewardQueries,
   notificationQueries,
+  categoryQueries,
 } from "./queries";
 import { toast } from "sonner";
 
@@ -98,11 +101,11 @@ export const useLoginMutation = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
-      localStorage.setItem("userId", data.userId);
+      localStorage.setItem("accessToken", data?.accessToken!);
+      localStorage.setItem("refreshToken", data?.refreshToken!);
+      localStorage.setItem("userId", data?.user?.id!);
       
-      queryClient.setQueryData(userQueries.me(), { id: data.userId });
+      queryClient.setQueryData(userQueries.me(), { id: data?.user?.id! });
       toast.success("Logged in successfully");
     },
     onError: (error) => {
@@ -139,8 +142,8 @@ export const useRefreshTokenMutation = () => {
       return response.data;
     },
     onSuccess: (data) => {
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("refreshToken", data.refreshToken);
+      localStorage.setItem("accessToken", data?.accessToken!);
+      localStorage.setItem("refreshToken", data?.refreshToken!);
     },
     onError: (error) => {
       console.error("Failed to refresh token:", error);
@@ -366,6 +369,33 @@ export const useCreateRewardMutation = () => {
     onError: (error) => {
       console.error("Failed to create reward:", error);
       toast.error(error.message || "Failed to create reward");
+    },
+  });
+};
+
+// ===== CATEGORY MUTATIONS =====
+export const useCreateCategoryMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: z.infer<typeof createCategorySchema>) => {
+      const response = await api("/apps/categories", {
+        method: "POST",
+        body: data,
+        schema: responseSchema(categorySchema),
+      });
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: categoryQueries.list() });
+      toast.success("Category created successfully");
+    },
+    onError: (error) => {
+      console.error("Failed to create category:", error);
+      toast.error(error.message || "Failed to create category");
     },
   });
 };

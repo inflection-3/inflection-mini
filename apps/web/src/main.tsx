@@ -37,7 +37,7 @@ if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <StrictMode>
-      <Providers queryClient={queryClient}> 
+      <Providers > 
         <RouterProvider router={router} />
       </Providers>
     </StrictMode>,

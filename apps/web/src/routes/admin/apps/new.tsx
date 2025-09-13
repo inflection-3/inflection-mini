@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 
 import { useState } from "react";
 import { useCreateAppMutation } from "@/lib/mutations";
@@ -152,9 +152,11 @@ function RouteComponent() {
   </div>
 
   <div className="flex gap-2 pt-4">
-    <Button type="button" variant="outline" className="flex-1">
+    <Link to="/admin" className="flex-1">
+    <Button type="button" variant="outline" className="w-full">
       Cancel
     </Button>
+    </Link>
     <Button 
       type="submit" 
       disabled={createAppMutation.isPending}

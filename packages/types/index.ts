@@ -65,13 +65,13 @@ export const partnerApplicationSchema = z.object({
 });
 
 export const createAppSchema = z.object({
-  categoryId: z.string(),
-  slug: z.string(),
-  appName: z.string(),
-  appLogo: z.string(),
-  appUrl: z.string(),
-  appDescription: z.string(),
-  appBadgeLabel: z.string(),
+  categoryId: z.string().min(1),
+  slug: z.string().min(1),
+  appName: z.string().min(1),
+  appLogo: z.string().min(1),
+  appUrl: z.string().min(1),
+  appDescription: z.string().min(1),
+  appBadgeLabel: z.string().min(1),
 });
 
 export const updateAppSchema = createAppSchema.partial().extend({

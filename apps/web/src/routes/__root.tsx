@@ -4,6 +4,7 @@ import { TanstackDevtools } from '@tanstack/react-devtools'
 import type { QueryClient } from '@tanstack/react-query';
 import type { User } from '@mini/types';
 import { userQueries } from '@/lib/queries';
+import { Toaster } from 'sonner';
 
 export type RouterAppContext = {
   queryClient: QueryClient;
@@ -52,6 +53,7 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
   component: () => (
     <>
       <Outlet />
+      <Toaster />
       <TanstackDevtools
         config={{
           position: 'bottom-left',

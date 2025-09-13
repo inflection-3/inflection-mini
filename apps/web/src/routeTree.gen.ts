@@ -13,11 +13,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as WalletIndexRouteImport } from './routes/wallet/index'
 import { Route as NotificationsIndexRouteImport } from './routes/notifications/index'
 import { Route as NetworkIndexRouteImport } from './routes/network/index'
+import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as AppsIndexRouteImport } from './routes/apps/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AppsNewRouteImport } from './routes/apps/new'
 import { Route as AppsIdRouteImport } from './routes/apps/$id'
-import { Route as AppsIdRouteImport } from './routes/_apps/$id'
 import { Route as AdminAgentsIndexRouteImport } from './routes/admin/agents/index'
 import { Route as AppsEditIdRouteImport } from './routes/apps/edit/$id'
 
@@ -41,6 +41,11 @@ const NetworkIndexRoute = NetworkIndexRouteImport.update({
   path: '/network/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginIndexRoute = LoginIndexRouteImport.update({
+  id: '/login/',
+  path: '/login/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppsIndexRoute = AppsIndexRouteImport.update({
   id: '/apps/',
   path: '/apps/',
@@ -61,11 +66,6 @@ const AppsIdRoute = AppsIdRouteImport.update({
   path: '/apps/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppsIdRoute = AppsIdRouteImport.update({
-  id: '/_apps/$id',
-  path: '/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminAgentsIndexRoute = AdminAgentsIndexRouteImport.update({
   id: '/admin/agents/',
   path: '/admin/agents/',
@@ -79,11 +79,11 @@ const AppsEditIdRoute = AppsEditIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/$id': typeof AppsIdRoute
   '/apps/$id': typeof AppsIdRoute
   '/apps/new': typeof AppsNewRoute
   '/admin': typeof AdminIndexRoute
   '/apps': typeof AppsIndexRoute
+  '/login': typeof LoginIndexRoute
   '/network': typeof NetworkIndexRoute
   '/notifications': typeof NotificationsIndexRoute
   '/wallet': typeof WalletIndexRoute
@@ -92,11 +92,11 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/$id': typeof AppsIdRoute
   '/apps/$id': typeof AppsIdRoute
   '/apps/new': typeof AppsNewRoute
   '/admin': typeof AdminIndexRoute
   '/apps': typeof AppsIndexRoute
+  '/login': typeof LoginIndexRoute
   '/network': typeof NetworkIndexRoute
   '/notifications': typeof NotificationsIndexRoute
   '/wallet': typeof WalletIndexRoute
@@ -106,11 +106,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_apps/$id': typeof AppsIdRoute
   '/apps/$id': typeof AppsIdRoute
   '/apps/new': typeof AppsNewRoute
   '/admin/': typeof AdminIndexRoute
   '/apps/': typeof AppsIndexRoute
+  '/login/': typeof LoginIndexRoute
   '/network/': typeof NetworkIndexRoute
   '/notifications/': typeof NotificationsIndexRoute
   '/wallet/': typeof WalletIndexRoute
@@ -121,11 +121,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/$id'
     | '/apps/$id'
     | '/apps/new'
     | '/admin'
     | '/apps'
+    | '/login'
     | '/network'
     | '/notifications'
     | '/wallet'
@@ -134,11 +134,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/$id'
     | '/apps/$id'
     | '/apps/new'
     | '/admin'
     | '/apps'
+    | '/login'
     | '/network'
     | '/notifications'
     | '/wallet'
@@ -147,11 +147,11 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/_apps/$id'
     | '/apps/$id'
     | '/apps/new'
     | '/admin/'
     | '/apps/'
+    | '/login/'
     | '/network/'
     | '/notifications/'
     | '/wallet/'
@@ -162,10 +162,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppsIdRoute: typeof AppsIdRoute
-  AppsIdRoute: typeof AppsIdRoute
   AppsNewRoute: typeof AppsNewRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AppsIndexRoute: typeof AppsIndexRoute
+  LoginIndexRoute: typeof LoginIndexRoute
   NetworkIndexRoute: typeof NetworkIndexRoute
   NotificationsIndexRoute: typeof NotificationsIndexRoute
   WalletIndexRoute: typeof WalletIndexRoute
@@ -203,6 +203,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NetworkIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/apps/': {
       id: '/apps/'
       path: '/apps'
@@ -231,13 +238,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_apps/$id': {
-      id: '/_apps/$id'
-      path: '/$id'
-      fullPath: '/$id'
-      preLoaderRoute: typeof AppsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/agents/': {
       id: '/admin/agents/'
       path: '/admin/agents'
@@ -258,10 +258,10 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppsIdRoute: AppsIdRoute,
-  AppsIdRoute: AppsIdRoute,
   AppsNewRoute: AppsNewRoute,
   AdminIndexRoute: AdminIndexRoute,
   AppsIndexRoute: AppsIndexRoute,
+  LoginIndexRoute: LoginIndexRoute,
   NetworkIndexRoute: NetworkIndexRoute,
   NotificationsIndexRoute: NotificationsIndexRoute,
   WalletIndexRoute: WalletIndexRoute,

@@ -25,9 +25,11 @@ export const userQueries = {
     queryOptions({
       queryKey: userQueries.me(),
       queryFn: async () => {
+        console.log("Executing user/me query...");
         const response = await api("/user/me", {
           schema: responseSchema(userSchema),
         });
+        console.log("MY RESPONSE", response);
         if (!response.success) {
           throw new Error(response.message);
         }

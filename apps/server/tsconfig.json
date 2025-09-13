@@ -10,7 +10,8 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
     "paths": {
-      "@mini/db": ["../../packages/db"]
+      "@mini/db": ["../../packages/db"],
+      "@mini/types": ["../../packages/types"]
     }
   }
 }

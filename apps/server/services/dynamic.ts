@@ -78,7 +78,6 @@ export function authenticateDynamic() {
       const decodedToken = await verifyToken(token);
 
     
-      // Attach user to context
       c.set('dynamicUserId', decodedToken.sub || decodedToken.id);
       
       await next();

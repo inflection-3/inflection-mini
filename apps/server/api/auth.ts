@@ -1,23 +1,34 @@
 import { Hono } from "hono";
-import { generateTokens, verifyDynamicAccessTokenMiddleware } from "../lib/auth";
+import { generateTokens } from "../lib/auth";
 import { db, eq } from "@mini/db/connection";
 import { users } from "@mini/db/schema";
+import { zValidator } from "@hono/zod-validator";
+import z from "zod";
+import { authenticateDynamic } from "../services/dynamic";
 
 const authRouter = new Hono();
 
+const loginSchema = z.object({
+    name: z.string().optional(),
+    phone: z.string(),
+    walletAddress: z.string().optional(),
+    email: z.string().optional(),
+});
 
-authRouter.post("/login", verifyDynamicAccessTokenMiddleware, async(c) => {
+
+authRouter.post("/login", zValidator("json", loginSchema), authenticateDynamic(), async(c) => {
+    const { name: userName, email, phone, walletAddress } = c.req.valid("json");
     const dynamicUserId = c.get("dynamicUserId");
     const user = await db.query.users.findFirst({
         where: eq(users.dynamicId, dynamicUserId),
     });
     if(!user) {
         const [newUser] = await db.insert(users).values({
-            dynamicId: dynamicUserId,
-            phone: "",
-            name: "",
-            email: "",
-            walletAddress: "",
+            dynamicId: dynamicUserId,   
+            phone: phone,
+            email: email ?? "",
+            walletAddress: walletAddress ?? "",
+            name: userName ?? "",
         }).returning();
         if(!newUser) {
             return c.json({success: false, data: null, message: "Failed to create user" }, 500);

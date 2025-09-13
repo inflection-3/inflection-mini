@@ -80,20 +80,22 @@ export const protectedRouteMiddleware = createMiddleware<AppBindings>(async (c, 
 });
 
 
-export const verifyDynamicAccessTokenMiddleware = createMiddleware<AppBindings>(async (c, next,) => {
-    const dynamicAccessToken = c.req.header("x-dynamic-access-token");
+// export const verifyDynamicAccessTokenMiddleware = createMiddleware<AppBindings>(async (c, next,) => {
+//     const dynamicAccessToken = c.req.header("x-dynamic-access-token");
+//     console.log(dynamicAccessToken);
 
-    if (!dynamicAccessToken) {
-        return c.json({ error: "Forbidden" }, 403);
-    }
+//     if (!dynamicAccessToken) {
+//         return c.json({ error: "Forbidden" }, 403);
+//     }
 
-    const user = await db.select().from(users).where(eq(users.dynamicId, dynamicAccessToken));
+//     const user = await db.select().from(users).where(eq(users.dynamicId, dynamicAccessToken));
     
-  if (!user) {
-    return c.json({ error: "Not found" }, 404);
-  }
-  await next();
-});
+//   if (!user?.length) {
+//     return c.json({ error: "Not found" }, 404);
+//   }
+//   console.log(user);
+//   await next();
+// });
 
 
 export async function generateTokens(userId: string) {

@@ -18,6 +18,7 @@
       "dependencies": {
         "@dynamic-labs/passport-dynamic": "^0.0.15",
         "@hono/zod-validator": "^0.7.2",
+        "@mini/types": "workspace:*",
         "@rcmade/hono-docs": "^1.0.30",
         "@types/passport": "^1.0.17",
         "firebase-admin": "^12.7.0",

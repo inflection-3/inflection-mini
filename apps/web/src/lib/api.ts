@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { up } from "up-fetch";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:9999/api";
 
 const upfetch = up(fetch, () => ({
   baseUrl: API_BASE_URL,
@@ -9,8 +9,8 @@ const upfetch = up(fetch, () => ({
     "Content-Type": "application/json",
   },
   onRequest: (options) => {
-    // Add auth token to headers
     const token = localStorage.getItem("accessToken");
+    console.log("API Request - Token:", token ? "Present" : "Missing");
     if (token) {
       (options as any).headers = {
         ...options.headers,
@@ -51,7 +51,6 @@ export async function api<T = any>(
 
     return data as T;
   } catch (error: any) {
-    // Handle upfetch errors
     if (error.data?.message) {
       throw new Error(error.data.message);
     }

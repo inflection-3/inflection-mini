@@ -130,6 +130,7 @@ export const useRefreshTokenMutation = () => {
         schema: responseSchema(z.object({
           accessToken: z.string(),
           refreshToken: z.string(),
+          user: userSchema,
         })),
       });
       if (!response.success) {

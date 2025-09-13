@@ -8,16 +8,6 @@ const upfetch = up(fetch, () => ({
   headers: {
     "Content-Type": "application/json",
   },
-  onRequest: (options) => {
-    const token = localStorage.getItem("accessToken");
-    console.log("API Request - Token:", token ? "Present" : "Missing");
-    if (token) {
-      (options as any).headers = {
-        ...options.headers,
-        Authorization: `Bearer ${token}`,
-      };
-    }
-  },
 }));
 
 type RequestOptions = {
@@ -40,11 +30,20 @@ export async function api<T = any>(
     schema,
   } = options;
 
+  // Add authorization header if token exists
+  const token = localStorage.getItem("accessToken");
+  console.log("API Request - Token:", token ? "Present" : "Missing");
+  
+  const requestHeaders = {
+    ...headers,
+    ...(token && { Authorization: `Bearer ${token}` }),
+  };
+
   try {
     const data = await upfetch<T>(endpoint, {
       method,
       body,
-      headers,
+      headers: requestHeaders,
       params,
       schema,
     });

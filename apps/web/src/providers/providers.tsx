@@ -3,7 +3,7 @@
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
 import { DynamicContextProvider } from "@dynamic-labs/sdk-react-core";
 import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {  QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
 import { config as wagmiConfig } from "@/lib/wagmi";
 import {  config } from "@/lib/config";
@@ -16,7 +16,7 @@ import { userQueries } from "@/lib/queries";
 
 
 
-export default function Providers({ children }: { children: React.ReactNode, queryClient: QueryClient }) {
+export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <DynamicContextProvider
@@ -44,10 +44,10 @@ export default function Providers({ children }: { children: React.ReactNode, que
               if (!response.success) {
                 toast.error(response.message)
               }
-              queryClient.setQueryData(userQueries.me(), response.data)
+              console.log("RESPONSE", response.data)
               localStorage.setItem("accessToken", response.data.accessToken)
               localStorage.setItem("refreshToken", response.data.refreshToken)
-              window.location.href = "/"
+              queryClient.setQueryData(userQueries.me(), response.data)
               toast.success("Logged in successfully")
             } catch (error) {
              toast.error(error instanceof Error ? error.message : "An unknown error occurred")

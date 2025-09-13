@@ -13,9 +13,13 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as WalletIndexRouteImport } from './routes/wallet/index'
 import { Route as NotificationsIndexRouteImport } from './routes/notifications/index'
 import { Route as NetworkIndexRouteImport } from './routes/network/index'
+import { Route as AppsIndexRouteImport } from './routes/apps/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AppsNewRouteImport } from './routes/apps/new'
+import { Route as AppsIdRouteImport } from './routes/apps/$id'
 import { Route as AppsIdRouteImport } from './routes/_apps/$id'
 import { Route as AdminAgentsIndexRouteImport } from './routes/admin/agents/index'
+import { Route as AppsEditIdRouteImport } from './routes/apps/edit/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -37,9 +41,24 @@ const NetworkIndexRoute = NetworkIndexRouteImport.update({
   path: '/network/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppsIndexRoute = AppsIndexRouteImport.update({
+  id: '/apps/',
+  path: '/apps/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppsNewRoute = AppsNewRouteImport.update({
+  id: '/apps/new',
+  path: '/apps/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppsIdRoute = AppsIdRouteImport.update({
+  id: '/apps/$id',
+  path: '/apps/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppsIdRoute = AppsIdRouteImport.update({
@@ -52,33 +71,50 @@ const AdminAgentsIndexRoute = AdminAgentsIndexRouteImport.update({
   path: '/admin/agents/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppsEditIdRoute = AppsEditIdRouteImport.update({
+  id: '/apps/edit/$id',
+  path: '/apps/edit/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$id': typeof AppsIdRoute
+  '/apps/$id': typeof AppsIdRoute
+  '/apps/new': typeof AppsNewRoute
   '/admin': typeof AdminIndexRoute
+  '/apps': typeof AppsIndexRoute
   '/network': typeof NetworkIndexRoute
   '/notifications': typeof NotificationsIndexRoute
   '/wallet': typeof WalletIndexRoute
+  '/apps/edit/$id': typeof AppsEditIdRoute
   '/admin/agents': typeof AdminAgentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$id': typeof AppsIdRoute
+  '/apps/$id': typeof AppsIdRoute
+  '/apps/new': typeof AppsNewRoute
   '/admin': typeof AdminIndexRoute
+  '/apps': typeof AppsIndexRoute
   '/network': typeof NetworkIndexRoute
   '/notifications': typeof NotificationsIndexRoute
   '/wallet': typeof WalletIndexRoute
+  '/apps/edit/$id': typeof AppsEditIdRoute
   '/admin/agents': typeof AdminAgentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_apps/$id': typeof AppsIdRoute
+  '/apps/$id': typeof AppsIdRoute
+  '/apps/new': typeof AppsNewRoute
   '/admin/': typeof AdminIndexRoute
+  '/apps/': typeof AppsIndexRoute
   '/network/': typeof NetworkIndexRoute
   '/notifications/': typeof NotificationsIndexRoute
   '/wallet/': typeof WalletIndexRoute
+  '/apps/edit/$id': typeof AppsEditIdRoute
   '/admin/agents/': typeof AdminAgentsIndexRoute
 }
 export interface FileRouteTypes {
@@ -86,38 +122,54 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$id'
+    | '/apps/$id'
+    | '/apps/new'
     | '/admin'
+    | '/apps'
     | '/network'
     | '/notifications'
     | '/wallet'
+    | '/apps/edit/$id'
     | '/admin/agents'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/$id'
+    | '/apps/$id'
+    | '/apps/new'
     | '/admin'
+    | '/apps'
     | '/network'
     | '/notifications'
     | '/wallet'
+    | '/apps/edit/$id'
     | '/admin/agents'
   id:
     | '__root__'
     | '/'
     | '/_apps/$id'
+    | '/apps/$id'
+    | '/apps/new'
     | '/admin/'
+    | '/apps/'
     | '/network/'
     | '/notifications/'
     | '/wallet/'
+    | '/apps/edit/$id'
     | '/admin/agents/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppsIdRoute: typeof AppsIdRoute
+  AppsIdRoute: typeof AppsIdRoute
+  AppsNewRoute: typeof AppsNewRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AppsIndexRoute: typeof AppsIndexRoute
   NetworkIndexRoute: typeof NetworkIndexRoute
   NotificationsIndexRoute: typeof NotificationsIndexRoute
   WalletIndexRoute: typeof WalletIndexRoute
+  AppsEditIdRoute: typeof AppsEditIdRoute
   AdminAgentsIndexRoute: typeof AdminAgentsIndexRoute
 }
 
@@ -151,11 +203,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NetworkIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/apps/': {
+      id: '/apps/'
+      path: '/apps'
+      fullPath: '/apps'
+      preLoaderRoute: typeof AppsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/': {
       id: '/admin/'
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apps/new': {
+      id: '/apps/new'
+      path: '/apps/new'
+      fullPath: '/apps/new'
+      preLoaderRoute: typeof AppsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apps/$id': {
+      id: '/apps/$id'
+      path: '/apps/$id'
+      fullPath: '/apps/$id'
+      preLoaderRoute: typeof AppsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_apps/$id': {
@@ -172,16 +245,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAgentsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/apps/edit/$id': {
+      id: '/apps/edit/$id'
+      path: '/apps/edit/$id'
+      fullPath: '/apps/edit/$id'
+      preLoaderRoute: typeof AppsEditIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppsIdRoute: AppsIdRoute,
+  AppsIdRoute: AppsIdRoute,
+  AppsNewRoute: AppsNewRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AppsIndexRoute: AppsIndexRoute,
   NetworkIndexRoute: NetworkIndexRoute,
   NotificationsIndexRoute: NotificationsIndexRoute,
   WalletIndexRoute: WalletIndexRoute,
+  AppsEditIdRoute: AppsEditIdRoute,
   AdminAgentsIndexRoute: AdminAgentsIndexRoute,
 }
 export const routeTree = rootRouteImport

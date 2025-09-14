@@ -207,11 +207,13 @@ export const useUpdateAppMutation = () => {
   return useMutation({
     mutationFn: async (data: z.infer<typeof updateAppSchema>) => {
       const { id, ...updateData } = data;
+      console.log('Updating app with data:', { id, updateData });
       const response = await api(`/apps/${id}`, {
         method: "PUT",
         body: updateData,
         schema: responseSchema(partnerApplicationSchema),
       });
+      console.log('Update app response:', response);
       if (!response.success) {
         throw new Error(response.message);
       }

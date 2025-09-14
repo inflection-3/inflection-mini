@@ -6,8 +6,9 @@ import { useFileUpload } from "@/hooks/use-file-upload"
 import { Button } from "@/components/ui/button"
 import { useEffect } from "react"
 
-export default function UploadBanner({setBannerFile}: {
-    setBannerFile: (file: File) => void
+export default function UploadBanner({setBannerFile, existingImageUrl}: {
+    setBannerFile: (file: File | null) => void
+    existingImageUrl?: string
 }) {
   const maxSizeMB = 10
   const maxSize = maxSizeMB * 1024 * 1024 // 2MB default
@@ -27,11 +28,12 @@ export default function UploadBanner({setBannerFile}: {
     accept: "image/svg+xml,image/png,image/jpeg,image/jpg,image/gif",
     maxSize,
   })
-  const previewUrl = files[0]?.preview || null
+  const previewUrl = files[0]?.preview || existingImageUrl || null
   const fileName = files[0]?.file.name || null
 
   useEffect(() => {
     if (files[0]) {
+      console.log('Setting banner file:', files[0].file);
       setBannerFile(files[0].file as File)
     }
   }, [files])
@@ -93,7 +95,14 @@ export default function UploadBanner({setBannerFile}: {
             <button
               type="button"
               className="focus-visible:border-ring focus-visible:ring-ring/50 z-50 flex size-8 cursor-pointer items-center justify-center rounded-full bg-black/60 text-white transition-[color,box-shadow] outline-none hover:bg-black/80 focus-visible:ring-[3px]"
-              onClick={() => removeFile(files[0]?.id)}
+              onClick={() => {
+                if (files[0]?.id) {
+                  removeFile(files[0].id);
+                } else {
+                  // If it's an existing image, just clear it
+                  setBannerFile(null);
+                }
+              }}
               aria-label="Remove image"
             >
               <XIcon className="size-4" aria-hidden="true" />

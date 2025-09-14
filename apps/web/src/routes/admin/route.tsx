@@ -8,7 +8,7 @@ export const Route = createFileRoute("/admin")({
   
     if (auth.user?.role !== "admin") {
       throw redirect({ 
-        to: "/", // Redirect to home page for non-admin users
+        to: "/",
         search: {
           error: "Access denied. Admin privileges required."
         }

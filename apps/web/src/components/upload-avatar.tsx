@@ -4,19 +4,21 @@ import { useFileUpload } from "@/hooks/use-file-upload"
 import { Button } from "@/components/ui/button"
 import { useEffect } from "react"
 
-export default function UploadAvatar({setAvatarFile}: {
-    setAvatarFile: (file: File) => void
+export default function UploadAvatar({setAvatarFile, existingImageUrl}: {
+    setAvatarFile: (file: File | null) => void
+    existingImageUrl?: string
 }) {
   const [{ files }, { removeFile, openFileDialog, getInputProps }] =
     useFileUpload({
       accept: "image/*",
     })
 
-  const previewUrl = files[0]?.preview || null
+  const previewUrl = files[0]?.preview || existingImageUrl || null
   const fileName = files[0]?.file.name || null
 
   useEffect(() => {
     if (files[0]) {
+      console.log('Setting avatar file:', files[0].file);
       setAvatarFile(files[0].file as File)
     }
   }, [files])
@@ -47,7 +49,14 @@ export default function UploadAvatar({setAvatarFile}: {
         </Button>
         {previewUrl && (
           <Button
-            onClick={() => removeFile(files[0]?.id)}
+            onClick={() => {
+              if (files[0]?.id) {
+                removeFile(files[0].id);
+              } else {
+                // If it's an existing image, just clear it
+                setAvatarFile(null);
+              }
+            }}
             size="icon"
             className="border-background focus-visible:border-background absolute -top-2 -right-2 size-6 rounded-full border-2 shadow-none"
             aria-label="Remove image"

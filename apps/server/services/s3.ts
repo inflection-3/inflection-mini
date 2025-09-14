@@ -14,7 +14,6 @@ const s3 = new S3Client({
     const key = crypto.randomUUID() + "-" + file.name
     const publicUrl = "https://cdn.inflection.network/" + key
     
-    // Convert File to ArrayBuffer to prevent flowing stream issues
     const arrayBuffer = await file.arrayBuffer()
     
     const command = new PutObjectCommand({

@@ -50,7 +50,7 @@ function RouteComponent() {
         </div>
         <div className="flex gap-2">
           <Button asChild>
-            <Link to="/admin/apps/$id/edit" params={{ id }}>
+            <Link to="/admin/apps/edit/$id" params={{ id }}>
               <Edit className="w-4 h-4" />
               Edit App
             </Link>

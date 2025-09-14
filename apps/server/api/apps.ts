@@ -46,10 +46,7 @@ export const idSchema = z.object({
   id: z.uuid(),
 });
 
-const updateAppSchema = appSchema.partial().extend({
-  id: z.string(),
-  categoryId: z.number(),
-});
+const updateAppSchema = appSchema.partial();
 
 const createCategorySchema = z.object({
   name: z.string().min(1),
@@ -106,12 +103,13 @@ appsRouter.post(
 
 appsRouter.put(
   "/:id",
+  zValidator("param", idSchema),
   zValidator("json", updateAppSchema),
   authMiddleware,
   async (c) => {
-    const input = c.req.valid("json");
+    const { id } = c.req.valid("param");
+    const updateData = c.req.valid("json");
     const { userId } = c.get("jwtPayload");
-    const { id, ...updateData } = input;
     const app = await getApp(id);
     if (!app) {
       return c.json(

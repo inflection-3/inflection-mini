@@ -72,7 +72,6 @@ export const createAppSchema = z.object({
 
 export const updateAppSchema = createAppSchema.partial().extend({
   id: z.string(),
-  categoryId: z.number(),
 });
 
 // Partner Interaction schemas

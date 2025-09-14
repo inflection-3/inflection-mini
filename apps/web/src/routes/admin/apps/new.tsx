@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 
 import { useState, useCallback, useMemo } from "react";
-import { useCreateAppMutation, useCreateCategoryMutation } from "@/lib/mutations";
+import { useCreateAppMutation, useCreateCategoryMutation, useUploadMutation } from "@/lib/mutations";
 import { categoryQueries } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,8 @@ import { z } from "zod";
 import { createAppSchema, createCategorySchema, type Category } from "@mini/types";
 import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
+import UploadBanner from "@/components/upload-banner";
+import UploadAvatar from "@/components/upload-avatar";
 
 export const Route = createFileRoute('/admin/apps/new')({
   component: RouteComponent,
@@ -22,7 +24,6 @@ function RouteComponent() {
     categoryId: "",
     slug: "",
     appName: "",
-    appLogo: "",
     appUrl: "",
     appDescription: "",
     appBadgeLabel: "",
@@ -32,9 +33,19 @@ function RouteComponent() {
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [categoryError, setCategoryError] = useState("");
+  
+  // File upload state
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<{
+    step: 'creating' | 'uploading-avatar' | 'uploading-banner' | 'completed';
+    message: string;
+  }>({ step: 'completed', message: '' });
 
   const createAppMutation = useCreateAppMutation();
   const createCategoryMutation = useCreateCategoryMutation();
+  const uploadMutation = useUploadMutation();
   const { data: categories = [], isLoading: categoriesLoading } = useQuery(categoryQueries.listOptions());
 
   const validateForm = useCallback((): boolean => {
@@ -53,24 +64,78 @@ function RouteComponent() {
     return true;
   }, [formData]);
 
-  const handleSubmit = useCallback((e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    if (!validateForm() || isSubmitting) return;
 
-    createAppMutation.mutate(formData, {
-      onSuccess: () => {
-        setFormData({
-          categoryId: "",
-          slug: "",
-          appName: "",
-          appLogo: "",
-          appUrl: "",
-          appDescription: "",
-          appBadgeLabel: "",
+    setIsSubmitting(true);
+    setUploadProgress({ step: 'creating', message: 'Creating app...' });
+
+    try {
+      // Step 1: Create the app
+      const createdApp = await new Promise<any>((resolve, reject) => {
+        createAppMutation.mutate(formData, {
+          onSuccess: (data) => resolve(data),
+          onError: (error) => reject(error),
         });
-      },
-    });
-  }, [validateForm, createAppMutation, formData]);
+      });
+
+      if (!createdApp?.id) {
+        throw new Error('Failed to create app - no ID returned');
+      }
+
+      // Step 2: Upload avatar if provided
+      if (avatarFile) {
+        setUploadProgress({ step: 'uploading-avatar', message: 'Uploading avatar...' });
+        await new Promise<void>((resolve, reject) => {
+          uploadMutation.mutate({
+            file: avatarFile,
+            resourceType: 'applogo',
+            resourceId: createdApp.id,
+            endpoint: 'apps'
+          }, {
+            onSuccess: () => resolve(),
+            onError: (error) => reject(error),
+          });
+        });
+      }
+
+      // Step 3: Upload banner if provided
+      if (bannerFile) {
+        setUploadProgress({ step: 'uploading-banner', message: 'Uploading banner...' });
+        await new Promise<void>((resolve, reject) => {
+          uploadMutation.mutate({
+            file: bannerFile,
+            resourceType: 'appbanner',
+            resourceId: createdApp.id,
+            endpoint: 'apps'
+          }, {
+            onSuccess: () => resolve(),
+            onError: (error) => reject(error),
+          });
+        });
+      }
+
+      // Step 4: Reset form and show success
+      setUploadProgress({ step: 'completed', message: 'App created successfully!' });
+      setFormData({
+        categoryId: "",
+        slug: "",
+        appName: "",
+        appUrl: "",
+        appDescription: "",
+        appBadgeLabel: "",
+      });
+      setAvatarFile(null);
+      setBannerFile(null);
+      
+    } catch (error: any) {
+      console.error('Failed to create app:', error);
+      setUploadProgress({ step: 'completed', message: '' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [validateForm, createAppMutation, uploadMutation, formData, avatarFile, bannerFile, isSubmitting]);
 
   const handleChange = useCallback((field: keyof typeof formData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -134,9 +199,6 @@ function RouteComponent() {
     handleChange("categoryId", value);
   }, [handleChange]);
 
-  const handleAppLogoChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    handleChange("appLogo", e.target.value);
-  }, [handleChange]);
 
   const handleAppUrlChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     handleChange("appUrl", e.target.value);
@@ -243,15 +305,13 @@ function RouteComponent() {
   </div>
 
   <div className="space-y-2">
-    <Label htmlFor="appLogo">App Logo URL *</Label>
-    <Input
-      id="appLogo"
-      value={formData.appLogo}
-      onChange={handleAppLogoChange}
-      placeholder="https://example.com/logo.png"
-      aria-invalid={!!errors.appLogo}
-    />
-    {errors.appLogo && <p className="text-sm text-destructive">{errors.appLogo}</p>}
+    <Label>App Logo (Avatar)</Label>
+    <UploadAvatar setAvatarFile={setAvatarFile} />
+  </div>
+
+  <div className="space-y-2">
+    <Label>App Banner</Label>
+    <UploadBanner setBannerFile={setBannerFile} />
   </div>
 
   <div className="space-y-2">
@@ -289,18 +349,33 @@ function RouteComponent() {
     />
   </div>
 
+  {/* Progress indicator */}
+  {isSubmitting && (
+    <div className="space-y-2 p-4 bg-muted rounded-lg">
+      <div className="flex items-center gap-2">
+        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+        <span className="text-sm font-medium">{uploadProgress.message}</span>
+      </div>
+      <div className="text-xs text-muted-foreground">
+        {uploadProgress.step === 'creating' && 'Step 1 of ' + (avatarFile && bannerFile ? '3' : avatarFile || bannerFile ? '2' : '1')}
+        {uploadProgress.step === 'uploading-avatar' && 'Step 2 of ' + (bannerFile ? '3' : '2')}
+        {uploadProgress.step === 'uploading-banner' && 'Step ' + (avatarFile ? '3' : '2') + ' of ' + (avatarFile ? '3' : '2')}
+      </div>
+    </div>
+  )}
+
   <div className="flex gap-2 pt-4">
     <Link to="/admin" className="flex-1">
-    <Button type="button" variant="outline" className="w-full">
-      Cancel
-    </Button>
+      <Button type="button" variant="outline" className="w-full" disabled={isSubmitting}>
+        Cancel
+      </Button>
     </Link>
     <Button 
       type="submit" 
-      disabled={createAppMutation.isPending}
+      disabled={isSubmitting}
       className="flex-1"
     >
-      {createAppMutation.isPending ? "Creating..." : "Create App"}
+      {isSubmitting ? uploadProgress.message : "Create App"}
     </Button>
   </div>
 </form>

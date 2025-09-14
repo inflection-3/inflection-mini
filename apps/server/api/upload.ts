@@ -2,15 +2,16 @@ import { Hono } from "hono";
 import { AppBindings } from "../types";
 import z from "zod";
 import { zValidator } from "@hono/zod-validator";
-import { authMiddleware } from "../lib/auth";
+import { authMiddleware, protectedMiddleware } from "../lib/auth";
 import { uploadFile } from "../services/s3";
-import { db } from "@mini/db/connection";
+import { db, eq } from "@mini/db/connection";
 import { isOwnApp } from "../lib/apps";
+import { partnerApplications, users } from "@mini/db/schema";
 
 const upload = new Hono<AppBindings>();
 
 const uploadSchema = z.object({
-    rsourceType: z.enum(['appbanner', 'applogo', "userprofile", "userbanner"]),
+    resourceType: z.enum(['appbanner', 'applogo', "userprofile", "userbanner"]),
     resourceId: z.string(),
     file: z.instanceof(File).refine(
       (file) => file.size <= 10 * 1024 * 1024, // 10MB max size
@@ -21,7 +22,7 @@ const uploadSchema = z.object({
     ),
   })
 
-upload.post("/user",   zValidator('form', uploadSchema), authMiddleware, async (c) => {
+upload.post("/user",   zValidator('form', uploadSchema), protectedMiddleware, async (c) => {
     const { file } = c.req.valid('form')
     const {id} = c.get('user')
     const isTHisUser = await db.query.users.findFirst({
@@ -39,11 +40,10 @@ upload.post("/user",   zValidator('form', uploadSchema), authMiddleware, async (
 });
 
 
-upload.post("/apps",   zValidator('form', uploadSchema), authMiddleware, async (c) => {
-    const { file, resourceId } = c.req.valid('form')
+upload.post("/apps",   zValidator('form', uploadSchema), protectedMiddleware, async (c) => {
+    const { file, resourceId, resourceType } = c.req.valid('form')
     const {id} = c.get('user')
-    c
-    const isOwner = isOwnApp(resourceId, id)
+    const isOwner = await isOwnApp(resourceId, id)
     if (!isOwner) {
         return c.json({ success: false, data: null, messaging: 'You are not the owner of this app' }, 403)
     }
@@ -53,6 +53,15 @@ upload.post("/apps",   zValidator('form', uploadSchema), authMiddleware, async (
         contentType: file.type,
       }
     const { publicUrl, key, response } = await uploadFile(file, metadata);
+    if(resourceType === "appbanner") {
+      await db.update(partnerApplications).set({
+        bannerImage: publicUrl
+      }).where(eq(partnerApplications.id, resourceId))
+    } else if(resourceType === "applogo") {
+      await db.update(partnerApplications).set({
+        appLogo: publicUrl
+      }).where(eq(partnerApplications.id, resourceId))
+    }
     return c.json({ publicUrl, key, response });
 });
 

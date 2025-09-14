@@ -1,5 +1,4 @@
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { uuid } from "zod";
 
 const s3 = new S3Client({
     region: 'auto',
@@ -14,10 +13,14 @@ const s3 = new S3Client({
   export const uploadFile = async (file: File, metadata: Record<string, string>) => {
     const key = crypto.randomUUID() + "-" + file.name
     const publicUrl = "https://storage.inflection.network/" + key
+    
+    // Convert File to ArrayBuffer to prevent flowing stream issues
+    const arrayBuffer = await file.arrayBuffer()
+    
     const command = new PutObjectCommand({
       Bucket: Bun.env.R2_BUCKET_NAME,
       Key: key,
-      Body: file,
+      Body: new Uint8Array(arrayBuffer),
       ContentType: file.type,
       Metadata: metadata,
       ACL: "public-read"

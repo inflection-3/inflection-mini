@@ -14,6 +14,7 @@ import {
   createRewardSchema,
   createCategorySchema,
   categorySchema,
+  uploadResponseSchema,
 } from "@mini/types";
 import { api } from "./api";
 import {
@@ -417,6 +418,52 @@ export const useClearCacheMutation = () => {
   return useMutation({
     mutationFn: async () => {
       queryClient.clear();
+    },
+  });
+};
+
+
+export const useUploadMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: {
+      file: File;
+      resourceType: "appbanner" | "applogo" | "userprofile" | "userbanner";
+      resourceId: string;
+      endpoint: "user" | "apps";
+    }) => {
+      const { file, resourceType, resourceId, endpoint } = data;
+      
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("resourceType", resourceType);
+      formData.append("resourceId", resourceId);
+
+      const response = await api(`/upload/${endpoint}`, {
+        method: "POST",
+        body: formData,
+        schema: responseSchema(uploadResponseSchema),
+      });
+      
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+      return response.data;
+    },
+    onSuccess: (data, variables) => {
+      // Invalidate relevant queries based on the upload type
+      if (variables.endpoint === "user") {
+        queryClient.invalidateQueries({ queryKey: userQueries.me() });
+      } else if (variables.endpoint === "apps") {
+        queryClient.invalidateQueries({ queryKey: appsQueries.detail(variables.resourceId) });
+        queryClient.invalidateQueries({ queryKey: appsQueries.list() });
+      }
+      toast.success("File uploaded successfully");
+    },
+    onError: (error) => {
+      console.error("Failed to upload file:", error);
+      toast.error(error.message || "Failed to upload file");
     },
   });
 };

@@ -27,8 +27,9 @@ const appSchema = z.object({
   categoryId: z.string(),
   slug: z.string(),
   appName: z.string(),
-  appLogo: z.string(),
+  appLogo: z.string().optional(),
   appUrl: z.string(),
+  bannerImage: z.string().optional(),
   appDescription: z.string(),
   appBadgeLabel: z.string(),
 });
@@ -78,7 +79,7 @@ appsRouter.post(
   async (c) => {
     const input = c.req.valid("json");
     const { userId } = c.get("jwtPayload");
-    const app = await createApp({ ...input, userId });
+    const app = await createApp({ ...input, userId, appLogo: input.appLogo ?? "", bannerImage: input.bannerImage ?? "" });
     if (!app) {
       return c.json(
         { message: "Failed to create app", data: null, success: false },

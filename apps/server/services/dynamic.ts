@@ -23,7 +23,7 @@ async function getPublicKey(kid: string): Promise<string> {
 }
 
 // Extract JWT token from Authorization header
-function extractToken(authHeader: string | undefined): string | null {
+export function extractToken(authHeader: string | undefined): string | null {
   if (!authHeader) return null;
   
   // Support both "Bearer token" and "token" formats
@@ -34,7 +34,7 @@ function extractToken(authHeader: string | undefined): string | null {
   return authHeader;
 }
 
-async function verifyToken(encodedJwt: string): Promise<JwtPayload> {
+export async function verifyTokenDynamicToken(encodedJwt: string): Promise<JwtPayload> {
   try {
     // Decode JWT header to get the kid
     const header = jwt.decode(encodedJwt, { complete: true })?.header;
@@ -75,7 +75,7 @@ export function authenticateDynamic() {
         return c.json({ error: 'Authorization token required' }, 401);
       }
 
-      const decodedToken = await verifyToken(token);
+      const decodedToken = await verifyTokenDynamicToken(token);
 
     
       c.set('dynamicUserId', decodedToken.sub || decodedToken.id);

@@ -1,15 +1,15 @@
 import { Hono } from "hono";
-import { authMiddleware } from "../lib/auth";
+import { authMiddleware, protectedMiddleware } from "../lib/auth";
 import { AppBindings } from "../types";
 import { getUser } from "../lib/users";
 
 
 const userRouter = new Hono<AppBindings>();
 
-userRouter.get("/me", authMiddleware, async(c) => {
+userRouter.get("/me", protectedMiddleware, async(c) => {
   const {
-    userId
-  } = c.get("jwtPayload")
+    id:userId
+  } = c.get("user")
   const user = await getUser(userId)
   if(!user) {
     return c.json({ message: "User not found", success: false}, 404)

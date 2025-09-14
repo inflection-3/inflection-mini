@@ -64,7 +64,6 @@ export const createAppSchema = z.object({
   categoryId: z.string().min(1),
   slug: z.string().min(1),
   appName: z.string().min(1),
-  appLogo: z.string().min(1),
   appUrl: z.string().min(1),
   appDescription: z.string().min(1),
   appBadgeLabel: z.string().min(1),
@@ -178,6 +177,19 @@ export const categorySchema = z.object({
   updatedAt: z.string().datetime(),
 });
 
+// Upload schemas
+export const uploadSchema = z.object({
+  resourceType: z.enum(['appbanner', 'applogo', "userprofile", "userbanner"]),
+  resourceId: z.string(),
+  file: z.instanceof(File),
+});
+
+export const uploadResponseSchema = z.object({
+  publicUrl: z.string(),
+  key: z.string(),
+  response: z.any(),
+});
+
 export type User = z.infer<typeof userSchema>;
 export type UserWithTokens = z.infer<typeof userWithTokensSchema>;
 export type PartnerCategory = z.infer<typeof partnerCategorySchema>;
@@ -197,6 +209,8 @@ export type UserWithDetails = z.infer<typeof userWithDetailsSchema>;
 export type Login = z.infer<typeof loginSchema>;
 export type CreateCategory = z.infer<typeof createCategorySchema>;
 export type Category = z.infer<typeof categorySchema>;
+export type Upload = z.infer<typeof uploadSchema>;
+export type UploadResponse = z.infer<typeof uploadResponseSchema>;
 
 // API Response wrapper
 export type ApiResponse<T> = {

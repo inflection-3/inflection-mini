@@ -1,13 +1,11 @@
 import { z } from "zod";
 import { up } from "up-fetch";
+import { getAuthToken } from "@dynamic-labs/sdk-react-core";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:9999/api";
 
 const upfetch = up(fetch, () => ({
   baseUrl: API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
 }));
 
 type RequestOptions<T extends z.ZodType = z.ZodType> = {
@@ -30,12 +28,16 @@ export async function api<T extends z.ZodType>(
     schema,
   } = options;
 
-  // Add authorization header if token exists
   const token = localStorage.getItem("accessToken");
+  const tokenDynamic = getAuthToken();
+  
+  const isFormData = body instanceof FormData;
+  const baseHeaders = isFormData ? {} : { "Content-Type": "application/json" };
   
   const requestHeaders = {
+    ...baseHeaders,
     ...headers,
-    ...(token && { Authorization: `Bearer ${token}` }),
+    ...(token && { Authorization: `Bearer ${token}`, "x-dynamic-access-token": tokenDynamic }),
   };
 
   try {

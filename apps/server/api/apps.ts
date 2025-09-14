@@ -10,6 +10,7 @@ import {
   getAppInteraction,
   getApps,
   getCategories,
+  getCategory,
   getFeaturedApps,
   isOwnApp,
   updateApp,
@@ -79,7 +80,14 @@ appsRouter.post(
   async (c) => {
     const input = c.req.valid("json");
     const { userId } = c.get("jwtPayload");
-    const app = await createApp({ ...input, userId, appLogo: input.appLogo ?? "", bannerImage: input.bannerImage ?? "" });
+    const category = await getCategory(input.categoryId);
+    if (!category) {
+      return c.json(
+        { message: "Category not found", data: null, success: false },
+        404
+      );
+    }
+    const app = await createApp({ ...input, userId, appLogo: input.appLogo ?? "", bannerImage: input.bannerImage ?? "", categoryName:category.name });
     if (!app) {
       return c.json(
         { message: "Failed to create app", data: null, success: false },

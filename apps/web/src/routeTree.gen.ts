@@ -23,6 +23,7 @@ import { Route as MainAppsIndexRouteImport } from './routes/_main/apps/index'
 import { Route as AdminAppsNewRouteImport } from './routes/admin/apps/new'
 import { Route as AdminAppsIdRouteImport } from './routes/admin/apps/$id'
 import { Route as MainAppsIdRouteImport } from './routes/_main/apps/$id'
+import { Route as AdminAppsInteractionNewRouteImport } from './routes/admin/apps/interaction.new'
 import { Route as AdminAppsIdInteractionRouteImport } from './routes/admin/apps/$id.interaction'
 import { Route as AdminAppsIdEditRouteImport } from './routes/admin/apps/$id.edit'
 
@@ -95,6 +96,11 @@ const MainAppsIdRoute = MainAppsIdRouteImport.update({
   path: '/apps/$id',
   getParentRoute: () => MainRouteRoute,
 } as any)
+const AdminAppsInteractionNewRoute = AdminAppsInteractionNewRouteImport.update({
+  id: '/apps/interaction/new',
+  path: '/apps/interaction/new',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminAppsIdInteractionRoute = AdminAppsIdInteractionRouteImport.update({
   id: '/interaction',
   path: '/interaction',
@@ -122,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/admin/apps': typeof AdminAppsIndexRoute
   '/admin/apps/$id/edit': typeof AdminAppsIdEditRoute
   '/admin/apps/$id/interaction': typeof AdminAppsIdInteractionRoute
+  '/admin/apps/interaction/new': typeof AdminAppsInteractionNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
@@ -138,6 +145,7 @@ export interface FileRoutesByTo {
   '/admin/apps': typeof AdminAppsIndexRoute
   '/admin/apps/$id/edit': typeof AdminAppsIdEditRoute
   '/admin/apps/$id/interaction': typeof AdminAppsIdInteractionRoute
+  '/admin/apps/interaction/new': typeof AdminAppsInteractionNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -157,6 +165,7 @@ export interface FileRoutesById {
   '/admin/apps/': typeof AdminAppsIndexRoute
   '/admin/apps/$id/edit': typeof AdminAppsIdEditRoute
   '/admin/apps/$id/interaction': typeof AdminAppsIdInteractionRoute
+  '/admin/apps/interaction/new': typeof AdminAppsInteractionNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -176,6 +185,7 @@ export interface FileRouteTypes {
     | '/admin/apps'
     | '/admin/apps/$id/edit'
     | '/admin/apps/$id/interaction'
+    | '/admin/apps/interaction/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -192,6 +202,7 @@ export interface FileRouteTypes {
     | '/admin/apps'
     | '/admin/apps/$id/edit'
     | '/admin/apps/$id/interaction'
+    | '/admin/apps/interaction/new'
   id:
     | '__root__'
     | '/_main'
@@ -210,6 +221,7 @@ export interface FileRouteTypes {
     | '/admin/apps/'
     | '/admin/apps/$id/edit'
     | '/admin/apps/$id/interaction'
+    | '/admin/apps/interaction/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -318,6 +330,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainAppsIdRouteImport
       parentRoute: typeof MainRouteRoute
     }
+    '/admin/apps/interaction/new': {
+      id: '/admin/apps/interaction/new'
+      path: '/apps/interaction/new'
+      fullPath: '/admin/apps/interaction/new'
+      preLoaderRoute: typeof AdminAppsInteractionNewRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/apps/$id/interaction': {
       id: '/admin/apps/$id/interaction'
       path: '/interaction'
@@ -377,6 +396,7 @@ interface AdminRouteRouteChildren {
   AdminAppsNewRoute: typeof AdminAppsNewRoute
   AdminAgentsIndexRoute: typeof AdminAgentsIndexRoute
   AdminAppsIndexRoute: typeof AdminAppsIndexRoute
+  AdminAppsInteractionNewRoute: typeof AdminAppsInteractionNewRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
@@ -385,6 +405,7 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminAppsNewRoute: AdminAppsNewRoute,
   AdminAgentsIndexRoute: AdminAgentsIndexRoute,
   AdminAppsIndexRoute: AdminAppsIndexRoute,
+  AdminAppsInteractionNewRoute: AdminAppsInteractionNewRoute,
 }
 
 const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(

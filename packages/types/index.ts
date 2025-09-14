@@ -60,6 +60,7 @@ export const partnerApplicationSchema = z.object({
   updatedAt: z.string().datetime(),
 });
 
+
 export const createAppSchema = z.object({
   categoryId: z.string().min(1),
   slug: z.string().min(1),

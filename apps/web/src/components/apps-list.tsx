@@ -3,7 +3,7 @@ import { StatCard } from "@/components/gradient-card";
 import type { PartnerApplication } from "@mini/types";
 import { Link } from "@tanstack/react-router";
 
-export function AppsList({ apps }: { apps: PartnerApplication[] }) {
+export function AppsList({ apps, admin = false }: { apps: PartnerApplication[], admin?: boolean }) {
   
   return (
     <div className="flex flex-col gap-y-4">
@@ -21,15 +21,15 @@ export function AppsList({ apps }: { apps: PartnerApplication[] }) {
         </div>
       )}
       <div className="grid grid-cols-3 gap-4">
-        {apps?.map((app) => <AppCard key={app.appName} {...app} />)}
+        {apps?.map((app) => <AppCard key={app.appName} {...app} admin={admin} />)}
       </div>
     </div>
   );
 }
 
-function AppCard(app: PartnerApplication) {
+function AppCard(app: PartnerApplication & { admin?: boolean }) {
   return (
-    <Link to="/apps/$id" params={{ id: app?.id }} className="max-w-[126px]">
+    <Link to={app.admin ? "/admin/apps/$id" : "/apps/$id"} params={{ id: app?.id }} className="max-w-[126px]">
       <StatCard className="w-full h-[100px] flex items-center flex-col justify-center rounded-[12px]">
         <img
           className="w-[56px] h-[56px] rounded-[12px]"

@@ -12,7 +12,7 @@ const s3 = new S3Client({
 
   export const uploadFile = async (file: File, metadata: Record<string, string>) => {
     const key = crypto.randomUUID() + "-" + file.name
-    const publicUrl = "https://storage.inflection.network/" + key
+    const publicUrl = "https://cdn.inflection.network/" + key
     
     // Convert File to ArrayBuffer to prevent flowing stream issues
     const arrayBuffer = await file.arrayBuffer()

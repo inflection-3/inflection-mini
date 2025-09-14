@@ -137,3 +137,11 @@ export const getCategories = async (tx?: Tx) => {
   const categories = await executer.select().from(partnerCategories)
   return categories
 }
+
+export const getCategory = async (id: string, tx?: Tx) => {
+  const executer = tx ? tx : db
+  const category = await executer.query.partnerCategories.findFirst({
+    where: eq(partnerCategories.id, id),
+  })
+  return category
+}

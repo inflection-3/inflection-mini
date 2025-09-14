@@ -14,5 +14,5 @@ export const Route = createFileRoute('/admin/apps/')({
 function RouteComponent() {
   const { data: apps } = useSuspenseQuery(appsQueries.listOptions())
 
-  return <AppsList apps={apps ?? []} />
+  return <AppsList apps={apps ?? []} admin={true} />
 }

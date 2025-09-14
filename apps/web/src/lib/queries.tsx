@@ -10,6 +10,7 @@ import {
   notificationSchema,
   notificationTokenSchema,
   categorySchema,
+  partnerApplicationWithDetailsSchema,
 } from "@mini/types";
 import { api } from "./api";
 
@@ -188,7 +189,7 @@ export const appsQueries = {
       queryKey: appsQueries.detail(id),
       queryFn: async () => {
         const response = await api(`/apps/${id}`, {
-          schema: responseSchema(partnerApplicationSchema),
+          schema: responseSchema(partnerApplicationWithDetailsSchema),
         });
         if (!response.success) {
           throw new Error(response.message);

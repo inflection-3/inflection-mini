@@ -14,6 +14,8 @@ export function AddInteractionForm() {
     verficationType: "none",
     rewardId: "",
     appId: "",
+    description: "",
+    title: ""
   });
 
   const [errors, setErrors] = useState<Partial<Record<keyof typeof formData, string>>>({});
@@ -49,6 +51,8 @@ export function AddInteractionForm() {
           verficationType: "none",
           rewardId: "",
           appId: "",
+          title: "",
+          description: ""
         });
       },
     });

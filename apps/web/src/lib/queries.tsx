@@ -220,7 +220,25 @@ export const appsQueries = {
 // ===== REWARD QUERIES =====
 export const rewardQueries = {
   all: () => ["rewards"] as const,
+  list: () => [...rewardQueries.all(), "list"] as const,
   detail: (id: string) => [...rewardQueries.all(), "detail", id] as const,
+
+  listOptions: (enabled: boolean = true) =>
+    queryOptions({
+      queryKey: rewardQueries.list(),
+      queryFn: async () => {
+        const response = await api("/reward", {
+          schema: responseSchema(z.array(rewardSchema)),
+        });
+        console.log(response.data);
+        if (!response.success) {
+          throw new Error(response.message);
+        }
+        return response.data;
+      },
+      staleTime: 5 * 60 * 1000,
+      enabled: enabled,
+    }),
 
   detailOptions: (id: string, enabled: boolean = true) =>
     queryOptions({

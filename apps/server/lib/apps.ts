@@ -125,6 +125,12 @@ export const getReward = async (id: string, tx?: Tx) => {
   return result
 }
 
+export const getRewards = async (tx?: Tx) => {
+  const executer = tx ? tx : db
+  const rewards = await executer.select().from(reward)
+  return rewards
+}
+
 
 export const createCategory = async (category: typeof partnerCategories.$inferInsert, tx?: Tx) => {
   const executer = tx ? tx : db

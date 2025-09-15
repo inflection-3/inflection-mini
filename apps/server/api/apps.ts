@@ -36,10 +36,11 @@ const appSchema = z.object({
 });
 
 const interactionSchema = z.object({
+  title: z.string(),
+  description: z.string(),
   interactionUrl: z.string(),
   verficationType: z.enum(["auto", "api", "manual", "none"]),
   rewardId: z.string(),
-  appId: z.string(),
 });
 
 export const idSchema = z.object({
@@ -210,6 +211,8 @@ appsRouter.post(
     }
     const interaction = c.req.valid("json");
     const newInteraction = await createAppInteraction({
+      title: interaction.title,
+      description: interaction.description,
       interactionUrl: interaction.interactionUrl,
       verficationType: interaction.verficationType,
       appId: id,
@@ -232,7 +235,7 @@ appsRouter.post(
 
 appsRouter.put(
   "/interactions/:id",
-  zValidator("json", interactionSchema.omit({ appId: true })),
+  zValidator("json", interactionSchema.partial()),
   zValidator("param", idSchema),
   authMiddleware,
   async (c) => {

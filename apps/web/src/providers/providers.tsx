@@ -25,6 +25,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         environmentId: config.dynamic.environmentId,
         walletConnectors: [EthereumWalletConnectors, ZeroDevSmartWalletConnectors],
         events: {
+          onLogout: async () => {
+            localStorage.removeItem("accessToken")
+            localStorage.removeItem("refreshToken")
+            queryClient.clear()
+            window.location.reload()
+          },
           onAuthSuccess: async (user) => {
             try {
               const dynamicAccessToken =await getAuthToken()
@@ -48,6 +54,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
               localStorage.setItem("refreshToken", response.data.refreshToken)
               queryClient.setQueryData(userQueries.me(), response.data)
               toast.success("Logged in successfully")
+              window.location.reload()
             } catch (error) {
              toast.error(error instanceof Error ? error.message : "An unknown error occurred")
              queryClient.clear()

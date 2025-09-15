@@ -56,7 +56,7 @@ function RouteComponent() {
             </Link>
           </Button>
           <Button asChild>
-            <Link to="/admin/apps/$id/interaction" params={{ id }}>
+            <Link to="/admin/apps/interaction/$id" params={{ id }}>
               <Plus className="w-4 h-4" />
               Add Interaction
             </Link>
@@ -156,7 +156,7 @@ function RouteComponent() {
               Interactions ({app.interactions?.length || 0})
             </CardTitle>
             <Button size="sm" asChild>
-              <Link to="/admin/apps/$id/interaction" params={{ id }}>
+              <Link to="/admin/apps/interaction/$id" params={{ id }}>
                 <Plus className="w-4 h-4" />
                 Add New
               </Link>
@@ -166,17 +166,21 @@ function RouteComponent() {
             Manage interactions and rewards for this app
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className='px-0'>
           {app.interactions && app.interactions.length > 0 ? (
             <div className="space-y-4">
-              {app.interactions.map((interaction: any) => (
+              {app.interactions.map((interaction) => (
                 <div 
                   key={interaction.id} 
                   className="border rounded-lg p-4 hover:bg-muted/50 transition-colors"
                 >
-                  <div className="flex items-start justify-between">
+                  <div className="flex flex-col items-start justify-between">
                     <div className="space-y-2 flex-1">
-                      <div className="flex items-center gap-2">
+                      <div>
+                        <p>{interaction?.title}</p>
+                        <p>{interaction?.description}</p>
+                      </div>
+                      <div className="flex justify-between items-center gap-2">
                         <span className="font-medium">Interaction URL</span>
                         <Button size="sm" variant="ghost" asChild>
                           <a href={interaction.interactionUrl} target="_blank" rel="noopener noreferrer">
@@ -188,8 +192,8 @@ function RouteComponent() {
                         {interaction.interactionUrl}
                       </p>
                       
-                      <div className="flex items-center gap-4 text-sm">
-                        <div>
+                      <div className="flex flex-col gap-4 text-sm">
+                        <div className='flex items-center justify-between'>
                           <span className="font-medium">Verification: </span>
                           <span className={`px-2 py-1 rounded text-xs font-medium ${
                             interaction.verficationType === 'auto' ? 'bg-blue-100 text-blue-800' :
@@ -228,7 +232,7 @@ function RouteComponent() {
               <p className="text-lg font-medium mb-2">No interactions yet</p>
               <p className="text-sm mb-4">Create your first interaction to start earning rewards</p>
               <Button asChild>
-                <Link to="/admin/apps/$id/interaction" params={{ id }}>
+                <Link to="/admin/apps/interaction/$id" params={{ id }}>
                   <Plus className="w-4 h-4" />
                   Add First Interaction
                 </Link>

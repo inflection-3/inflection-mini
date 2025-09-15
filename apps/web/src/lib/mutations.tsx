@@ -366,6 +366,7 @@ export const useCreateRewardMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: rewardQueries.all() });
+      queryClient.invalidateQueries({ queryKey: rewardQueries.list() });
       queryClient.invalidateQueries({ queryKey: appsQueries.all() });
       toast.success("Reward created successfully");
     },
@@ -453,7 +454,7 @@ export const useUploadMutation = () => {
       }
       return response.data;
     },
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       // Invalidate relevant queries based on the upload type
       if (variables.endpoint === "user") {
         queryClient.invalidateQueries({ queryKey: userQueries.me() });

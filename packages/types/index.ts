@@ -76,6 +76,8 @@ export const updateAppSchema = createAppSchema.partial().extend({
 
 // Partner Interaction schemas
 export const partnerInteractionSchema = z.object({
+  title: z.string(),
+  description: z.string(),
   id: z.string().uuid(),
   appId: z.string().uuid(),
   interactionUrl: z.string(),
@@ -87,6 +89,8 @@ export const partnerInteractionSchema = z.object({
 });
 
 export const createInteractionSchema = z.object({
+  title: z.string(),
+  description: z.string(),
   interactionUrl: z.string(),
   verficationType: z.enum(["auto", "api", "manual", "none"]),
   rewardId: z.string(),
@@ -106,6 +110,7 @@ export const userAppInteractionSchema = z.object({
 
 // Reward schemas
 export const rewardSchema = z.object({
+  title: z.string().nullable(),
   id: z.string().uuid(),
   userId: z.string().uuid(),
   partnerApplicationId: z.string().uuid(),
@@ -117,6 +122,7 @@ export const rewardSchema = z.object({
 });
 
 export const createRewardSchema = z.object({
+  title: z.string(),
   rewardType: z.enum(["points", "USDC", "NFT"]),
   amount: z.number(),
   appId: z.string(),

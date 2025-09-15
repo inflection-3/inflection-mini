@@ -57,6 +57,8 @@ export const partnerApplications = pgTable("partner_applications", {
 
 export const partnerInteraction = pgTable("partner_interaction", {
   id: uuid("id").primaryKey().defaultRandom(),
+  title: varchar("title"),
+  description: text("description"),
   appId: uuid("app_id").notNull().references(() => partnerApplications.id),
   interactionUrl: text("interaction_url").notNull(),
   partnerApplicationId: uuid("partner_application_id").notNull().references(() => partnerApplications.id),
@@ -83,6 +85,7 @@ export const userAppInteraction = pgTable("user_app_interaction", {
 
 export const reward = pgTable("rewards", {
   id: uuid("id").primaryKey().defaultRandom(),
+  title: varchar("title"),
   userId: uuid("user_id").notNull().references(() => users.id),
   partnerApplicationId: uuid("partner_application_id").notNull().references(() => partnerApplications.id),
   rewardType: rewardType("reward_type").notNull(),

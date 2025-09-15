@@ -15,6 +15,20 @@
       "when": 1757764323598,
       "tag": "0001_lumpy_magik",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1757888996975,
+      "tag": "0002_fancy_namorita",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1757889048689,
+      "tag": "0003_supreme_hedge_knight",
+      "breakpoints": true
     }
   ]
 }

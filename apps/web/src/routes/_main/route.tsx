@@ -1,4 +1,3 @@
-import { BottomNavigation } from "@/components/bottom-navigation";
 import { SiteHeader } from "@/components/site-header";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
@@ -15,7 +14,6 @@ function RouteComponent() {
           <Outlet />
         </div>
       </div>
-      <BottomNavigation />
     </>
   );
 }

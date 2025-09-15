@@ -1,25 +1,27 @@
 import { useState } from "react";
 import { useCreateRewardMutation } from "@/lib/mutations";
-import { useQuery } from "@tanstack/react-query";
-import { appsQueries } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { z } from "zod";
 import { createRewardSchema } from "@mini/types";
 
-export function CreateRewardForm({ onClose }: { onClose: () => void }) {
+interface CreateRewardFormProps {
+  onClose: () => void;
+  appId: string;
+}
+
+export function CreateRewardForm({ onClose, appId }: CreateRewardFormProps) {
   const [formData, setFormData] = useState<z.infer<typeof createRewardSchema>>({
     rewardType: "points",
     amount: 0,
-    appId: "",
+    appId: appId, // Use the provided appId
+    title: "",
   });
 
   const [errors, setErrors] = useState<Partial<Record<keyof typeof formData, string>>>({});
   const createRewardMutation = useCreateRewardMutation();
-  
-  // Get apps list for dropdown
-  const { data: apps } = useQuery(appsQueries.listOptions());
 
   function validateForm(): boolean {
     const result = createRewardSchema.safeParse(formData);
@@ -45,9 +47,10 @@ export function CreateRewardForm({ onClose }: { onClose: () => void }) {
       onSuccess: () => {
         onClose();
         setFormData({
+          title: "",
           rewardType: "points",
           amount: 0,
-          appId: "",
+          appId: appId, // Keep the provided appId
         });
       },
     });
@@ -67,41 +70,48 @@ export function CreateRewardForm({ onClose }: { onClose: () => void }) {
   ] as const;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={(e) => {
+      e.preventDefault();
+    }} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="appId">Partner Application *</Label>
-        <select
-          id="appId"
-          value={formData.appId}
-          onChange={(e) => handleChange("appId", e.target.value)}
-          className="w-full px-3 py-2 border rounded-md focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none"
-          aria-invalid={!!errors.appId}
-        >
-          <option value="">Select an app...</option>
-          {apps?.map((app: any) => (
-            <option key={app.id} value={app.id}>
-              {app.appName}
-            </option>
-          ))}
-        </select>
-        {errors.appId && <p className="text-sm text-destructive">{errors.appId}</p>}
+        <Label>Partner Application</Label>
+        <div className="px-3 py-2 bg-muted/50 border rounded-md text-sm text-muted-foreground">
+          App ID: {appId}
+        </div>
+        <p className="text-xs text-muted-foreground">
+          Creating reward for this specific app
+        </p>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="title">Reward Title *</Label>
+        <Input
+          id="title"
+          value={formData.title}
+          onChange={(e) => handleChange("title", e.target.value)}
+          placeholder="Enter reward title"
+          aria-invalid={!!errors.title}
+        />
+        {errors.title && <p className="text-sm text-destructive">{errors.title}</p>}
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="rewardType">Reward Type *</Label>
-        <select
-          id="rewardType"
+        <Select
           value={formData.rewardType}
-          onChange={(e) => handleChange("rewardType", e.target.value as any)}
-          className="w-full px-3 py-2 border rounded-md focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none"
-          aria-invalid={!!errors.rewardType}
+          onValueChange={(value) => handleChange("rewardType", value as any)}
         >
-          {rewardTypeOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger className={errors.rewardType ? "border-destructive" : ""}>
+            <SelectValue placeholder="Select reward type..." />
+          </SelectTrigger>
+          <SelectContent>
+            {rewardTypeOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         {errors.rewardType && <p className="text-sm text-destructive">{errors.rewardType}</p>}
         <p className="text-xs text-muted-foreground">
           {rewardTypeOptions.find(opt => opt.value === formData.rewardType)?.description}
@@ -149,7 +159,7 @@ export function CreateRewardForm({ onClose }: { onClose: () => void }) {
         <div className="text-sm text-muted-foreground space-y-1">
           <p><strong>Type:</strong> {formData.rewardType}</p>
           <p><strong>Amount:</strong> {formData.amount}</p>
-          <p><strong>App:</strong> {apps?.find((app: any) => app.id === formData.appId)?.appName || "None selected"}</p>
+          <p><strong>App ID:</strong> {appId}</p>
         </div>
       </div>
 
@@ -158,7 +168,8 @@ export function CreateRewardForm({ onClose }: { onClose: () => void }) {
           Cancel
         </Button>
         <Button 
-          type="submit" 
+          type="button" 
+          onClick={handleSubmit}
           disabled={createRewardMutation.isPending}
           className="flex-1"
         >

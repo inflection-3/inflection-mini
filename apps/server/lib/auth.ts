@@ -28,14 +28,14 @@ export const protectedMiddleware = async (
     next: () => Promise<void>
   ) => {
     try {
-      // const authHeader = c.req.header('x-dynamic-access-token');
-      // const token = extractToken(authHeader);
+      const authHeader = c.req.header('x-dynamic-access-token');
+      const token = extractToken(authHeader);
 
-      // if (!token) {
-      //   return c.json({ error: 'Authorization token required' }, 401);
-      // }
+      if (!token) {
+        return c.json({ error: 'Authorization token required' }, 401);
+      }
 
-      // const decodedToken = await verifyTokenDynamicToken(token);
+      const decodedToken = await verifyTokenDynamicToken(token);
       await authMiddleware(c, async () => {
         const payload = c.get("jwtPayload");
         const [user] = await db

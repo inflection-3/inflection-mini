@@ -1,74 +1,12 @@
-import { StatCard } from "@/components/gradient-card";
-import { Button } from "@/components/ui/button";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
-import { cn } from "@/lib/utils";
+
 import { DynamicEmbeddedUserProfile } from "@dynamic-labs/sdk-react-core";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowDown, ArrowRight, ArrowUp } from "lucide-react";
 
 export const Route = createFileRoute("/_main/wallet/")({
   component: RouteComponent,
 });
 
-type TransactionType =
-  | "deposit"
-  | "withdrawal"
-  | "transfer"
-  | "buy"
-  | "sell"
-  | "swap"
-  | "receive"
-  | "app_incentaction";
 
-type TransactionItemProps = {
-  type: TransactionType;
-  amount: number;
-  date: string;
-  status: "pending" | "completed" | "failed";
-};
-
-const transactionItems: TransactionItemProps[] = [
-  {
-    type: "deposit",
-    amount: 100,
-    date: "2021-01-01",
-    status: "completed",
-  },
-  {
-    type: "withdrawal",
-    amount: 100,
-    date: "2021-01-01",
-    status: "completed",
-  },
-  {
-    type: "transfer",
-    amount: 100,
-    date: "2021-01-01",
-    status: "completed",
-  },
-  {
-    type: "buy",
-    amount: 100,
-    date: "2021-01-01",
-    status: "pending",
-  },
-  {
-    type: "sell",
-    amount: 100,
-    date: "2021-01-01",
-    status: "failed",
-  },
-  {
-    type: "swap",
-    amount: 100,
-    date: "2021-01-01",
-    status: "completed",
-  },
-];
 
 function RouteComponent() {
   return (

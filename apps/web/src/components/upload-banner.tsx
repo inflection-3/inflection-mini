@@ -29,7 +29,6 @@ export default function UploadBanner({setBannerFile, existingImageUrl}: {
     maxSize,
   })
   const previewUrl = files[0]?.preview || existingImageUrl || null
-  const fileName = files[0]?.file.name || null
 
   useEffect(() => {
     if (files[0]) {

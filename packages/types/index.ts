@@ -76,6 +76,7 @@ export const updateAppSchema = createAppSchema.partial().extend({
 
 // Partner Interaction schemas
 export const partnerInteractionSchema = z.object({
+  actionTitle: z.string(),
   title: z.string(),
   description: z.string(),
   id: z.string().uuid(),
@@ -89,6 +90,7 @@ export const partnerInteractionSchema = z.object({
 });
 
 export const createInteractionSchema = z.object({
+  actionTitle: z.string(),  
   title: z.string(),
   description: z.string(),
   interactionUrl: z.string(),
@@ -99,6 +101,7 @@ export const createInteractionSchema = z.object({
 
 // User App Interaction schemas
 export const userAppInteractionSchema = z.object({
+  actionTitle: z.string(),
   id: z.string().uuid(),
   interactionId: z.string().uuid().nullable(),
   userId: z.string().uuid().nullable(),

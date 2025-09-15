@@ -36,6 +36,7 @@ const appSchema = z.object({
 });
 
 const interactionSchema = z.object({
+  actionTitle: z.string(),
   title: z.string(),
   description: z.string(),
   interactionUrl: z.string(),

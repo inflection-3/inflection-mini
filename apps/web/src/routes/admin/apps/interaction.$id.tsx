@@ -23,6 +23,7 @@ function RouteComponent() {
   const [isCreateRewardOpen, setIsCreateRewardOpen] = useState(false);
   
   const [formData, setFormData] = useState<z.infer<typeof createInteractionSchema>>({
+    actionTitle: "",
     title: "",
     description: "",
     interactionUrl: "",
@@ -60,6 +61,7 @@ function RouteComponent() {
     createInteractionMutation.mutate({ ...formData }, {
       onSuccess: () => {
         setFormData({
+          actionTitle: "",
           title: "",
           description: "",
           interactionUrl: "",
@@ -90,7 +92,17 @@ function RouteComponent() {
           Creating interaction for this specific app
         </p>
       </div>
-
+      <div className="space-y-2">
+        <Label htmlFor="actionTitle">Action Title *</Label>
+        <Input
+          id="actionTitle"
+          value={formData.actionTitle}
+          onChange={(e) => handleChange("actionTitle", e.target.value)}
+          placeholder="Enter action title"
+          aria-invalid={!!errors.actionTitle}
+        />
+        {errors.actionTitle && <p className="text-sm text-destructive">{errors.actionTitle}</p>}
+      </div>
       <div className="space-y-2">
         <Label htmlFor="title">Interaction Title *</Label>
         <Input

@@ -59,6 +59,7 @@ export const partnerInteraction = pgTable("partner_interaction", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: varchar("title"),
   description: text("description"),
+  actionTitle: varchar(),
   appId: uuid("app_id").notNull().references(() => partnerApplications.id),
   interactionUrl: text("interaction_url").notNull(),
   partnerApplicationId: uuid("partner_application_id").notNull().references(() => partnerApplications.id),

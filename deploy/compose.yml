@@ -1,0 +1,58 @@
+version: "3.8"
+
+services:
+  # Combined API + Frontend Service (Recommended for your setup)
+  app:
+    build:
+      context: .
+      dockerfile: ./apps/server/Dockerfile.combined
+      args:
+        NODE_ENV: production
+    restart: unless-stopped
+    ports:
+      - "3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+    networks:
+      - dokploy-network
+    labels:
+      # Enable Traefik
+      - "traefik.enable=true"
+      
+      # Main app router - serves both frontend and API
+      - "traefik.http.routers.mini-app.rule=Host(`yourdomain.com`) || Host(`www.yourdomain.com`)"
+      - "traefik.http.routers.mini-app.entrypoints=websecure"
+      - "traefik.http.routers.mini-app.tls.certResolver=letsencrypt"
+      - "traefik.http.services.mini-app.loadbalancer.server.port=3001"
+      
+      # Redirect www to non-www
+      - "traefik.http.middlewares.mini-app-redirect.redirectregex.regex=^https://www\\.yourdomain\\.com/(.*)"
+      - "traefik.http.middlewares.mini-app-redirect.redirectregex.replacement=https://yourdomain.com/$${1}"
+      - "traefik.http.middlewares.mini-app-redirect.redirectregex.permanent=true"
+      
+      # Security headers
+      - "traefik.http.middlewares.mini-app-headers.headers.frameDeny=true"
+      - "traefik.http.middlewares.mini-app-headers.headers.contentTypeNosniff=true"
+      - "traefik.http.middlewares.mini-app-headers.headers.browserXssFilter=true"
+      - "traefik.http.middlewares.mini-app-headers.headers.referrerPolicy=strict-origin-when-cross-origin"
+      - "traefik.http.middlewares.mini-app-headers.headers.customRequestHeaders.X-Forwarded-Proto=https"
+      
+      # Apply middlewares
+      - "traefik.http.routers.mini-app.middlewares=mini-app-redirect,mini-app-headers"
+    healthcheck:
+      test: ["CMD", "bun", "--version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+        reservations:
+          memory: 384M
+
+networks:
+  dokploy-network:
+    external: true

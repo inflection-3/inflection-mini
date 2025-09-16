@@ -17,4 +17,17 @@ export default defineConfig({
       '@': resolve(__dirname, './src'),
     },
   },
+  esbuild: {
+    logLevel: 'silent',
+  },
+  build: {
+    rollupOptions: {
+      onwarn(warning, warn) {
+        // Ignore TypeScript warnings
+        if (warning.code === 'UNUSED_EXTERNAL_IMPORT') return
+        if (warning.code === 'CIRCULAR_DEPENDENCY') return
+        warn(warning)
+      },
+    },
+  },
 })

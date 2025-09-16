@@ -36,7 +36,7 @@ const appSchema = z.object({
 });
 
 const interactionSchema = z.object({
-  actionTitle: z.string(),
+  actionTitle: z.string().nullable(),
   title: z.string(),
   description: z.string(),
   interactionUrl: z.string(),
@@ -219,6 +219,7 @@ appsRouter.post(
       appId: id,
       partnerApplicationId: id,
       rewardId: interaction.rewardId,
+      actionTitle: interaction.actionTitle,
     });
     if (!newInteraction) {
       return c.json(

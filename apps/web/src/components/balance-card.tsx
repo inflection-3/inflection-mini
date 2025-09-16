@@ -4,9 +4,13 @@ import { useUser } from "@/hooks/use-user";
 import { Button } from "./ui/button";
 import { Wallet } from "lucide-react";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
+import { useNavigate } from "@tanstack/react-router";
 
 
-export function BalanceCard() {
+export function BalanceCard({action = false}: {
+  action?: boolean
+}) {
+  const navigate = useNavigate()
     const { user } = useUser()
     const { balance, isLoading } = useUsdcBalance({ address: user?.walletAddress || "" })
     const {setShowDynamicUserProfile} = useDynamicContext()
@@ -29,7 +33,7 @@ export function BalanceCard() {
         </div>
         <div className="flex items-center gap-2 w-full">
           <p className="text-sm text-muted-foreground truncate max-w-[100px]">{user?.walletAddress}</p>
-          <Button size={"sm"} variant="secondary" className="py-2 gap-[2px]" onClick={() => setShowDynamicUserProfile(true)}>
+          <Button size={"sm"} variant="secondary" className="py-2 gap-[2px]" onClick={() => action ? setShowDynamicUserProfile(true) : navigate({to: "/wallet"})}>
             <Wallet />
             Wallet
           </Button>

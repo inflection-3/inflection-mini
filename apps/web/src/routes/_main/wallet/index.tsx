@@ -1,5 +1,8 @@
 
-import { DynamicEmbeddedUserProfile } from "@dynamic-labs/sdk-react-core";
+import { BalanceCard } from "@/components/balance-card";
+import { StatCard } from "@/components/gradient-card";
+import { MyPoints } from "@/components/my-points";
+import { Badge } from "@/components/ui/badge";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_main/wallet/")({
@@ -7,100 +10,53 @@ export const Route = createFileRoute("/_main/wallet/")({
 });
 
 
+const walletItems = [
+  {
+    title: "Savings Balance",
+    value: "$0.00",
+    icon: "/dollor.svg"
+  }, 
+  {
+    title: "Investments",
+    value: "$0.00",
+    icon: "/invest.svg"
+  },
+  {
+    title: "Stablecoin Debit Card",
+    value: "$0.00",
+    icon: "/card.svg"
+  },
+]
+
+
 
 function RouteComponent() {
   return (
     <>
-      {/* <BalanceCard />
-      <MyPoints />
-      <div className="h-5"></div>
-      <h1 className="font-medium">Transction History</h1>
-      <div className="flex justify-between">
-        <SearchInput />
-        <Button variant="outline">
-          <Filter />
-          Filter
-        </Button>
-      </div>
-      <div className="flex flex-col gap-5 mb-20">
-        {transactionItems.map((item) => (
-          <TransactionItem key={item.type} {...item} />
+      <BalanceCard action />
+      <div className="grid grid-cols-2 gap-5">
+        {walletItems.map((item) => (
+          <WalletItem key={item.title} {...item} />
         ))}
-      </div> */}
-      <DynamicEmbeddedUserProfile  />
+      </div>
     </>
   );
 }
 
-// function TransactionItem({ type, amount, date, status }: TransactionItemProps) {
-//   const statusColor =
-//     status === "completed"
-//       ? "bg-green-500"
-//       : status === "pending"
-//         ? "bg-yellow-500"
-//         : "bg-red-500";
-//   const statusTextColor =
-//     status === "completed"
-//       ? "text-green-500"
-//       : status === "pending"
-//         ? "text-yellow-500"
-//         : "text-red-500";
-//   const Icon = type === "deposit" && <ArrowUp /> || type === "withdrawal" && <ArrowDown /> || type === "transfer" && <ArrowRight /> || type === "buy" && <ArrowUp /> || type === "sell" && <ArrowDown /> || type === "swap" && <ArrowRight /> || type === "receive" && <ArrowDown /> || type === "app_incentaction" && <ArrowUp />;
 
-//   return (
-//     <Drawer>
-//       <DrawerTrigger asChild>
-//         <StatCard>
-//           <div className="flex justify-between">
-//             <div className="flex items-center gap-2">
-//               <div
-//                 className={cn(
-//                   "w-10 h-10 rounded-full bg-muted flex items-center justify-center",
-//                   statusColor
-//                 )}
-//               >
-//                 {Icon}
-//               </div>
-//               <div className="flex flex-col">
-//                 <p className="text-sm font-medium">{type}</p>
-//                 <p className="text-sm text-muted-foreground">{date}</p>
-//               </div>
-//             </div>
-//             <div className="flex items-center gap-2">
-//               <p className="text-sm font-medium">{amount}</p>
-//             </div>
-//           </div>
-//         </StatCard>
-//       </DrawerTrigger>
-//       <DrawerContent>
-//         <div className="flex p-5 flex-col max-w-md mx-auto w-full gap-4 items-center">
-//         <h2 className="capitalize">{type}</h2>
-//         <div
-//           className={cn(
-//             "h-10 w-10 flex items-center justify-center rounded-full",
-//             statusColor
-//           )}
-//         >
-//           {Icon}
-//         </div>
-//         <p className="text-lg">{amount} USDC</p>
-//         <div className="flex justify-between items-center w-full">
-//           <p className="text-sm text-muted-foreground">Date</p>
-//           <p>{date}</p>
-//         </div>
-//         <div className="flex justify-between items-center w-full">
-//           <p className="text-sm text-muted-foreground">Status</p>
-//           <p className={cn(statusTextColor)}>{status}</p>
-//         </div>
-//         <div className="flex justify-between items-center w-full">
-//           <p className="text-sm text-muted-foreground">Network</p>
-//           <p>Ethereum</p>
-//         </div>
-//         <a className="w-full" href="https://etherscan.io/tx/0x1234567890" target="_blank">
-//           <Button className="w-full">view on explorer</Button>
-//         </a>
-//         </div>
-//       </DrawerContent>
-//     </Drawer>
-//   );
-// }
+export function WalletItem({title, value, icon}: {
+  title: string
+  value: string
+  icon: string
+}) {
+  return (
+    <StatCard className="flex flex-col gap-4 relative">
+      <img src={icon} alt={title} width={51} height={51} />
+      <div>
+        <p className="text-sm text-muted-foreground">{title}</p>
+        <p className="font-medium">{value}</p>
+      </div>
+      <Badge className="absolute top-2 right-2 text-[6px]">Coming soon</Badge>
+    </StatCard>
+  );
+}

@@ -51,13 +51,61 @@ export async function api<T extends z.ZodType>(
 
     return data;
   } catch (error: any) {
+    // Log schema validation errors with detailed information
+    if (error.name === 'ZodError' || error.issues) {
+      console.error('🔴 Schema Validation Error:', {
+        endpoint,
+        method,
+        error: error.issues || error.message,
+        receivedData: error.data,
+        expectedSchema: schema?.description || 'Unknown schema',
+        timestamp: new Date().toISOString(),
+      });
+      
+      // Format Zod errors for better readability
+      if (error.issues) {
+        const formattedErrors = error.issues.map((issue: any) => ({
+          path: issue.path.join('.'),
+          message: issue.message,
+          code: issue.code,
+          received: issue.received,
+          expected: issue.expected,
+        }));
+        console.error('📋 Detailed Validation Errors:', formattedErrors);
+      }
+    }
+    
+    // Log other API errors
     if (error.data?.message) {
+      console.error('🔴 API Error:', {
+        endpoint,
+        method,
+        message: error.data.message,
+        status: error.status,
+        timestamp: new Date().toISOString(),
+      });
       throw new Error(error.data.message);
     }
     
     if (error.status) {
+      console.error('🔴 HTTP Error:', {
+        endpoint,
+        method,
+        status: error.status,
+        statusText: error.statusText,
+        timestamp: new Date().toISOString(),
+      });
       throw new Error(`HTTP ${error.status}: ${error.statusText || 'Request failed'}`);
     }
+    
+    // Log unexpected errors
+    console.error('🔴 Unexpected Error:', {
+      endpoint,
+      method,
+      error: error.message || error,
+      stack: error.stack,
+      timestamp: new Date().toISOString(),
+    });
     
     throw error;
   }

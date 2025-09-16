@@ -74,8 +74,8 @@ export const userAppInteraction = pgTable("user_app_interaction", {
   id: uuid("id").primaryKey().defaultRandom(),
   interactionId: uuid("interaction_id").references(() => partnerInteraction.id),
   userId: uuid("user_id").references(() => users.id),
-  verfied: boolean("verfied_at").notNull().default(false),
-  verfiedAt: timestamp("verfied_at").$onUpdate(() => new Date()),
+  verified: boolean("verified").notNull().default(false),
+  verifiedAt: timestamp("verified_at").$onUpdate(() => new Date()),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 }, (table) => [

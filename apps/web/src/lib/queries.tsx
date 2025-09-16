@@ -188,13 +188,28 @@ export const appsQueries = {
     queryOptions({
       queryKey: appsQueries.detail(id),
       queryFn: async () => {
-        const response = await api(`/apps/${id}`, {
-          schema: responseSchema(partnerApplicationWithDetailsSchema),
+         const response = await api(`/apps/${id}`, {
+          schema: responseSchema(partnerApplicationSchema.extend({
+            interactions: z.array(z.object({
+              id: z.string().uuid(),
+              title: z.string(),
+              description: z.string(),
+              actionTitle: z.string().nullable(),
+              interactionUrl: z.string(),
+              verficationType: z.enum(["auto", "api", "manual", "none"]),
+              rewardId: z.string().uuid(),
+              createdAt: z.string().datetime(),
+              updatedAt: z.string().datetime(),
+              appId: z.string().uuid(),
+              partnerApplicationId: z.string()
+            })),
+          })),
         });
         if (!response.success) {
           throw new Error(response.message);
         }
-        return response.data;
+        return response.data;  
+       
       },
       staleTime: 5 * 60 * 1000,
       enabled: enabled,

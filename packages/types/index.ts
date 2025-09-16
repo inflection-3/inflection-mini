@@ -76,17 +76,11 @@ export const updateAppSchema = createAppSchema.partial().extend({
 
 // Partner Interaction schemas
 export const partnerInteractionSchema = z.object({
-  actionTitle: z.string(),
+  id: z.string().uuid(),
   title: z.string(),
   description: z.string(),
-  id: z.string().uuid(),
-  appId: z.string().uuid(),
+  actionTitle: z.string().nullable(),
   interactionUrl: z.string(),
-  partnerApplicationId: z.string().uuid(),
-  verficationType: z.enum(["auto", "api", "manual", "none"]),
-  rewardId: z.string().uuid(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
 });
 
 export const createInteractionSchema = z.object({
@@ -101,7 +95,7 @@ export const createInteractionSchema = z.object({
 
 // User App Interaction schemas
 export const userAppInteractionSchema = z.object({
-  actionTitle: z.string(),
+  actionTitle: z.string().nullable(),
   id: z.string().uuid(),
   interactionId: z.string().uuid().nullable(),
   userId: z.string().uuid().nullable(),
@@ -160,12 +154,6 @@ export const notificationTokenSchema = z.object({
 });
 
 // Extended schemas with relations
-export const partnerApplicationWithDetailsSchema = partnerApplicationSchema.extend({
-  interactions: z.array(partnerInteractionSchema).optional(),
-  rewards: z.array(rewardSchema).optional(),
-  userInteractions: z.array(userAppInteractionSchema).optional(),
-  userAppRewards: z.array(userAppRewardSchema).optional(),
-});
 
 export const userWithDetailsSchema = userSchema.extend({
   appInteractions: z.array(userAppInteractionSchema).optional(),
@@ -198,6 +186,9 @@ export const uploadResponseSchema = z.object({
   key: z.string(),
   response: z.any(),
 });
+
+
+export const partnerApplicationWithDetailsSchema = z.any();
 
 export type User = z.infer<typeof userSchema>;
 export type UserWithTokens = z.infer<typeof userWithTokensSchema>;

@@ -12,8 +12,8 @@ interface EditInteractionFormProps {
 export function EditInteractionForm({ interaction }: EditInteractionFormProps) {
   const [formData, setFormData] = useState({
     interactionUrl: interaction.interactionUrl,
-    verficationType: interaction.verficationType,
-    rewardId: interaction.rewardId,
+    verficationType: (interaction as any).verficationType || "none",
+    rewardId: (interaction as any).rewardId || "",
   });
 
   const [errors, setErrors] = useState<Partial<Record<keyof typeof formData, string>>>({});
@@ -22,8 +22,8 @@ export function EditInteractionForm({ interaction }: EditInteractionFormProps) {
   useEffect(() => {
     setFormData({
       interactionUrl: interaction.interactionUrl,
-      verficationType: interaction.verficationType,
-      rewardId: interaction.rewardId,
+      verficationType: (interaction as any).verficationType || "none",
+      rewardId: (interaction as any).rewardId || "",
     });
   }, [interaction]);
 
@@ -115,10 +115,10 @@ export function EditInteractionForm({ interaction }: EditInteractionFormProps) {
           <strong>Interaction ID:</strong> {interaction.id}
         </p>
         <p className="text-sm text-muted-foreground">
-          <strong>App ID:</strong> {interaction.appId}
+          <strong>App ID:</strong> {(interaction as any).appId || "N/A"}
         </p>
         <p className="text-sm text-muted-foreground">
-          <strong>Created:</strong> {new Date(interaction.createdAt).toLocaleDateString()}
+          <strong>Created:</strong> {(interaction as any).createdAt ? new Date((interaction as any).createdAt).toLocaleDateString() : "N/A"}
         </p>
       </div>
 

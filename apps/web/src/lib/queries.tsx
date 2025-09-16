@@ -10,7 +10,6 @@ import {
   notificationSchema,
   notificationTokenSchema,
   categorySchema,
-  partnerApplicationWithDetailsSchema,
 } from "@mini/types";
 import { api } from "./api";
 

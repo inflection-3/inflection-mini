@@ -81,6 +81,9 @@ export const partnerInteractionSchema = z.object({
   description: z.string(),
   actionTitle: z.string().nullable(),
   interactionUrl: z.string(),
+  verificationType: z.enum(["auto", "api", "manual", "none"]),
+  rewardId: z.string(),
+  appId: z.string(),
 });
 
 export const createInteractionSchema = z.object({
@@ -88,7 +91,7 @@ export const createInteractionSchema = z.object({
   title: z.string(),
   description: z.string(),
   interactionUrl: z.string(),
-  verficationType: z.enum(["auto", "api", "manual", "none"]),
+  verificationType: z.enum(["auto", "api", "manual", "none"]),
   rewardId: z.string(),
   appId: z.string(),
 });
@@ -99,8 +102,8 @@ export const userAppInteractionSchema = z.object({
   id: z.string().uuid(),
   interactionId: z.string().uuid().nullable(),
   userId: z.string().uuid().nullable(),
-  verfied: z.boolean(),
-  verfiedAt: z.string().datetime().nullable(),
+  verified: z.boolean(),
+  verifiedAt: z.string().datetime().nullable(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 });

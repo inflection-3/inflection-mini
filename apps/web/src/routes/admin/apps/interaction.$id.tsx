@@ -27,7 +27,7 @@ function RouteComponent() {
     title: "",
     description: "",
     interactionUrl: "",
-    verficationType: "none",
+    verificationType: "auto",
     rewardId: "",
     appId: appId, 
   });
@@ -65,7 +65,7 @@ function RouteComponent() {
           title: "",
           description: "",
           interactionUrl: "",
-          verficationType: "none",
+          verificationType: "auto",
           rewardId: "",
           appId: appId, // Keep app ID from params
         });
@@ -142,10 +142,10 @@ function RouteComponent() {
       <div className="space-y-2">
         <Label htmlFor="verficationType">Verification Type *</Label>
         <Select
-          value={formData.verficationType}
-          onValueChange={(value) => handleChange("verficationType", value as any)}
+          value={formData.verificationType}
+          onValueChange={(value) => handleChange("verificationType", value as any)}
         >
-          <SelectTrigger className={errors.verficationType ? "border-destructive" : ""}>
+          <SelectTrigger className={errors.verificationType ? "border-destructive" : ""}>
             <SelectValue placeholder="Select verification type..." />
           </SelectTrigger>
           <SelectContent>
@@ -155,7 +155,7 @@ function RouteComponent() {
             <SelectItem value="manual">Manual</SelectItem>
           </SelectContent>
         </Select>
-        {errors.verficationType && <p className="text-sm text-destructive">{errors.verficationType}</p>}
+        {errors.verificationType && <p className="text-sm text-destructive">{errors.verificationType}</p>}
       </div>
 
       <div className="space-y-2">

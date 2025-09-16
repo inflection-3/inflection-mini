@@ -1,7 +1,6 @@
 
 import { BalanceCard } from "@/components/balance-card";
 import { StatCard } from "@/components/gradient-card";
-import { MyPoints } from "@/components/my-points";
 import { Badge } from "@/components/ui/badge";
 import { createFileRoute } from "@tanstack/react-router";
 

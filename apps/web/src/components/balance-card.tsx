@@ -1,4 +1,4 @@
-import { useUsdcBalance } from "@/hooks/use-usdc-balance";
+import { useBalance} from "@/hooks/use-usdc-balance";
 import { StatCard } from "./gradient-card";
 import { useUser } from "@/hooks/use-user";
 import { Button } from "./ui/button";
@@ -12,7 +12,7 @@ export function BalanceCard({action = false}: {
 }) {
   const navigate = useNavigate()
     const { user } = useUser()
-    const { balance, isLoading } = useUsdcBalance({ address: user?.walletAddress || "" })
+    const { balance, isLoading } = useBalance()
     const {setShowDynamicUserProfile} = useDynamicContext()
     return (
     <StatCard className="w-full ">

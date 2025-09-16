@@ -52,7 +52,7 @@ function RouteComponent() {
     const result = createAppSchema.safeParse(formData);
     if (!result.success) {
       const newErrors: Partial<Record<keyof typeof formData, string>> = {};
-      result.error.errors.forEach((error) => {
+      result.error.issues.forEach((error: any) => {
         if (error.path[0]) {
           newErrors[error.path[0] as keyof typeof formData] = error.message;
         }

@@ -34,7 +34,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           onAuthSuccess: async (user) => {
             try {
               const dynamicAccessToken =await getAuthToken()
-              const response = await api('/auth/login', {
+              const response:any = await api('/auth/login', {
                 method: 'POST',
                 body: {
                   email: user?.user?.email,

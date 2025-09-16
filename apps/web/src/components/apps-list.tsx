@@ -1,5 +1,6 @@
 
 import { StatCard } from "@/components/gradient-card";
+import { cn } from "@/lib/utils";
 import type { PartnerApplication } from "@mini/types";
 import { Link } from "@tanstack/react-router";
 
@@ -27,16 +28,16 @@ export function AppsList({ apps, admin = false }: { apps: PartnerApplication[], 
   );
 }
 
-function AppCard(app: PartnerApplication & { admin?: boolean }) {
+export function AppCard(app: PartnerApplication & { admin?: boolean, className?: string }) {
   return (
-    <Link to={app.admin ? "/admin/apps/$id" : "/apps/$id"} params={{ id: app?.id }} className="max-w-[126px]">
-      <StatCard className="w-full h-[100px] flex items-center flex-col justify-center rounded-[12px]">
+    <Link to={app.admin ? "/admin/apps/$id" : "/apps/$id"} params={{ id: app?.id }} className={cn("max-w-[126px]", app?.className)}>
+      <StatCard className="w-full h-[120px] flex items-center flex-col justify-center rounded-[12px]">
         <img
           className="w-[56px] h-[56px] rounded-[12px]"
           src={app?.appLogo ?? ""}
           alt="Featured Item"
         />
-        <p className="text-sm font-medium text-foreground text-center mt-2.5">
+        <p className="text-xs font-medium text-foreground text-center mt-2.5">
           {app?.appName}
         </p>
       </StatCard>

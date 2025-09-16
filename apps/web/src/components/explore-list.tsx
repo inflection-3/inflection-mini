@@ -5,18 +5,22 @@ const exploreItems = [
   {
     icon: "/network.svg",
     label: "Explore partner app",
+    link: "/apps",
   },
   {
     icon: "/invest.svg",
     label: "Invest 10% APY",
+    link: "/wallet",
   },
   {
     icon: "/buy-sell.svg",
     label: "Buy/Sell Stablecoins",
+    link: "/wallet",
   },
   {
     icon: "/card.svg",
     label: "Stablecoin Debit Card",
+    link: "/wallet",
   },
 ];
 
@@ -33,9 +37,9 @@ export function ExploreList() {
   );
 }
 
-export function ExploreItem({ icon, label }: { icon: string; label: string }) {
+export function ExploreItem({ icon, label, link }: { icon: string; label: string; link: string }) {
   return (
-    <Link to="/" className="max-w-[126px]">
+    <Link to={link} className="max-w-[126px]">
       <StatCard className="w-full h-[100px] flex items-center justify-center rounded-[12px]">
         <img
           className="w-[56px] h-[56px] rounded-[12px]"

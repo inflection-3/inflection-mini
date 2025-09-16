@@ -1,0 +1,1 @@
+ALTER TABLE "partner_interaction" ADD COLUMN "actionTitle" varchar;

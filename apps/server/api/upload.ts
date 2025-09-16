@@ -17,7 +17,7 @@ const uploadSchema = z.object({
       (file) => file.size <= 10 * 1024 * 1024, // 10MB max size
       { message: 'File size must be less than 10MB' }
     ).refine(
-      (file) => ['image/jpeg', 'image/png', 'application/pdf'].includes(file.type),
+      (file) => ['image/jpeg', 'image/png', 'application/pdf','image/svg+xml'].includes(file.type),
       { message: 'Only JPEG, PNG, and PDF files are allowed' }
     ),
   })

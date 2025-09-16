@@ -1,4 +1,4 @@
-import {  users } from "db/schema";
+import {  users } from "@mini/db/schema";
 import { jwt, sign } from "hono/jwt";
 import { createMiddleware } from "hono/factory";
 import {db} from "@mini/db/connection";

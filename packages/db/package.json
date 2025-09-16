@@ -21,7 +21,13 @@
     "pg": "^8.16.3"
   },
   "exports": {
-    "./connection": "./connection.ts",
-    "./schema": "./schema.ts"
+    "./connection": {
+      "types": "./dist/connection.d.ts",
+      "default": "./dist/connection.js"
+    },
+    "./schema": {
+      "types": "./dist/schema.d.ts", 
+      "default": "./dist/schema.js"
+    }
   }
 }

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { up } from "up-fetch";
 import { getAuthToken } from "@dynamic-labs/sdk-react-core";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:9999/api";
 
 const upfetch = up(fetch, () => ({
   baseUrl: API_BASE_URL,

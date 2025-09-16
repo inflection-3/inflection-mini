@@ -9,7 +9,6 @@
     "start": "bun run dist/index.js"
   },
   "devDependencies": {
-    "@mini/db": "*",
     "@mini/typescript-config": "*",
     "@types/bun": "latest",
     "@types/jsonwebtoken": "^9.0.10"
@@ -21,6 +20,7 @@
     "@aws-sdk/client-s3": "^3.888.0",
     "@dynamic-labs/passport-dynamic": "^0.0.15",
     "@hono/zod-validator": "^0.7.2",
+    "@mini/db": "workspace:*",
     "@mini/types": "workspace:*",
     "@rcmade/hono-docs": "^1.0.30",
     "@types/passport": "^1.0.17",

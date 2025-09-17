@@ -10,21 +10,19 @@ services:
     env_file:
       - .env
     restart: always
-    expose:
-      - "9999"
+     ports:
+      - 9999
     networks:
       - dokploy-network
 
     # Add Traefik labels here when you have a domain
    labels:
-    - "traefik.enable=true"
-    - "traefik.http.routers.inflection-app.rule=Host(`app.inflection.network`)"
-    - "traefik.http.routers.inflection-app.service=inflection-app-svc"  # Explicit service name
-    - "traefik.http.services.inflection-app-svc.loadbalancer.server.port=9999"  # Your app's internal port
-    - "traefik.http.routers.inflection-app-secure.rule=Host(`app.inflection.network`)"
-    - "traefik.http.routers.inflection-app-secure.service=inflection-app-svc"
-    - "traefik.http.routers.inflection-app-secure.tls=true"
-    - "traefik.http.routers.inflection-app-secure.tls.certresolver=letsencrypt"  # Assuming Dokploy's default 
+      - "traefik.enable=true"
+      - "traefik.http.routers.new-app.rule=Host(`app.inflection.network`)"
+      - "traefik.http.routers.new-app.entrypoints=websecure"
+      - "traefik.http.routers.new-app.tls.certResolver=letsencrypt"
+      - "traefik.http.services.new-app.loadbalancer.server.port=9999"
+
 
 networks:
   dokploy-network:

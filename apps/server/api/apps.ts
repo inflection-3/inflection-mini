@@ -13,11 +13,12 @@ import {
   getCategory,
   getFeaturedApps,
   isOwnApp,
+  isSubmited,
   updateApp,
 } from "../lib/apps";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
-import { authMiddleware } from "../lib/auth";
+import { authMiddleware, protectedMiddleware } from "../lib/auth";
 import { AppBindings } from "../types";
 import { db } from "@mini/db/connection";
 import { adminApiMiddleware } from "./middleware/admin-api";
@@ -279,9 +280,7 @@ appsRouter.post(
         404
       );
     }
-     let result = null;
-     if(interaction.verficationType === "none") {
-       result = await db.transaction(async(tx) => {
+       const result = await db.transaction(async(tx) => {
          const userInteraction = await createUserAppInteraction({
            userId: userId,
            interactionId: interaction.id,
@@ -297,8 +296,7 @@ appsRouter.post(
            userInteraction,
            reward,
          }
-       })
-     }
+     });
 
     return c.json({ message: "Interaction submitted successfully", data: result, success: true });
   }
@@ -323,6 +321,30 @@ appsRouter.get("/categories", async (c) => {
   });
 });
 
+
+appsRouter.get("interactions/:id/submited", zValidator("param", idSchema),protectedMiddleware, async (c) => {
+  const { id: interactionId } = c.req.valid("param");
+  const {id} = c.get("user")
+  const submited = await isSubmited(interactionId, id);
+  return c.json({
+    success: true,
+    message: "Interaction submited successfully",
+    data: submited ? true : false,
+  });
+  
+});
+
+
+appsRouter.get("interactions/submited", async (c) => {
+  const submited = await db.query.userAppInteraction.findMany() 
+  return c.json({
+    success: true,
+    message: "Interaction submited successfully",
+    data: submited,
+  });
+});
+
+
 appsRouter.get("/:id", zValidator("param", idSchema), async (c) => {
   const { id } = c.req.valid("param");
   const app = await getApp(id);
@@ -338,6 +360,8 @@ appsRouter.get("/:id", zValidator("param", idSchema), async (c) => {
     success: true,
   });
 });
+
+
 
 
 

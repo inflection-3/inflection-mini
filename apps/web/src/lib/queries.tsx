@@ -150,6 +150,7 @@ export const appsQueries = {
   featured: () => [...appsQueries.all(), "featured"] as const,
   detail: (id: string) => [...appsQueries.all(), "detail", id] as const,
   interactions: (id: string) => [...appsQueries.all(), "interactions", id] as const,
+  interactionsSubmited: (id: string, interactionId: string) => [...appsQueries.all(), "interactions", id, "submited", interactionId] as const,
 
   listOptions: (enabled: boolean = true) =>
     queryOptions({
@@ -188,10 +189,6 @@ export const appsQueries = {
       queryKey: appsQueries.detail(id),
       queryFn: async () => {
          const response = await api(`/apps/${id}`, {
-          schema: responseSchema(z.object({
-            
-
-          }))
         });
         if (!response.success) {
           throw new Error(response.message);
@@ -217,6 +214,19 @@ export const appsQueries = {
       },
       staleTime: 2 * 60 * 1000,
       enabled: enabled,
+    }),
+
+  interactionsSubmitedOptions: (id: string, enabled: boolean = true) =>
+    queryOptions({
+      queryKey: appsQueries.interactionsSubmited(id, id),
+      queryFn: async () => {
+        const response = await api(`/apps/interactions/${id}/submited`, {
+        });
+        if (!response.success) {
+          throw new Error(response.message);
+        }
+        return response.data;
+      },
     }),
 };
 

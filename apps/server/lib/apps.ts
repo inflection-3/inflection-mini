@@ -98,8 +98,10 @@ export const getUserAppInteraction = async (userId: string, tx?: Tx) => {
 }
 
 export const createUserAppInteraction = async (interaction: typeof userAppInteraction.$inferInsert, tx?: Tx) => {
+  console.log(interaction)
   const executer = tx ? tx : db
   const [newInteraction] = await executer.insert(userAppInteraction).values(interaction).returning()
+  console.log(newInteraction)
   return newInteraction
 }
 
@@ -150,4 +152,19 @@ export const getCategory = async (id: string, tx?: Tx) => {
     where: eq(partnerCategories.id, id),
   })
   return category
+
+}
+
+
+export async function isSubmited(interactionId: string, userId: string, tx?: Tx) {
+  const executer = tx ? tx : db
+  const submited = await executer.query.userAppInteraction.findFirst({
+    where:(table, {
+      eq,
+      and
+    }) => {
+      return and(eq(table.interactionId, interactionId), eq(table.userId, userId))
+    } 
+  })
+  return submited
 }

@@ -40,7 +40,7 @@ function RouteComponent() {
   return (
     <div className="flex flex-col gap-10 rounded-lg p-4 ">
       <BalanceCard />
-      <MyPoints />
+      <MyPoints appId={id} />
       <StatCard className=" w-full">
         <div className="flex items-center justify-between mb-4 w-full">
           <div className="flex items-center gap-3x">

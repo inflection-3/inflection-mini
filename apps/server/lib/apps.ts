@@ -10,7 +10,7 @@ export const getApps = async (tx?: Tx) => {
 
 export const getFeaturedApps = async (tx?: Tx) => {
   const executer = tx ? tx : db
-  const apps = await executer.select().from(partnerApplications).where(eq(partnerApplications.categoryName, 'Featured'))
+  const apps = await executer.select().from(partnerApplications).where(eq(partnerApplications.isFeatured, true))
   return apps
 }
 
@@ -167,4 +167,29 @@ export async function isSubmited(interactionId: string, userId: string, tx?: Tx)
     } 
   })
   return submited
+}
+
+
+export async function getUserPoints(userId: string, tx?: Tx) {
+  const executer = tx ? tx : db
+  const points = await executer.query.userAppReward.findMany({
+    where: (table, {eq, and}) =>  and(eq(table.userId, userId)),
+    with: {
+      reward: true
+    }
+  })
+  const totalPoints = points.reduce((acc, curr) => acc + (curr?.reward?.amount ?? 0), 0)
+  return totalPoints
+}
+
+export async function getUserPointsByApp(appId: string, userId: string, tx?: Tx) {
+  const executer = tx ? tx : db
+  const points = await executer.query.userAppReward.findMany({
+    where: (table, {eq, and}) =>  and(eq(table.partnerApplicationId, appId), eq(table.userId, userId)),
+    with: {
+      reward: true
+    }
+  })
+  const totalPoints = points.reduce((acc, curr) => acc + (curr?.reward?.amount ?? 0), 0)
+  return totalPoints
 }

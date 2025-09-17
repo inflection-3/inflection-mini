@@ -1,0 +1,1 @@
+ALTER TYPE "public"."verification_type" ADD VALUE 'auto';

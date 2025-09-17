@@ -3,7 +3,7 @@ import {varchar, boolean, integer, pgEnum, pgTable, text, timestamp, uniqueIndex
 
 
 export const userRole = pgEnum("user_role", ["admin", "user", "agent"]);
-export const verificationType = pgEnum("verification_type", [ "api", "manual", "none"])
+export const verificationType = pgEnum("verification_type", [ "api", "manual", "none", "auto"])
 export const rewardType = pgEnum("reward_type", ["points", "USDC", "NFT"])
 
 export const users = pgTable("users", {

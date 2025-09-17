@@ -24,6 +24,39 @@ export const userQueries = {
   userRewards: (userId: string) => [...userQueries.all(), userId, "rewards"] as const,
   userApps: (userId: string) => [...userQueries.all(), userId, "apps"] as const,
   userTransactions: (userId: string) => [...userQueries.all(), userId, "transactions"] as const,
+  userPoints: () => [...userQueries.all(), "points"] as const,
+  userPointsByApp: (appId: string) => [...userQueries.all(), "points", appId] as const,
+
+  userPointsOptions: (enabled: boolean = true) =>
+    queryOptions({
+      queryKey: userQueries.userPoints(),
+      queryFn: async () => {
+        const response = await api(`/user/me/points`, {
+          schema: responseSchema(z.number()),
+        });
+        if (!response.success) {
+          throw new Error(response.message);
+        }
+        return response.data;
+      },
+      staleTime: 1 * 60 * 1000,
+      enabled: enabled,
+    }),
+  userPointsByAppOptions: (appId: string, enabled: boolean = true) =>
+    queryOptions({
+      queryKey: userQueries.userPointsByApp( appId),
+      queryFn: async () => {
+        const response = await api(`/user/me/points/${appId}`, {
+          schema: responseSchema(z.number()),
+        });
+        if (!response.success) {
+          throw new Error(response.message);
+        }
+        return response.data;
+      },
+      staleTime: 1 * 60 * 1000,
+      enabled: enabled,
+    }),
 
   meOptions: (enabled: boolean = true) =>
     queryOptions({

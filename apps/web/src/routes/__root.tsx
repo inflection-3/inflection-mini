@@ -1,6 +1,4 @@
 import {  createRootRouteWithContext, Outlet } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanstackDevtools } from '@tanstack/react-devtools'
 import type { QueryClient } from '@tanstack/react-query';
 import type { User } from '@mini/types';
 import { userQueries } from '@/lib/queries';
@@ -107,17 +105,6 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
     <>
       <Outlet />
       <Toaster />
-      <TanstackDevtools
-        config={{
-          position: 'bottom-left',
-        }}
-        plugins={[
-          {
-            name: 'Tanstack Router',
-            render: <TanStackRouterDevtoolsPanel />,
-          },
-        ]}
-      />
     </>
   ),
 })

@@ -12,7 +12,7 @@ export default {
   dialect: "postgresql",
   out: "./migrations",
   dbCredentials: {
-    url: "postgresql://inflection:yesinflectionDB2992@@inflection-inflection-2qtimi:5432/inflection",
+    url: DATABASE_URL,
     ssl: {
       rejectUnauthorized: false,
     },

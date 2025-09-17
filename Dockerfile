@@ -53,7 +53,5 @@ COPY --from=builder --chown=bunjs:bunjs /app/.env* ./
 # Switch to non-root user
 USER bunjs
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD curl -f http://localhost:9999/health || exit 1
 ENV NODE_ENV=production
 CMD ["bun", "run", "apps/server/dist/index.js"]

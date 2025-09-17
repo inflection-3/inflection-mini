@@ -16,7 +16,7 @@ services:
       - dokploy-network
 
     # Add Traefik labels here when you have a domain
-   labels:
+    labels:
       - "traefik.enable=true"
       - "traefik.http.routers.new-app.rule=Host(`app.inflection.network`)"
       - "traefik.http.routers.new-app.entrypoints=websecure"

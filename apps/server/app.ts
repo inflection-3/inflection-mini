@@ -36,7 +36,9 @@ const staticFiles = [
   'favicon.ico', 'manifest.json', 'robots.txt',
   'buy-sell.svg', 'card.svg', 'invest.svg', 'network.svg', 
   'partner-app-icon.svg', 'scan.svg', 'test.svg',
-  'logo192.png', 'logo512.png'
+  'logo192.png', 'logo512.png',
+  'android-chrome-192x192.png', 'android-chrome-512x512.png',
+  "dollor.svg"
 ];
 
 staticFiles.forEach(file => {

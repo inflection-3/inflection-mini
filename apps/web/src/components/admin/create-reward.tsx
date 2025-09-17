@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { z } from "zod";
-import { createRewardSchema } from "@mini/types";
 
 interface CreateRewardFormProps {
   onClose: () => void;
@@ -13,35 +11,17 @@ interface CreateRewardFormProps {
 }
 
 export function CreateRewardForm({ onClose, appId }: CreateRewardFormProps) {
-  const [formData, setFormData] = useState<z.infer<typeof createRewardSchema>>({
-    rewardType: "points",
+  const [formData, setFormData] = useState({
+    rewardType: "points" as "points" | "USDC" | "NFT",
     amount: 0,
     appId: appId, // Use the provided appId
     title: "",
   });
 
-  const [errors, setErrors] = useState<Partial<Record<keyof typeof formData, string>>>({});
   const createRewardMutation = useCreateRewardMutation();
-
-  function validateForm(): boolean {
-    const result = createRewardSchema.safeParse(formData);
-    if (!result.success) {
-      const newErrors: Partial<Record<keyof typeof formData, string>> = {};
-      result.error.errors.forEach((error: { path: (string | number)[]; message: string }) => {
-        if (error.path[0]) {
-          newErrors[error.path[0] as keyof typeof formData] = error.message;
-        }
-      });
-      setErrors(newErrors);
-      return false;
-    }
-    setErrors({});
-    return true;
-  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!validateForm()) return;
 
     createRewardMutation.mutate(formData, {
       onSuccess: () => {
@@ -58,9 +38,6 @@ export function CreateRewardForm({ onClose, appId }: CreateRewardFormProps) {
 
   function handleChange(field: keyof typeof formData, value: string | number) {
     setFormData(prev => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: undefined }));
-    }
   }
 
   const rewardTypeOptions = [
@@ -90,9 +67,7 @@ export function CreateRewardForm({ onClose, appId }: CreateRewardFormProps) {
           value={formData.title}
           onChange={(e) => handleChange("title", e.target.value)}
           placeholder="Enter reward title"
-          aria-invalid={!!errors.title}
         />
-        {errors.title && <p className="text-sm text-destructive">{errors.title}</p>}
       </div>
 
       <div className="space-y-2">
@@ -101,7 +76,7 @@ export function CreateRewardForm({ onClose, appId }: CreateRewardFormProps) {
           value={formData.rewardType}
           onValueChange={(value) => handleChange("rewardType", value as any)}
         >
-          <SelectTrigger className={errors.rewardType ? "border-destructive" : ""}>
+          <SelectTrigger>
             <SelectValue placeholder="Select reward type..." />
           </SelectTrigger>
           <SelectContent>
@@ -112,7 +87,6 @@ export function CreateRewardForm({ onClose, appId }: CreateRewardFormProps) {
             ))}
           </SelectContent>
         </Select>
-        {errors.rewardType && <p className="text-sm text-destructive">{errors.rewardType}</p>}
         <p className="text-xs text-muted-foreground">
           {rewardTypeOptions.find(opt => opt.value === formData.rewardType)?.description}
         </p>
@@ -133,9 +107,7 @@ export function CreateRewardForm({ onClose, appId }: CreateRewardFormProps) {
           value={formData.amount}
           onChange={(e) => handleChange("amount", parseFloat(e.target.value) || 0)}
           placeholder="Enter amount"
-          aria-invalid={!!errors.amount}
         />
-        {errors.amount && <p className="text-sm text-destructive">{errors.amount}</p>}
         {formData.rewardType === "USDC" && (
           <p className="text-xs text-muted-foreground">
             Amount in USDC (e.g., 1.50 for $1.50)

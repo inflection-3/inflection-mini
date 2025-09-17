@@ -18,6 +18,9 @@ COPY .env* ./
 RUN bun install 
 RUN bun run turbo build
 
+# Run database migrations after build
+RUN cd packages/db && bun drizzle-kit migrate
+
 # Verify build artifacts exist
 RUN ls -la apps/server/dist/ && \
     ls -la apps/web/dist/ && \

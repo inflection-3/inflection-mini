@@ -1,0 +1,1 @@
+ALTER TABLE "partner_applications" ADD COLUMN "is_featured" boolean DEFAULT false NOT NULL;

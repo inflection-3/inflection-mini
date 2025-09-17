@@ -40,7 +40,7 @@ const interactionSchema = z.object({
   title: z.string(),
   description: z.string(),
   interactionUrl: z.string(),
-  verficationType: z.enum(["auto", "api", "manual", "none"]),
+  verificationType: z.enum(["api", "manual", "none"]),
   rewardId: z.string(),
 });
 
@@ -215,7 +215,7 @@ appsRouter.post(
       title: interaction.title,
       description: interaction.description,
       interactionUrl: interaction.interactionUrl,
-      verficationType: interaction.verficationType,
+      verificationType: interaction.verificationType,
       appId: id,
       partnerApplicationId: id,
       rewardId: interaction.rewardId,
@@ -280,7 +280,7 @@ appsRouter.post(
       );
     }
      let result = null;
-     if(interaction.verficationType === "none") {
+     if(interaction.verificationType === "none") {
        result = await db.transaction(async(tx) => {
          const userInteraction = await createUserAppInteraction({
            userId: userId,

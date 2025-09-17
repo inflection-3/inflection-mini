@@ -33,6 +33,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           },
           onAuthSuccess: async (user) => {
             try {
+              const redirectUrl = window.location.search.split("redirect=")[1]
               const dynamicAccessToken =await getAuthToken()
               const response:any = await api('/auth/login', {
                 method: 'POST',
@@ -54,7 +55,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
               localStorage.setItem("refreshToken", response.data.refreshToken)
               queryClient.setQueryData(userQueries.me(), response.data)
               toast.success("Logged in successfully")
-              window.location.reload()
+              if (redirectUrl) {
+                window.location.href = redirectUrl
+              }
+              window.location.href = "/"
             } catch (error) {
              toast.error(error instanceof Error ? error.message : "An unknown error occurred")
              queryClient.clear()

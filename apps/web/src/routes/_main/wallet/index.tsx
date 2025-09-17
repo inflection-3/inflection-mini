@@ -2,10 +2,23 @@
 import { BalanceCard } from "@/components/balance-card";
 import { StatCard } from "@/components/gradient-card";
 import { Badge } from "@/components/ui/badge";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_main/wallet/")({
   component: RouteComponent,
+  loader: async ({context}) => {
+    const { auth } = context;
+    if (!auth?.isAuthenticated) {
+      throw redirect({
+        to: "/login",
+      });
+    }
+    return {
+      user: auth.user,
+      isAuthenticated: auth.isAuthenticated,
+    };
+   
+  }
 });
 
 

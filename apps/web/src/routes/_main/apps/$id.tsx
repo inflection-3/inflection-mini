@@ -9,9 +9,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { buttonVariants } from "@/components/ui/button";
 import { appsQueries } from "@/lib/queries";
+import { cn } from "@/lib/utils";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute, useParams } from "@tanstack/react-router";
+import { createFileRoute, Link, useParams, useRouteContext } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_main/apps/$id")({
   component: RouteComponent,
@@ -25,6 +27,9 @@ export const Route = createFileRoute("/_main/apps/$id")({
 });
 
 function RouteComponent() {
+  const {auth} = useRouteContext({
+    from: "/_main/apps/$id",
+  })
   const { id } = useParams({
     from: "/_main/apps/$id",
   });
@@ -73,11 +78,23 @@ function RouteComponent() {
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="w-full mt-4">
-                  <MissionAction
-                    actionTitle={interaction.actionTitle}
-                    interactionUrl={interaction.interactionUrl}
-                    interactionId={interaction.id}
-                  />
+                  {
+                    auth.isAuthenticated ? (
+                      <MissionAction
+                        actionTitle={interaction.actionTitle}
+                        interactionUrl={interaction.interactionUrl}
+                        interactionId={interaction.id}
+                      />) :( 
+                        <Link className={cn(buttonVariants({
+                          variant: "default",
+                        }), "w-full")}  to="/login" params={{
+                          redirect: "apps/" + id,
+                        }}>
+                          Login
+                        </Link>
+                      )
+                    
+                  }
                 </AccordionContent>
               </AccordionItem>
             );

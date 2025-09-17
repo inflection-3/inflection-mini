@@ -64,6 +64,20 @@
       "when": 1758055699278,
       "tag": "0008_calm_deathstrike",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1758077695658,
+      "tag": "0009_heavy_blackheart",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1758079021924,
+      "tag": "0010_warm_black_panther",
+      "breakpoints": true
     }
   ]
 }

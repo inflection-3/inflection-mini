@@ -27,7 +27,7 @@ function RouteComponent() {
     title: "",
     description: "",
     interactionUrl: "",
-    verificationType: "auto",
+    verificationType: "none",
     rewardId: "",
     appId: appId, 
   });
@@ -65,7 +65,7 @@ function RouteComponent() {
           title: "",
           description: "",
           interactionUrl: "",
-          verificationType: "auto",
+          verificationType: "none",
           rewardId: "",
           appId: appId, // Keep app ID from params
         });
@@ -140,7 +140,7 @@ function RouteComponent() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="verficationType">Verification Type *</Label>
+        <Label htmlFor="verificationType">Verification Type *</Label>
         <Select
           value={formData.verificationType}
           onValueChange={(value) => handleChange("verificationType", value as any)}
@@ -150,7 +150,6 @@ function RouteComponent() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="none">None</SelectItem>
-            <SelectItem value="auto">Auto</SelectItem>
             <SelectItem value="api">API</SelectItem>
             <SelectItem value="manual">Manual</SelectItem>
           </SelectContent>

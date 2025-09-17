@@ -294,7 +294,7 @@ export const useUpdateInteractionMutation = () => {
     mutationFn: async (data: {
       interactionId: string;
       interactionUrl?: string;
-      verficationType?: "auto" | "api" | "manual" | "none";
+      verificationType?: "auto" | "api" | "manual" | "none";
       rewardId?: string;
     }) => {
       const { interactionId, ...updateData } = data;

@@ -12,7 +12,7 @@ interface EditInteractionFormProps {
 export function EditInteractionForm({ interaction }: EditInteractionFormProps) {
   const [formData, setFormData] = useState({
     interactionUrl: interaction.interactionUrl,
-    verficationType: (interaction as any).verficationType || "none",
+    verificationType: (interaction as any).verificationType || "none",
     rewardId: (interaction as any).rewardId || "",
   });
 
@@ -22,7 +22,7 @@ export function EditInteractionForm({ interaction }: EditInteractionFormProps) {
   useEffect(() => {
     setFormData({
       interactionUrl: interaction.interactionUrl,
-      verficationType: (interaction as any).verficationType || "none",
+      verificationType: (interaction as any).verificationType || "none",
       rewardId: (interaction as any).rewardId || "",
     });
   }, [interaction]);
@@ -57,7 +57,7 @@ export function EditInteractionForm({ interaction }: EditInteractionFormProps) {
     });
   }
 
-  function handleChange(field: keyof typeof formData, value: string | typeof formData.verficationType) {
+  function handleChange(field: keyof typeof formData, value: string | typeof formData.verificationType) {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: undefined }));
@@ -79,20 +79,20 @@ export function EditInteractionForm({ interaction }: EditInteractionFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="verficationType">Verification Type *</Label>
+        <Label htmlFor="verificationType">Verification Type *</Label>
         <select
-          id="verficationType"
-          value={formData.verficationType}
-          onChange={(e) => handleChange("verficationType", e.target.value as any)}
+          id="verificationType"
+          value={formData.verificationType}
+          onChange={(e) => handleChange("verificationType", e.target.value as any)}
           className="w-full px-3 py-2 border rounded-md focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none"
-          aria-invalid={!!errors.verficationType}
+          aria-invalid={!!errors.verificationType}
         >
           <option value="none">None</option>
           <option value="auto">Auto</option>
           <option value="api">API</option>
           <option value="manual">Manual</option>
         </select>
-        {errors.verficationType && <p className="text-sm text-destructive">{errors.verficationType}</p>}
+        {errors.verificationType && <p className="text-sm text-destructive">{errors.verificationType}</p>}
       </div>
 
       <div className="space-y-2">

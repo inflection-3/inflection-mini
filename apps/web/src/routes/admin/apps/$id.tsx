@@ -196,12 +196,12 @@ function RouteComponent() {
                         <div className='flex items-center justify-between'>
                           <span className="font-medium">Verification: </span>
                           <span className={`px-2 py-1 rounded text-xs font-medium ${
-                            interaction.verficationType === 'auto' ? 'bg-blue-100 text-blue-800' :
-                            interaction.verficationType === 'manual' ? 'bg-yellow-100 text-yellow-800' :
-                            interaction.verficationType === 'api' ? 'bg-green-100 text-green-800' :
+                            interaction.verificationType === 'auto' ? 'bg-blue-100 text-blue-800' :
+                            interaction.verificationType === 'manual' ? 'bg-yellow-100 text-yellow-800' :
+                            interaction.verificationType === 'api' ? 'bg-green-100 text-green-800' :
                             'bg-gray-100 text-gray-800'
                           }`}>
-                            {interaction.verficationType}
+                            {interaction.verificationType}
                           </span>
                         </div>
                         

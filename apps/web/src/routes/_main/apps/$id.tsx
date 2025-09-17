@@ -1,3 +1,6 @@
+//@ts-ignore
+//@ts-nocheck
+
 import { BalanceCard } from "@/components/balance-card";
 import { ClaimPoints } from "@/components/claim-points";
 import { StatCard } from "@/components/gradient-card";

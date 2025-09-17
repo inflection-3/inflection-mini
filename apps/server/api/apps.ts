@@ -215,7 +215,7 @@ appsRouter.post(
       title: interaction.title,
       description: interaction.description,
       interactionUrl: interaction.interactionUrl,
-      verificationType: interaction.verificationType,
+      verficationType: interaction.verificationType,
       appId: id,
       partnerApplicationId: id,
       rewardId: interaction.rewardId,
@@ -280,7 +280,7 @@ appsRouter.post(
       );
     }
      let result = null;
-     if(interaction.verificationType === "none") {
+     if(interaction.verficationType === "none") {
        result = await db.transaction(async(tx) => {
          const userInteraction = await createUserAppInteraction({
            userId: userId,

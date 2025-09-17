@@ -3,7 +3,7 @@ import {varchar, boolean, integer, pgEnum, pgTable, text, timestamp, uniqueIndex
 
 
 export const userRole = pgEnum("user_role", ["admin", "user", "agent"]);
-export const verficationTYpe = pgEnum("verification_type", [ "api", "manual", "none"])
+export const verificationType = pgEnum("verification_type", [ "api", "manual", "none"])
 export const rewardType = pgEnum("reward_type", ["points", "USDC", "NFT"])
 
 export const users = pgTable("users", {
@@ -64,7 +64,7 @@ export const partnerInteraction = pgTable("partner_interaction", {
   appId: uuid("app_id").notNull().references(() => partnerApplications.id),
   interactionUrl: text("interaction_url").notNull(),
   partnerApplicationId: uuid("partner_application_id").notNull().references(() => partnerApplications.id),
-  verficationType: verficationTYpe("verfication_type").default("none"),
+  verficationType: verificationType("verfication_type").default("none"),
   rewardId: uuid("reward_id").notNull().references(() => reward.id),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),

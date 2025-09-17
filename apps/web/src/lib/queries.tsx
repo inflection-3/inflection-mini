@@ -188,6 +188,10 @@ export const appsQueries = {
       queryKey: appsQueries.detail(id),
       queryFn: async () => {
          const response = await api(`/apps/${id}`, {
+          schema: responseSchema(z.object({
+            
+
+          }))
         });
         if (!response.success) {
           throw new Error(response.message);

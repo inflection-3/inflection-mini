@@ -14,8 +14,6 @@ services:
       - .env
     environment:
       - DATABASE_URL=${DATABASE_URL}
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     networks:
       - dokploy-network
     labels:
@@ -38,5 +36,4 @@ services:
           memory: 1G
 networks:
   dokploy-network:
-    external: false
-    driver: bridge
+    external: true

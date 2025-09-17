@@ -4,6 +4,10 @@ FROM oven/bun:1.2.20-alpine AS builder
 RUN apk add --no-cache libc6-compat curl
 WORKDIR /app
 
+# Accept DATABASE_URL as build argument
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
+
 # Install Turbo globally
 RUN bun add turbo --global
 
@@ -19,6 +23,7 @@ RUN bun install
 RUN bun run turbo build
 
 # Run database migrations after build
+# Note: DATABASE_URL must be passed as build arg or available in environment
 RUN cd packages/db && bun drizzle-kit migrate
 
 # Verify build artifacts exist

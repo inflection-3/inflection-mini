@@ -52,7 +52,7 @@ function RouteComponent() {
   const groupedApps = groupAppsByCategory(apps);
 
   return (
-    <div className="">
+    <div className="flex flex-col gap-y-5">
       {groupedApps.map((group) => (
         <div
           key={group.categoryName}

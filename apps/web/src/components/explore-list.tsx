@@ -1,26 +1,31 @@
 import { Link } from "@tanstack/react-router";
 import { StatCard } from "./gradient-card";
+import { Badge } from "./ui/badge";
 
 const exploreItems = [
   {
     icon: "/network.svg",
     label: "Explore partner app",
     link: "/apps",
+    active: true,
   },
   {
     icon: "/invest.svg",
     label: "Invest 10% APY",
-    link: "/wallet",
+    link: "https://www.avantisfi.com/",
+    active: true,
   },
   {
     icon: "/buy-sell.svg",
     label: "Buy/Sell Stablecoins",
-    link: "/wallet",
+    link: "https://app.p2p.lol/campaign?id=9&manager=inflection",
+    active: true,
   },
   {
     icon: "/card.svg",
     label: "Stablecoin Debit Card",
     link: "/wallet",
+    active: true,
   },
 ];
 
@@ -37,9 +42,9 @@ export function ExploreList() {
   );
 }
 
-export function ExploreItem({ icon, label, link }: { icon: string; label: string; link: string }) {
+export function ExploreItem({ icon, label, link, active }: { icon: string; label: string; link: string; active: boolean }) {
   return (
-    <Link to={link} className="max-w-[126px]">
+    <Link to={link} className="max-w-[126px] relative">
       <StatCard className="w-full h-[100px] flex items-center justify-center rounded-[12px]">
         <img
           className="w-[56px] h-[56px] rounded-[12px]"
@@ -50,6 +55,13 @@ export function ExploreItem({ icon, label, link }: { icon: string; label: string
       <p className="text-xs text-muted-foreground text-center mt-2.5">
         {label}
       </p>
+      {
+        !active && (
+          <Badge className="absolute text-[6px] top-1 right-1">
+            coming soon
+          </Badge>
+        )
+      }
     </Link>
   );
 }

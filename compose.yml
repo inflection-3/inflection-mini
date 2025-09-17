@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  api:
+  app:
     build:
       context: .
       dockerfile: DockerFile
@@ -17,10 +17,10 @@ services:
     # Add Traefik labels here when you have a domain
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.inflection-api.rule=Host(`app.inflection.network`)"
-      - "traefik.http.routers.inflection-api.entrypoints=websecure"
-      - "traefik.http.routers.inflection-api.tls.certResolver=letsencrypt"
-      - "traefik.http.services.inflection-api.loadbalancer.server.port=9999"
+      - "traefik.http.routers.inflection-app.rule=Host(`app.inflection.network`)"
+      - "traefik.http.routers.inflection-app.entrypoints=websecure"
+      - "traefik.http.routers.inflection-app.tls.certResolver=letsencrypt"
+      - "traefik.http.services.inflection-app.loadbalancer.server.port=9999"
 
 networks:
   dokploy-network:

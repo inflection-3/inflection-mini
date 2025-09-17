@@ -16,7 +16,7 @@
     /* Linting */
     "skipLibCheck": true, // Skip type checking for library files
     "noEmitOnError": false, // Allow build to continue despite errors
-    "strict": false, // Disable strict type checking (includes strictNullChecks, noImplicitAny, etc.)
+    "strict": true, // Disable strict type checking (includes strictNullChecks, noImplicitAny, etc.)
     "allowJs": true, // Allow JavaScript files without type checking
     "checkJs": false,
     "baseUrl": ".",

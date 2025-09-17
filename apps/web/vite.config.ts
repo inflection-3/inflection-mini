@@ -23,6 +23,7 @@ export default defineConfig({
     logLevel: 'silent',
   },
   build: {
+  
     rollupOptions: {
       onwarn(warning, warn) {
         // Ignore TypeScript warnings

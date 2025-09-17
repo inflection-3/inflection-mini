@@ -1,39 +1,27 @@
+version: "3"
 
-version: "3.8"
 services:
-  app:
+  api:
     build:
-      context: .  # Root directory containing turbo.json, package.json, etc.
-      dockerfile: Dockerfile
-      args:
-        NODE_ENV: production
-    restart: unless-stopped
-    ports:
-      - "9999:9999"
+      context: .
+      dockerfile: DockerFile
     env_file:
       - .env
-    environment:
-      - DATABASE_URL=${DATABASE_URL}
+    restart: always
+    ports:
+      - "9999:9999"
+      - "5432:5432"
     networks:
       - dokploy-network
+
+    # Add Traefik labels here when you have a domain
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.app-inflection.rule=Host(`app.inflection.network`)"
-      - "traefik.http.routers.app-inflection.entrypoints=websecure"
-      - "traefik.http.routers.app-inflection.tls.certResolver=letsencrypt"
-      - "traefik.http.services.app-inflection.loadbalancer.server.port=3000"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9999/health", "||", "exit", "1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-    deploy:
-      resources:
-        limits:
-          memory: 2G
-        reservations:
-          memory: 1G
+      - "traefik.http.routers.inflection-api.rule=Host(`app.inflection.network`)"
+      - "traefik.http.routers.inflection-api.entrypoints=websecure"
+      - "traefik.http.routers.inflection-api.tls.certResolver=letsencrypt"
+      - "traefik.http.services.inflection-api.loadbalancer.server.port=9999"
+
 networks:
   dokploy-network:
     external: true

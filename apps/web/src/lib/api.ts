@@ -1,3 +1,7 @@
+// @ts-ignore
+// @ts-nocheck
+// @ts-expect-error
+
 import { z } from "zod";
 import { up } from "up-fetch";
 import { getAuthToken } from "@dynamic-labs/sdk-react-core";

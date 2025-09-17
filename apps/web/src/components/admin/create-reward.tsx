@@ -27,7 +27,7 @@ export function CreateRewardForm({ onClose, appId }: CreateRewardFormProps) {
     const result = createRewardSchema.safeParse(formData);
     if (!result.success) {
       const newErrors: Partial<Record<keyof typeof formData, string>> = {};
-      result.error.errors.forEach((error) => {
+      result.error.errors.forEach((error: { path: (string | number)[]; message: string }) => {
         if (error.path[0]) {
           newErrors[error.path[0] as keyof typeof formData] = error.message;
         }

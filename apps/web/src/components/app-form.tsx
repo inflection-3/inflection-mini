@@ -56,7 +56,7 @@ export function AppForm({ editMode = false, defaultData, onSuccess, onCancel }: 
     const result = createAppSchema.safeParse(formData);
     if (!result.success) {
       const newErrors: Partial<Record<keyof typeof formData, string>> = {};
-      result.error.errors.forEach((error) => {
+      result.error.errors.forEach((error: z.ZodIssue) => {
         if (error.path[0]) {
           newErrors[error.path[0] as keyof typeof formData] = error.message;
         }

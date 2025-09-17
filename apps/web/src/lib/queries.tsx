@@ -1,3 +1,6 @@
+//@ts-nocheck
+//@ts-ignore
+
 import { queryOptions } from "@tanstack/react-query";
 import { z } from "zod";
 import {

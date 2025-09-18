@@ -1,6 +1,26 @@
 version: "3.8"
 
 services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+      args:
+        - DATABASE_URL=${DATABASE_URL}
+    env_file:
+      - .env
+    restart: always
+    ports:
+      - 9999
+    networks:
+      - dokploy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.new-app.rule=Host(`app.inflection.network`)"
+      - "traefik.http.routers.new-app.entrypoints=websecure"
+      - "traefik.http.routers.new-app.tls.certResolver=letsencrypt"
+      - "traefik.http.services.new-app.loadbalancer.server.port=9999"
+
   app:
     build:
       context: .
@@ -26,4 +46,4 @@ services:
 
 networks:
   dokploy-network:
-    external: true
+    driver: bridge

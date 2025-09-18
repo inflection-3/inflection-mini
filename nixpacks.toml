@@ -1,11 +1,2 @@
 [phases.setup]
 nixPkgs = ["nodejs_20", "bun"]
-
-[phases.install]
-cmds = ["bun install"]
-
-[phases.build]
-cmds = ["bun run build:web"]
-
-[start]
-cmd = "bun run start:web"

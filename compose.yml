@@ -11,7 +11,7 @@ services:
       - .env
     restart: always
     ports:
-      - 9999
+      - 3000:3000
     networks:
       - dokploy-network
     labels:
@@ -19,19 +19,19 @@ services:
       - "traefik.http.routers.new-app.rule=Host(`app.inflection.network`)"
       - "traefik.http.routers.new-app.entrypoints=websecure"
       - "traefik.http.routers.new-app.tls.certResolver=letsencrypt"
-      - "traefik.http.services.new-app.loadbalancer.server.port=9999"
+      - "traefik.http.services.new-app.loadbalancer.server.port=3000"
 
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.server
       args:
         - DATABASE_URL=${DATABASE_URL}
     env_file:
       - .env
     restart: always
     ports:
-      - 9999
+      - 9999:9999
     networks:
       - dokploy-network
 

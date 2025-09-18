@@ -1,3 +1,7 @@
+# Root nixpacks.toml for monorepo
+# This file is used when deploying the entire monorepo
+# For individual services, use the specific nixpacks.toml files in each app directory
+
 [providers]
 node = "20"
 

@@ -10,7 +10,7 @@ export function FeaturedList() {
       </h1>
       <div className="grid grid-cols-3 gap-2.5">
       <FeaturedItem link="/apps/eebb5e2f-1144-46c8-8cf2-1b140d167691" title="Geodnet" image="/test.svg" active />
-      <FeaturedItem link="" className="bg-gradient-to-r from-[#035ADE] to-[#0247CE]" title="Geodnet" image="/scan.svg" />
+      <FeaturedItem link="" className="bg-gradient-to-r from-[#035ADE] to-[#0247CE]" title="scan and pay" image="/scan.svg" />
       </div>
    </div>
   );

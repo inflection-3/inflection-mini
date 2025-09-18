@@ -2,12 +2,12 @@ import {  users } from "@mini/db/schema";
 import { jwt, sign } from "hono/jwt";
 import { createMiddleware } from "hono/factory";
 import {db} from "@mini/db/connection";
-import { eq, InferSelectModel } from "drizzle-orm";
+import { eq} from "drizzle-orm";
 import { env } from "../env";
 import { AppBindings } from "../types";
 import { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
-import { authenticateDynamic, extractToken, verifyTokenDynamicToken } from "../services/dynamic";
+import {  extractToken, verifyTokenDynamicToken } from "../services/dynamic";
 
 
 export type AUTH_TOKENS = {

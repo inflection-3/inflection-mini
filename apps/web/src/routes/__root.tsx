@@ -79,7 +79,6 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
           auth: {
             user: {
               ...userData,
-              role: "admin",
             },
             isAuthenticated: true,
           },

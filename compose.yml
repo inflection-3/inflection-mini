@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - DATABASE_URL=${DATABASE_URL}
+    env_file:
+      - .env
+    restart: always
+    ports:
+      - 9999
+    networks:
+      - dokploy-network
+
+    # Add Traefik labels here when you have a domain
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.new-app.rule=Host(`app.inflection.network`)"
+      - "traefik.http.routers.new-app.entrypoints=websecure"
+      - "traefik.http.routers.new-app.tls.certResolver=letsencrypt"
+      - "traefik.http.services.new-app.loadbalancer.server.port=9999"
+
+
+networks:
+  dokploy-network:
+    external: true

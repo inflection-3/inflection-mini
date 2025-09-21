@@ -1,6 +1,3 @@
-//@ts-nocheck
-//@ts-ignore
-
 
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
@@ -8,13 +5,17 @@ import { appsQueries } from '@/lib/queries'
 import { CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Edit, Plus, ExternalLink, Calendar, DollarSign } from 'lucide-react'
-
+import { useDeleteInteractionMutation } from '@/lib/mutations'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import { DialogClose } from '@/components/ui/dialog'
+import { Trash } from 'lucide-react'
 export const Route = createFileRoute('/admin/apps/$id')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
   const { id } = Route.useParams()
+  const deleteInteractionMutation = useDeleteInteractionMutation()
   
   const { data: app, isLoading, error } = useQuery(
     appsQueries.detailOptions(id)
@@ -173,7 +174,7 @@ function RouteComponent() {
         <CardContent className='px-0'>
           {app.interactions && app.interactions.length > 0 ? (
             <div className="space-y-4">
-              {app.interactions.map((interaction) => (
+              {app.interactions.map((interaction: any) => (
                 <div 
                   key={interaction.id} 
                   className="border rounded-lg p-4 hover:bg-muted/50 transition-colors"
@@ -191,6 +192,25 @@ function RouteComponent() {
                             <ExternalLink className="w-3 h-3" />
                           </a>
                         </Button>
+                        <Dialog>
+                          <DialogTrigger>
+                            <Trash className="w-3 h-3" />
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogTitle>Delete Interaction</DialogTitle>
+                            <DialogDescription>
+                              Are you sure you want to delete this interaction?
+                            </DialogDescription>
+                            <DialogFooter>
+                              <DialogClose asChild>
+                                <Button size="sm" variant="outline">Cancel</Button>
+                              </DialogClose>
+                              <Button size="sm" variant="destructive" onClick={() => deleteInteractionMutation.mutate(interaction.id)}>Delete</Button>
+                            </DialogFooter>
+                          </DialogContent>
+
+                        </Dialog>
+                      
                       </div>
                       <p className="text-sm text-muted-foreground break-all">
                         {interaction.interactionUrl}

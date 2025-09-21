@@ -6,6 +6,7 @@ import {
   createUserAppInteraction,
   createUserAppReward,
   deleteApp,
+  deleteAppInteraction,
   getApp,
   getAppInteraction,
   getApps,
@@ -341,6 +342,32 @@ appsRouter.get("interactions/submited", async (c) => {
     success: true,
     message: "Interaction submited successfully",
     data: submited,
+  });
+});
+
+
+appsRouter.delete("interactions/:id", zValidator("param", idSchema), authMiddleware, adminApiMiddleware, async (c) => {
+  const { id: userId } = c.get("user");
+  const { id } = c.req.valid("param");
+  const interaction = await getAppInteraction(id);
+  if (!interaction) {
+    return c.json(
+      { message: "Interaction not found", data: null, success: false },
+      404
+    );
+  }
+  const owner = await isOwnApp(interaction.appId!, userId);
+  if (!owner) {
+    return c.json(
+      { message: "You are not authorized to delete this interaction", data: null, success: false },
+      403
+    );
+  }
+  const deletedInteraction = await deleteAppInteraction(id)
+  return c.json({
+    data: deletedInteraction,
+    success: true,
+    message: "Interaction deleted successfully",
   });
 });
 

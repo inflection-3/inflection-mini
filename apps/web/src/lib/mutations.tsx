@@ -470,3 +470,29 @@ export const useUploadMutation = () => {
     },
   });
 };
+
+
+export const useDeleteInteractionMutation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: appsQueries.all() });
+      toast.success("Interaction deleted successfully");
+    },
+    onError: (error) => {
+      console.error("Failed to delete interaction:", error);
+      toast.error(error.message || "Failed to delete interaction");
+    },
+    mutationFn: async (interactionId: string) => {
+      const response = await api(`/apps/interactions/${interactionId}`, {
+        method: "DELETE",
+      });
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+      return response.data;
+    },
+  });
+};
+
+

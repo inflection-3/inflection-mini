@@ -22,7 +22,7 @@ export const users = pgTable("users", {
 
 export const refreshTokens = pgTable("refresh_tokens", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id").notNull().references(() => users.id),
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
   token: text("token").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -39,9 +39,9 @@ export const partnerCategories = pgTable("partner_categories", {
 
 export const partnerApplications = pgTable("partner_applications", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id").notNull().references(() => users.id),
-  categoryId: uuid("category_id").references(() => partnerCategories.id),
-  categoryName: varchar("category_name").references(() => partnerCategories.name),
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  categoryId: uuid("category_id").references(() => partnerCategories.id, { onDelete: "set null" }),
+  categoryName: varchar("category_name").references(() => partnerCategories.name, { onDelete: "set null" }),
   slug: varchar("slug").notNull().unique(),
   appName: varchar("app_name").notNull(),
   bannerImage: varchar("banner_image"),
@@ -61,11 +61,11 @@ export const partnerInteraction = pgTable("partner_interaction", {
   title: varchar("title"),
   description: text("description"),
   actionTitle: varchar(),
-  appId: uuid("app_id").notNull().references(() => partnerApplications.id),
+  appId: uuid("app_id").notNull().references(() => partnerApplications.id, { onDelete: "cascade" }),
   interactionUrl: text("interaction_url").notNull(),
-  partnerApplicationId: uuid("partner_application_id").notNull().references(() => partnerApplications.id),
+  partnerApplicationId: uuid("partner_application_id").notNull().references(() => partnerApplications.id, { onDelete: "cascade" }),
   verficationType: verificationType("verfication_type").default("none"),
-  rewardId: uuid("reward_id").notNull().references(() => reward.id),
+  rewardId: uuid("reward_id").notNull().references(() => reward.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
@@ -73,8 +73,8 @@ export const partnerInteraction = pgTable("partner_interaction", {
 
 export const userAppInteraction = pgTable("user_app_interaction", {
   id: uuid("id").primaryKey().defaultRandom(),
-  interactionId: uuid("interaction_id").references(() => partnerInteraction.id),
-  userId: uuid("user_id").references(() => users.id),
+  interactionId: uuid("interaction_id").references(() => partnerInteraction.id, { onDelete: "cascade" }),
+  userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
   verified: boolean("verified").notNull().default(false),
   verifiedAt: timestamp("verified_at").$onUpdate(() => new Date()),
   createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -88,8 +88,8 @@ export const userAppInteraction = pgTable("user_app_interaction", {
 export const reward = pgTable("rewards", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: varchar("title"),
-  userId: uuid("user_id").notNull().references(() => users.id),
-  partnerApplicationId: uuid("partner_application_id").notNull().references(() => partnerApplications.id),
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  partnerApplicationId: uuid("partner_application_id").notNull().references(() => partnerApplications.id, { onDelete: "cascade" }),
   rewardType: rewardType("reward_type").notNull(),
   amount: integer("amount").notNull(),
   issuedAt: timestamp("issued_at").notNull().defaultNow(),
@@ -102,9 +102,9 @@ export const reward = pgTable("rewards", {
 
 export const userAppReward = pgTable("user_app_rewards", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id").notNull().references(() => users.id),
-  partnerApplicationId: uuid("partner_application_id").notNull().references(() => partnerApplications.id),
-  rewardId: uuid("reward_id").references(() => reward.id),
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  partnerApplicationId: uuid("partner_application_id").notNull().references(() => partnerApplications.id, { onDelete: "cascade" }),
+  rewardId: uuid("reward_id").references(() => reward.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 }, (table) => [
@@ -115,7 +115,7 @@ export const userAppReward = pgTable("user_app_rewards", {
 
 export const notification = pgTable("notifications", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id").references(() => users.id),
+  userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
   title: varchar("title").notNull(),
   message: text("message").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -125,7 +125,7 @@ export const notification = pgTable("notifications", {
 
 export const notificationToken = pgTable("notification_tokens", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id").notNull().references(() => users.id),
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
   token: text("token").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -134,8 +134,8 @@ export const notificationToken = pgTable("notification_tokens", {
 
 export const userOnboardingReward = pgTable("user_onboarding_rewards", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id").notNull().references(() => users.id),
-  rewardId: uuid("reward_id").notNull().references(() => reward.id),
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  rewardId: uuid("reward_id").notNull().references(() => reward.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 })

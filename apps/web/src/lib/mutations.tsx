@@ -296,11 +296,15 @@ export const useUpdateInteractionMutation = () => {
   return useMutation({
     mutationFn: async (data: {
       interactionId: string;
+      appId?: string;
+      title?: string;
+      description?: string;
+      actionTitle?: string;
       interactionUrl?: string;
       verificationType?: "auto" | "api" | "manual" | "none";
       rewardId?: string;
     }) => {
-      const { interactionId, ...updateData } = data;
+      const { interactionId, appId, ...updateData } = data;
       const response = await api(`/apps/interactions/${interactionId}`, {
         method: "PUT",
         body: updateData,
@@ -311,8 +315,13 @@ export const useUpdateInteractionMutation = () => {
       }
       return response.data;
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: appsQueries.all() });
+      // Invalidate specific app details if appId is provided
+      if (variables.appId) {
+        queryClient.invalidateQueries({ queryKey: appsQueries.detail(variables.appId) });
+        queryClient.invalidateQueries({ queryKey: appsQueries.interactions(variables.appId) });
+      }
       toast.success("Interaction updated successfully");
     },
     onError: (error) => {

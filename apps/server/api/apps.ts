@@ -16,6 +16,7 @@ import {
   isOwnApp,
   isSubmited,
   updateApp,
+  updateAppInteraction,
 } from "../lib/apps";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
@@ -245,6 +246,8 @@ appsRouter.put(
   async (c) => {
     const { userId } = c.get("jwtPayload");
     const { id } = c.req.valid("param");
+    const updateData = c.req.valid("json");
+    
     const interaction = await getAppInteraction(id);
     if (!interaction) {
       return c.json(
@@ -252,6 +255,7 @@ appsRouter.put(
         404
       );
     }
+    
     const owner = await isOwnApp(interaction.appId!, userId);
     if (!owner) {
       return c.json(
@@ -264,6 +268,25 @@ appsRouter.put(
         403
       );
     }
+
+    // Filter out null/undefined values and ensure required fields
+    const filteredData = Object.fromEntries(
+      Object.entries(updateData).filter(([_, value]) => value != null)
+    );
+
+    const updatedInteraction = await updateAppInteraction(id, filteredData as any);
+    if (!updatedInteraction) {
+      return c.json(
+        { message: "Failed to update interaction", data: null, success: false },
+        500
+      );
+    }
+
+    return c.json({
+      message: "Interaction updated successfully",
+      data: updatedInteraction,
+      success: true,
+    });
   }
 );
 

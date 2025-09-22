@@ -9,6 +9,7 @@ import { useDeleteInteractionMutation } from '@/lib/mutations'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { DialogClose } from '@/components/ui/dialog'
 import { Trash } from 'lucide-react'
+import { EditInteractionModal } from '@/components/edit-interaction-modal'
 export const Route = createFileRoute('/admin/apps/$id')({
   component: RouteComponent,
 })
@@ -135,7 +136,7 @@ function RouteComponent() {
 
             <div className="flex items-center justify-between border-b">
               <label className="text-sm font-medium">Open for Claim</label>
-              <span className={`text-sm px-2 py-1 rounded text-xs font-medium ${
+              <span className={`px-2 py-1 rounded text-xs font-medium ${
                 app.openForClaim 
                   ? 'bg-green-100 text-green-800' 
                   : 'bg-red-100 text-red-800'
@@ -241,10 +242,7 @@ function RouteComponent() {
                     </div>
 
                     <div className="flex gap-2 ml-4">
-                      <Button size="sm" variant="outline">
-                        <Edit className="w-3 h-3" />
-                        Edit
-                      </Button>
+                      <EditInteractionModal interaction={interaction} appId={id} />
                     </div>
                   </div>
                 </div>

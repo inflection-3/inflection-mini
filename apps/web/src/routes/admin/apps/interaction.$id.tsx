@@ -7,11 +7,12 @@ import { useCreateInteractionMutation } from '@/lib/mutations';
 import { rewardQueries } from '@/lib/queries';
 import { createInteractionSchema, type Reward } from '@mini/types';
 import { useQuery } from '@tanstack/react-query';
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react';
 import { z } from "zod";
 import { CreateRewardForm } from '@/components/admin/create-reward';
 import { Textarea } from '@/components/ui/textarea';
+import { Loader2 } from 'lucide-react';
 
 export const Route = createFileRoute('/admin/apps/interaction/$id')({
   component: RouteComponent,
@@ -21,6 +22,7 @@ export const Route = createFileRoute('/admin/apps/interaction/$id')({
 function RouteComponent() {
   const { id: appId } = Route.useParams();
   const [isCreateRewardOpen, setIsCreateRewardOpen] = useState(false);
+  const navigate = useNavigate();
   
   const [formData, setFormData] = useState<z.infer<typeof createInteractionSchema>>({
     actionTitle: "",
@@ -196,7 +198,7 @@ function RouteComponent() {
       </div>
 
       <div className="flex gap-2 pt-4">
-        <Button type="button" variant="outline" className="flex-1">
+        <Button onClick={() => navigate({ to: "/admin/apps/$id", params: { id: appId } })} type="button" variant="outline" className="flex-1">
           Cancel
         </Button>
         <Button 
@@ -204,7 +206,14 @@ function RouteComponent() {
           disabled={createInteractionMutation.isPending}
           className="flex-1"
         >
-          {createInteractionMutation.isPending ? "Creating..." : "Add Interaction"}
+          {createInteractionMutation.isPending ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Creating...
+            </>
+          ) : (
+            "Add Interaction"
+          )}
         </Button>
       </div>
     </form>

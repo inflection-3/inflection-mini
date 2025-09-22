@@ -369,8 +369,8 @@ appsRouter.get("interactions/submited", async (c) => {
 });
 
 
-appsRouter.delete("interactions/:id", zValidator("param", idSchema), authMiddleware, adminApiMiddleware, async (c) => {
-  const { id: userId } = c.get("user");
+appsRouter.delete("interactions/:id", zValidator("param", idSchema), protectedMiddleware, adminApiMiddleware, async (c) => {
+  const user = c.get("user");
   const { id } = c.req.valid("param");
   const interaction = await getAppInteraction(id);
   if (!interaction) {
@@ -379,7 +379,7 @@ appsRouter.delete("interactions/:id", zValidator("param", idSchema), authMiddlew
       404
     );
   }
-  const owner = await isOwnApp(interaction.appId!, userId);
+  const owner = await isOwnApp(interaction.appId!, user.id);
   if (!owner) {
     return c.json(
       { message: "You are not authorized to delete this interaction", data: null, success: false },

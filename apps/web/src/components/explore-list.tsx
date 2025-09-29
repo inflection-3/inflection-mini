@@ -12,7 +12,7 @@ const exploreItems = [
   {
     icon: "/invest.svg",
     label: "Invest 10% APY",
-    link: "https://www.avantisfi.com/",
+    link: "https://app.morpho.org/ethereum/earn",
     active: true,
   },
   {
@@ -24,7 +24,7 @@ const exploreItems = [
   {
     icon: "/card.svg",
     label: "Stablecoin Debit Card",
-    link: "/wallet",
+    link: "https://cypherhq.io/card/",
     active: true,
   },
 ];
